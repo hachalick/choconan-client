@@ -1,0 +1,46 @@
+{
+  "name": "v2",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack -p 80",
+    "build": "next build --turbopack",
+    "start": "next start -p 80",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@ducanh2912/next-pwa": "^10.2.9",
+    "@persian-tools/persian-tools": "^3.6.0",
+    "autoprefixer": "^10.4.21",
+    "convert-excel-to-json": "^1.7.0",
+    "dexie": "^4.2.0",
+    "dexie-react-hooks": "^4.2.0",
+    "jalali-ts": "^8.0.0",
+    "moment-jalaali": "^0.10.4",
+    "next": "15.5.2",
+    "postcss": "^8.5.6",
+    "react": "19.1.0",
+    "react-date-object": "^2.1.9",
+    "react-dom": "19.1.0",
+    "react-icons": "^5.5.0",
+    "react-multi-date-picker": "^4.5.2",
+    "react-select": "^5.10.2",
+    "sharp": "^0.34.3",
+    "socket.io-client": "^4.8.1",
+    "sweetalert2": "^11.23.0",
+    "swiper": "^11.2.10"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4.1.13",
+    "@types/moment-jalaali": "^0.7.9",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.2",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5",
+    "webpack": "^5.101.3"
+  }
+}

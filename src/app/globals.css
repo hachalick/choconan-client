@@ -1,0 +1,264 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-success-4: #F0FCEE;
+  --color-success-8: #E2F8DD;
+  --color-success-12: #D3F5CC;
+  --color-success-16: #C5F2BB;
+  --color-success-20: #B6EEAA;
+  --color-success-24: #A8EB99;
+  --color-success-28: #99E788;
+  --color-success-32: #88E477;
+  --color-success-36: #71DE59;
+  --color-success-40: #6EDD55;
+  --color-success-44: #5FDA44;
+  --color-success-48: #51D733;
+  --color-success-52: #46CC28;
+  --color-success-56: #41BB25;
+  --color-success-60: #3BAA22;
+  --color-success-64: #35991E;
+  --color-success-68: #2F881B;
+  --color-success-72: #297718;
+  --color-success-76: #236614;
+  --color-success-80: #1D5511;
+  --color-success-84: #17440D;
+  --color-success-88: #12330A;
+  --color-success-92: #0C2207;
+  --color-success-96: #061103;
+
+  --color-error-4: #FEEBEF;
+  --color-error-8: #FDD8DE;
+  --color-error-12: #FDC4CE;
+  --color-error-16: #FCB1BD;
+  --color-error-20: #FB9DAD;
+  --color-error-24: #FA899C;
+  --color-error-28: #F9768C;
+  --color-error-32: #F8627B;
+  --color-error-36: #F8506C;
+  --color-error-40: #F73B5A;
+  --color-error-44: #F6284A;
+  --color-error-48: #F5143A;
+  --color-error-52: #EB0A2F;
+  --color-error-56: #D7092B;
+  --color-error-60: #C40827;
+  --color-error-64: #B00723;
+  --color-error-68: #9D0720;
+  --color-error-72: #89061C;
+  --color-error-76: #760518;
+  --color-error-80: #620414;
+  --color-error-84: #4E0310;
+  --color-error-88: #3B020C;
+  --color-error-92: #27020B;
+  --color-error-96: #140104;
+
+  --color-warning-4: #FCFCED;
+  --color-warning-8: #F9F8DC;
+  --color-warning-12: #F7F5CA;
+  --color-warning-16: #F4F188;
+  --color-warning-20: #F1EEA7;
+  --color-warning-24: #EEEA95;
+  --color-warning-28: #ECE783;
+  --color-warning-32: #E9E372;
+  --color-warning-36: #E6E060;
+  --color-warning-40: #E3DC4F;
+  --color-warning-44: #E1D83C;
+  --color-warning-48: #DED52B;
+  --color-warning-52: #D4CB21;
+  --color-warning-56: #C2BA1E;
+  --color-warning-60: #B0A91C;
+  --color-warning-64: #9F9819;
+  --color-warning-68: #8D8716;
+  --color-warning-72: #7C7613;
+  --color-warning-76: #6A6511;
+  --color-warning-80: #58550E;
+  --color-warning-84: #47440B;
+  --color-warning-88: #35330B;
+  --color-warning-92: #232206;
+  --color-warning-96: #121103;
+
+  --color-primary-4: #F4F1F9;
+  --color-primary-8: #E8E3F3;
+  --color-primary-12: #DDD4EC;
+  --color-primary-16: #D2C6E6;
+  --color-primary-20: #C7B8E0;
+  --color-primary-24: #BBAADA;
+  --color-primary-28: #B09CD3;
+  --color-primary-32: #A58ECD;
+  --color-primary-36: #9A7FC7;
+  --color-primary-40: #8869BD;
+  --color-primary-44: #8363BB;
+  --color-primary-48: #7855B4;
+  --color-primary-52: #6E4BAA;
+  --color-primary-56: #65449C;
+  --color-primary-60: #583EBE;
+  --color-primary-64: #523880;
+  --color-primary-68: #493271;
+  --color-primary-72: #402C63;
+  --color-primary-76: #372555;
+  --color-primary-80: #2E1F47;
+  --color-primary-84: #251939;
+  --color-primary-88: #1B132B;
+  --color-primary-92: #120C1C;
+  --color-primary-96: #09060E;
+
+  --color-secondary-4: #EEF1FC;
+  --color-secondary-8: #DDE4F8;
+  --color-secondary-12: #CCD6F5;
+  --color-secondary-16: #BBC9F1;
+  --color-secondary-20: #AABBEE;
+  --color-secondary-24: #99AEEA;
+  --color-secondary-28: #88A0E7;
+  --color-secondary-32: #7892E3;
+  --color-secondary-36: #6281DF;
+  --color-secondary-40: #5677DC;
+  --color-secondary-44: #456AD9;
+  --color-secondary-48: #345CD5;
+  --color-secondary-52: #2A52CB;
+  --color-secondary-56: #264BBA;
+  --color-secondary-60: #2344A9;
+  --color-secondary-64: #1F3E98;
+  --color-secondary-68: #1C3787;
+  --color-secondary-72: #183077;
+  --color-secondary-76: #152966;
+  --color-secondary-80: #112255;
+  --color-secondary-84: #0E1B44;
+  --color-secondary-88: #0A1533;
+  --color-secondary-92: #070E22;
+  --color-secondary-96: #030711;
+
+  --shadow-primary-sm: 3px 3px 9px var(--color-primary-64), -3px -3px 9px var(--color-primary-32);
+  --shadow-primary: 9px 9px 19px var(--color-primary-64), -9px -9px 19px var(--color-primary-32);
+  --shadow-primary-md: 3px 3px 9px var(--color-primary-64), -3px -3px 9px var(--color-primary-32);
+  --shadow-primary-lg: 3px 3px 9px var(--color-primary-64), -3px -3px 9px var(--color-primary-32);
+  --shadow-primary-xl: 3px 3px 9px var(--color-primary-64), -3px -3px 9px var(--color-primary-32);
+  --shadow-primary-2xl: 3px 3px 9px var(--color-primary-64), -3px -3px 9px var(--color-primary-32);
+
+  --shadow-secondary-sm: 3px 3px 9px var(--color-secondary-64), -3px -3px 9px var(--color-secondary-32);
+  --shadow-secondary: 9px 9px 19px var(--color-secondary-64), -9px -9px 19px var(--color-secondary-32);
+  --shadow-secondary-md: 3px 3px 9px var(--color-secondary-64), -3px -3px 9px var(--color-secondary-32);
+  --shadow-secondary-lg: 3px 3px 9px var(--color-secondary-64), -3px -3px 9px var(--color-secondary-32);
+  --shadow-secondary-xl: 3px 3px 9px var(--color-secondary-64), -3px -3px 9px var(--color-secondary-32);
+  --shadow-secondary-2xl: 3px 3px 9px var(--color-secondary-64), -3px -3px 9px var(--color-secondary-32);
+
+  --shadow-success-sm: 3px 3px 9px var(--color-success-64), -3px -3px 9px var(--color-success-32);
+  --shadow-success: 9px 9px 19px var(--color-success-64), -9px -9px 19px var(--color-success-32);
+  --shadow-success-md: 3px 3px 9px var(--color-success-64), -3px -3px 9px var(--color-success-32);
+  --shadow-success-lg: 3px 3px 9px var(--color-success-64), -3px -3px 9px var(--color-success-32);
+  --shadow-success-xl: 3px 3px 9px var(--color-success-64), -3px -3px 9px var(--color-success-32);
+  --shadow-success-2xl: 3px 3px 9px var(--color-success-64), -3px -3px 9px var(--color-success-32);
+
+  --shadow-warning-sm: 3px 3px 9px var(--color-warning-64), -3px -3px 9px var(--color-warning-32);
+  --shadow-warning: 9px 9px 19px var(--color-warning-64), -9px -9px 19px var(--color-warning-32);
+  --shadow-warning-md: 3px 3px 9px var(--color-warning-64), -3px -3px 9px var(--color-warning-32);
+  --shadow-warning-lg: 3px 3px 9px var(--color-warning-64), -3px -3px 9px var(--color-warning-32);
+  --shadow-warning-xl: 3px 3px 9px var(--color-warning-64), -3px -3px 9px var(--color-warning-32);
+  --shadow-warning-2xl: 3px 3px 9px var(--color-warning-64), -3px -3px 9px var(--color-warning-32);
+
+  --shadow-error-sm: 3px 3px 9px var(--color-error-64), -3px -3px 9px var(--color-error-32);
+  --shadow-error: 9px 9px 19px var(--color-error-64), -9px -9px 19px var(--color-error-32);
+  --shadow-error-md: 3px 3px 9px var(--color-error-64), -3px -3px 9px var(--color-error-32);
+  --shadow-error-lg: 3px 3px 9px var(--color-error-64), -3px -3px 9px var(--color-error-32);
+  --shadow-error-xl: 3px 3px 9px var(--color-error-64), -3px -3px 9px var(--color-error-32);
+  --shadow-error-2xl: 3px 3px 9px var(--color-error-64), -3px -3px 9px var(--color-error-32);
+
+  --font-iranyekan: var(--font-iranyekan);
+  --font-croissant: var(--font-croissant);
+}
+
+html {
+  scroll-behavior: smooth;
+  /* background: var(--color-secondary-4);
+  color: var(--color-primary-84); */
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-52);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px var(--color-primary-52);
+  border-radius: 10px;
+}
+
+progress::-webkit-progress-bar {
+  background-color: var(--color-primary-52);
+}
+
+progress::-webkit-progress-value {
+  background: var(--color-primary-52);
+}
+
+progress::-moz-progress-bar {
+  background: var(--color-primary-52);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.table {
+  @apply w-full rounded-2xl p-3 bg-gradient-to-br transition backdrop-blur-xs text-black bg-white/30;
+}
+
+.table th {
+  @apply p-3 bg-gradient-to-br transition;
+}
+
+.table-primary th {
+  @apply from-primary-28 to-primary-84 border-primary-28 text-white shadow-primary-sm;
+}
+.table-primary tr:nth-child(odd) {
+  @apply bg-primary-4;
+}
+.table-primary tr:nth-child(even) {
+  @apply bg-primary-8;
+}
+
+.table-secondary th {
+  @apply from-secondary-28 to-secondary-84 border-secondary-28 text-white shadow-secondary-sm;
+}
+.table-secondary tr:nth-child(odd) {
+  @apply bg-secondary-4;
+}
+.table-secondary tr:nth-child(even) {
+  @apply bg-secondary-8;
+}
+
+.table-success th {
+  @apply from-success-28 to-success-84 border-success-28 text-white shadow-primary-sm;
+}
+.table-success tr:nth-child(odd) {
+  @apply bg-success-4;
+}
+.table-success tr:nth-child(even) {
+  @apply bg-success-8;
+}
+
+.table-error th {
+  @apply from-error-28 to-error-84 border-error-28 text-white shadow-error-sm;
+}
+.table-error tr:nth-child(odd) {
+  @apply bg-error-4;
+}
+.table-error tr:nth-child(even) {
+  @apply bg-error-8;
+}
+
+.table-warning th {
+  @apply from-warning-28 to-warning-84 border-warning-28 text-white shadow-warning-sm;
+}
+.table-warning tr:nth-child(odd) {
+  @apply bg-warning-4;
+}
+.table-warning tr:nth-child(even) {
+  @apply bg-warning-8;
+}
+
