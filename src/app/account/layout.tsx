@@ -2,7 +2,7 @@
 import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
 import { EDashboard } from "@/Common/Enums/Dashboard";
 import Layout from "@/Components/Layout/Layout";
-import LoginPanel from "@/Components/Page/Panel/Login";
+import LoginPanel from "@/Components/Page/Panel/Login/Login";
 import { AccountContext } from "@/Contexts/Account.Context";
 import { useEffect, useState } from "react";
 
@@ -28,6 +28,7 @@ export default function DashboardLayout({
   const [idProductMenu, setIdProductMenu] = useState<string>("");
   const [idUserAccess, setIdUserAccess] = useState<string>("");
   const [idRoleAccess, setIdRoleAccess] = useState<string>("");
+  const [idLocation, setIdLocation] = useState<string>("");
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -84,6 +85,7 @@ export default function DashboardLayout({
           productMenu: { state: idProductMenu, setState: setIdProductMenu },
           roleAccess: { state: idRoleAccess, setState: setIdRoleAccess },
           userAccess: { state: idUserAccess, setState: setIdUserAccess },
+          location: { state: idLocation, setState: setIdLocation },
           connectServerSocketIo: {
             state: getConnectServerSocketIo,
             setState: setGetConnectServerSocketIo,

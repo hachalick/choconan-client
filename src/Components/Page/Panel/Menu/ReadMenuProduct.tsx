@@ -143,6 +143,16 @@ export default function ReadMenuProduct() {
                         <span>{product.available ? "است" : "نیست"}</span>
                       </div>
                       <div className="flex justify-between items-center">
+                        <span>لینک اسنپ</span>
+                        <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
+                        <span>{!!product.snap ? "است" : "نیست"}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>لینک تپسی</span>
+                        <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
+                        <span>{!!product.tapsi ? "است" : "نیست"}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
                         <span>قیمت</span>
                         <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
                         <span>{product.price} هزار تومان</span>

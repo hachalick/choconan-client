@@ -37,7 +37,11 @@ export function TableCaption({
   children?: React.ReactNode;
   position: "top" | "bottom";
 }>) {
-  return <caption className={`caption-${position}`}>{children}</caption>;
+  let className = "p-3 m-3";
+
+  className = position === "top" ? " caption-top" : " caption-bottom";
+
+  return <caption className={className}>{children}</caption>;
 }
 
 export function TableThead({
@@ -77,5 +81,5 @@ export function TableTd({
 }: Readonly<{
   children?: React.ReactNode;
 }>) {
-  return <td>{children}</td>;
+  return <td className="px-2 py-1">{children}</td>;
 }

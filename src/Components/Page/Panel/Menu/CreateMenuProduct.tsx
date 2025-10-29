@@ -33,6 +33,8 @@ export default function CreateMenuProduct() {
       price: 0,
       waiting: 0,
       category_id: "",
+      snap: "",
+      tapsi: "",
     }),
     []
   );
@@ -43,6 +45,56 @@ export default function CreateMenuProduct() {
   const [timerProduct, setTimerProduct] = useState<NodeJS.Timeout>();
   const [menu, setMenu] = useState<TIdCategoriesMenu>([]);
   const [getList, setGetList] = useState(true);
+  const [dataMatchSnap, setDataMatchSnap] = useState<{
+    allProduct: Array<{
+      id: number;
+      title: string;
+      price: number;
+    }>;
+    match: Array<{
+      id: number;
+      title: string;
+      price: number;
+      selfPrice: number;
+      selfTitle: string;
+    }>;
+    notMatch: Array<{
+      id: number;
+      title: string;
+      price: number;
+      selfPrice: number;
+    }>;
+  }>({ allProduct: [], match: [], notMatch: [] });
+  const [dataMatchTapsi, setDataMatchTapsi] = useState<{
+    allProduct: Array<{
+      id: number;
+      title: string;
+      price: number;
+    }>;
+    match: Array<{
+      id: number;
+      title: string;
+      price: number;
+      selfPrice: number;
+      selfTitle: string;
+    }>;
+    notMatch: Array<{
+      id: number;
+      title: string;
+      price: number;
+      selfPrice: number;
+    }>;
+  }>({ allProduct: [], match: [], notMatch: [] });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const resSnap = await FetchApi.OnlineShop.fetchCrawlerSnap();
+      setDataMatchSnap(resSnap);
+      const resTapsi = await FetchApi.OnlineShop.fetchCrawlerTapsi();
+      setDataMatchTapsi(resTapsi);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (getList) {
@@ -76,6 +128,8 @@ export default function CreateMenuProduct() {
             product_id,
             src,
             waiting,
+            snap,
+            tapsi,
           } = foundProduct;
 
           setDefaultProduct((val) => ({
@@ -91,6 +145,8 @@ export default function CreateMenuProduct() {
             src,
             waiting,
             category_id: foundCategory,
+            snap,
+            tapsi,
           }));
         }
 
@@ -121,6 +177,8 @@ export default function CreateMenuProduct() {
             price: defaultProduct.price,
             waiting: defaultProduct.waiting,
             id: defaultProduct.id,
+            snap: defaultProduct.snap,
+            tapsi: defaultProduct.tapsi,
           });
           setSaveChangeProduct(update);
           setCloudProduct(update);
@@ -160,6 +218,8 @@ export default function CreateMenuProduct() {
       src: defaultProduct.src,
       waiting: defaultProduct.waiting,
       id: defaultProduct.id,
+      snap: defaultProduct.snap,
+      tapsi: defaultProduct.tapsi,
     });
 
     setDefaultProduct(baseDefaultProduct);
@@ -214,6 +274,44 @@ export default function CreateMenuProduct() {
             onChange={(e) => onChangeProduct(e)}
             value={defaultProduct.name}
           />
+        </InputContainer>
+        <InputContainer column>
+          <Label htmlFor="snap">شناسه اسنپ</Label>
+          <Input
+            title="لینک اسنپ"
+            type="text"
+            id="snap"
+            name="snap"
+            list="list-product-snap"
+            onChange={(e) => onChangeProduct(e)}
+            value={defaultProduct.snap || ""}
+          />
+          <datalist id="list-product-snap">
+            {dataMatchSnap.allProduct.map((val) => (
+              <option value={val.id} key={val.id}>
+                {val.title}
+              </option>
+            ))}
+          </datalist>
+        </InputContainer>
+        <InputContainer column>
+          <Label htmlFor="tapsi">شناسه تپسی</Label>
+          <Input
+            title="لینک تپسی"
+            type="text"
+            id="tapsi"
+            name="tapsi"
+            list="list-product-tapsi"
+            onChange={(e) => onChangeProduct(e)}
+            value={defaultProduct.tapsi || ""}
+          />
+          <datalist id="list-product-tapsi">
+            {dataMatchTapsi.allProduct.map((val) => (
+              <option value={val.id} key={val.id}>
+                {val.title}
+              </option>
+            ))}
+          </datalist>
         </InputContainer>
         <InputContainer column>
           <Label htmlFor="price">قیمت</Label>

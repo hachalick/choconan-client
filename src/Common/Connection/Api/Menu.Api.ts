@@ -177,6 +177,8 @@ export class ApiMenu {
     name,
     src,
     access_token,
+    snap,
+    tapsi,
   }: TProductMenu & {
     category_id: string;
     access_token: string;
@@ -201,6 +203,8 @@ export class ApiMenu {
           meta_title,
           name,
           src,
+          snap,
+          tapsi,
         }),
       }
     );
@@ -222,6 +226,8 @@ export class ApiMenu {
     name,
     src,
     access_token,
+    snap,
+    tapsi,
   }: TProductMenu & {
     product_id: string;
     access_token: string;
@@ -246,6 +252,8 @@ export class ApiMenu {
           meta_title,
           name,
           src,
+          snap,
+          tapsi,
         }),
       }
     );

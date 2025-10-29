@@ -30,6 +30,8 @@ export default async function ProductMenu({
     product_id: "",
     src: "",
     waiting: 0,
+    snap: "",
+    tapsi: "",
   };
   try {
     const res = await FetchApi.Menu.fetchProductMenu({

@@ -32,6 +32,10 @@ export const AccountContext = createContext<
         state: string;
         setState: React.Dispatch<React.SetStateAction<string>>;
       };
+      location: {
+        state: string;
+        setState: React.Dispatch<React.SetStateAction<string>>;
+      };
       connectServerSocketIo: {
         state: boolean;
         setState: React.Dispatch<React.SetStateAction<boolean>>;

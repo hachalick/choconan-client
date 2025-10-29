@@ -423,6 +423,7 @@ export default function Dashboard() {
             setting?.profile.access.includes(
               EDashboardCapability.READ_ORDER_LOCATION
             ),
+          state: EDashboard.READ_ORDER_LOCATION,
           isOpen: false,
         },
         {
@@ -433,6 +434,7 @@ export default function Dashboard() {
             setting?.profile.access.includes(
               EDashboardCapability.CREATE_ORDER_LOCATION
             ),
+          state: EDashboard.CREATE_ORDER_LOCATION,
           isOpen: false,
         },
       ],

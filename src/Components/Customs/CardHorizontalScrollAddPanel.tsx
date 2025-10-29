@@ -14,7 +14,7 @@ export default function CardHorizontalScrollAddPanel({
   id: number;
   category_id: string;
 }) {
-  const initalCard = {
+  const initalCard: TProductMenu = {
     available: false,
     description: "",
     id,
@@ -24,6 +24,8 @@ export default function CardHorizontalScrollAddPanel({
     price: 0,
     src: "",
     waiting: 0,
+    snap: "",
+    tapsi: "",
   };
   const [add, setAdd] = useState(false);
   const [dataCard, setDataCard] = useState<TProductMenu>(initalCard);
@@ -51,6 +53,8 @@ export default function CardHorizontalScrollAddPanel({
         src: dataCard.src,
         waiting: dataCard.waiting,
         id,
+        snap: dataCard.snap,
+        tapsi: dataCard.tapsi,
       });
       Swal.fire({
         title: "با موفقیت ثبت شد!",

@@ -32,6 +32,8 @@ function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
             src: dataCard.src,
             waiting: dataCard.waiting,
             access_token,
+            snap: dataCard.snap,
+            tapsi: dataCard.tapsi,
           });
           setStatusChange(update);
           setStatusCloud(update);
@@ -93,7 +95,11 @@ function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
           <RiDeleteBin5Line size={25} />
         </button>
         <div className="aspect-[7/8] md:aspect-square">
-          <img alt={dataCard.name} src={ERoute.HOST + dataCard.src} className="w-full aspect-[3/4] object-contain"/>
+          <img
+            alt={dataCard.name}
+            src={ERoute.HOST + dataCard.src}
+            className="w-full aspect-[3/4] object-contain"
+          />
         </div>
         <form className="flex flex-col mx-3 gap-1 mb-2">
           <label htmlFor="src">آدرس عکس :</label>

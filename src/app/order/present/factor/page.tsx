@@ -32,6 +32,8 @@ export default function PresentFactor() {
           src,
           waiting,
           product_id,
+          snap,
+          tapsi,
         } = await FetchApi.Menu.fetchProductMenu({
           category: dataDb[i].category,
           id: String(dataDb[i].id_product_menu),
@@ -49,6 +51,8 @@ export default function PresentFactor() {
           category: dataDb[i].category,
           count: dataDb[i].count,
           product_id,
+          snap,
+          tapsi,
         });
       }
       setListOrder(listAllData);
