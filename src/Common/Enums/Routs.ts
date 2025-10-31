@@ -1,7 +1,7 @@
 export enum ERoute {
-  HOST = "http://127.0.0.1:8080",
+  // HOST = "http://127.0.0.1:8080",
   // HOST = "http://192.168.1.100:8080",
-  // HOST = "https://api.choconan.ir",
+  HOST = "https://api.choconan.ir",
   // app
   GET_VIDEO      = "/get-video",
   GET_LAST_VIDEO = "/get-last-video",
