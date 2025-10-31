@@ -10,6 +10,8 @@ import {
   MdArrowDropDown,
   MdArrowLeft,
   MdOutlineAccountCircle,
+  MdOutlineKeyboardDoubleArrowDown,
+  MdOutlineKeyboardDoubleArrowUp,
   MdOutlinePassword,
   MdOutlineRestaurantMenu,
   MdWifiTethering,
@@ -96,6 +98,7 @@ type TMenu = {
 
 export default function Dashboard() {
   const setting = useContext(AccountContext);
+  const [isOpenAccordion, setIsOpenAccordion] = useState<boolean>(false);
 
   useEffect(() => {
     const socket = io(ERoute.HOST);
@@ -653,86 +656,104 @@ export default function Dashboard() {
   return (
     <div className="flex flex-wrap md:flex-nowrap gap-2 gap-x-4 px-2 h-full">
       <audio src="/assets/sound/notification-sound.wav" />
-
-      <aside className="basis-72 shrink-0 grow md:grow-0 md:sticky top-3 h-[40dvh] md:h-[calc(100dvh-2rem)] overflow-auto">
+      <aside
+        className={`basis-72 shrink-0 grow md:grow-0 overflow-y-auto z-10 md:h-[calc(100dvh-2rem)] ${
+          isOpenAccordion
+            ? ""
+            : ""
+        }`}
+      >
         <Box variant="guest">
           <div className="flex flex-col gap-4">
-            <Box variant="primary">
-              <div className="flex flex-col gap-2 relative">
-                <button
-                  title="exit"
-                  className="cursor-pointer absolute left-0 p-1 rounded-full text-error-68 bg-error-12"
-                  onClick={() => {
-                    sessionStorage.clear();
-                    localStorage.clear();
-                    location.reload();
-                  }}
-                >
-                  <RiShutDownLine />
-                </button>
-                <button
-                  title="exit"
-                  className={`cursor-pointer absolute left-0 top-8 p-1 rounded-full ${
-                    setting?.connectServerSocketIo.setState
-                      ? "text-success-68 bg-success-12"
-                      : "text-warning-68 bg-warning-12"
-                  }`}
-                >
-                  {setting?.connectServerSocketIo.setState ? (
-                    <MdWifiTethering />
-                  ) : (
-                    <MdWifiTetheringOff />
-                  )}
-                </button>
-                <Link
-                  href="/"
-                  title="home"
-                  className="cursor-pointer absolute right-0 p-1 rounded-full text-secondary-68 bg-secondary-12"
-                >
-                  <RiHome6Line />
-                </Link>
-                <button
-                  type="button"
-                  title="a"
-                  className="w-fit mx-auto"
-                  onClick={() =>
-                    setting?.dashboard.setState(EDashboard.DEFAULT)
-                  }
-                >
-                  <img
-                    src={ERoute.HOST + setting?.profile.profile}
-                    alt={setting?.profile.name}
-                    width={50}
-                    height={50}
-                    className="mx-auto rounded-full w-16"
-                  />
-                </button>
-                <span className="text-center gap-4 flex flex-col justify-center items-center">
-                  <H size={4}>
-                    سلام{" "}
-                    {setting?.profile.name || setting?.profile.family ? (
-                      <>
-                        {setting?.profile.name} {setting?.profile.family}
-                      </>
+            <div className="">
+              <Box variant="primary">
+                <div className="flex flex-col gap-2 relative">
+                  <button
+                    title="exit"
+                    className="cursor-pointer absolute left-0 p-1 rounded-full text-error-68 bg-error-12"
+                    onClick={() => {
+                      sessionStorage.clear();
+                      localStorage.clear();
+                      location.reload();
+                    }}
+                  >
+                    <RiShutDownLine />
+                  </button>
+                  <button
+                    title="exit"
+                    className={`cursor-pointer absolute right-0 top-8 p-1 transition rounded-full text-sky-700 bg-sky-100 md:hidden block ${isOpenAccordion ? "rotate-0" : "rotate-180"}`}
+                    onClick={() => {
+                      setIsOpenAccordion((val) => !val);
+                    }}
+                  >
+                    <MdOutlineKeyboardDoubleArrowUp />
+                  </button>
+                  <button
+                    title="exit"
+                    className={`cursor-pointer absolute left-0 top-8 p-1 rounded-full ${
+                      setting?.connectServerSocketIo.setState
+                        ? "text-success-68 bg-success-12"
+                        : "text-warning-68 bg-warning-12"
+                    }`}
+                  >
+                    {setting?.connectServerSocketIo.setState ? (
+                      <MdWifiTethering />
                     ) : (
-                      "شوکونانی"
-                    )}{" "}
-                    عزیز !
-                  </H>
-                </span>
-              </div>
-            </Box>
-            {setting?.dashboard.setState && (
-              <UlMenu
-                content={menuUl}
-                deep={1}
-                setState={setting?.dashboard.setState}
-              />
-            )}
+                      <MdWifiTetheringOff />
+                    )}
+                  </button>
+                  <Link
+                    href="/"
+                    title="home"
+                    className="cursor-pointer absolute right-0 p-1 rounded-full text-secondary-68 bg-secondary-12"
+                  >
+                    <RiHome6Line />
+                  </Link>
+                  <button
+                    type="button"
+                    title="a"
+                    className="w-fit mx-auto"
+                    onClick={() =>
+                      setting?.dashboard.setState(EDashboard.DEFAULT)
+                    }
+                  >
+                    <img
+                      src={ERoute.HOST + setting?.profile.profile}
+                      alt={setting?.profile.name}
+                      width={50}
+                      height={50}
+                      className="mx-auto rounded-full w-16"
+                    />
+                  </button>
+                  <span className="text-center gap-4 flex flex-col justify-center items-center">
+                    <H size={4}>
+                      سلام{" "}
+                      {setting?.profile.name || setting?.profile.family ? (
+                        <>
+                          {setting?.profile.name} {setting?.profile.family}
+                        </>
+                      ) : (
+                        "شوکونانی"
+                      )}{" "}
+                      عزیز !
+                    </H>
+                  </span>
+                </div>
+              </Box>
+            </div>
+            <div className={isOpenAccordion ? "" : "hidden md:block"}>
+              {setting?.dashboard.setState && (
+                <UlMenu
+                  content={menuUl}
+                  deep={1}
+                  setState={setting?.dashboard.setState}
+                />
+              )}
+            </div>
           </div>
         </Box>
       </aside>
-      <article className="grow">
+      <article className="grow basis-3xl h-[calc(100dvh-2rem)] overflow-y-auto">
         <Box variant="guest" hFull>
           <div className="flex flex-col gap-4">
             <Container state={setting?.dashboard.state || EDashboard.DEFAULT} />

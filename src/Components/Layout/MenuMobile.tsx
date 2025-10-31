@@ -1,6 +1,5 @@
 "use client";
 import { dbOrders } from "@/Common/Utils/DbClient";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FiShoppingBag } from "react-icons/fi";
@@ -8,6 +7,7 @@ import { GoHome } from "react-icons/go";
 import {
   MdOutlineAccountCircle,
   MdOutlineRestaurantMenu,
+  MdOutlineSwipeDown,
 } from "react-icons/md";
 import { Button } from "../Ui/Button";
 import Box from "../Ui/Box";
@@ -33,6 +33,14 @@ function MenuMobile() {
         <div className="flex w-fit gap-4">
           <Button
             title="home"
+            variant="primary"
+            StartIcon={MdOutlineSwipeDown}
+            onClick={() => {
+              scrollTo(0, 0);
+            }}
+          />
+          <Button
+            title="home"
             href="/"
             variant={pathname === "/" ? "secondary" : "primary"}
             StartIcon={GoHome}
@@ -44,7 +52,11 @@ function MenuMobile() {
             StartIcon={MdOutlineRestaurantMenu}
           />
           <span className="relative flex justify-center items-center">
-            <span className="animate-ping duration-600 absolute bg-error-60 w-full h-full -z-1 rounded-full" id="pulsIsBasketFull" hidden/>
+            <span
+              className="animate-ping duration-600 absolute bg-error-60 w-full h-full -z-1 rounded-full"
+              id="pulsIsBasketFull"
+              hidden
+            />
             <Button
               title="order"
               href="/order"

@@ -30,33 +30,6 @@ export default function ReadOrder() {
     }
   }, [setting?.orders.state]);
 
-  // useEffect(() => {
-  //   const socket = io(ERoute.HOST);
-
-  //   const handleRefetch = () => {
-  //     setting?.orders.setState(true);
-  //   };
-
-  //   socket.on("connect", () => {
-  //     setConnectSocket(true);
-  //   });
-
-  //   socket.on("disconnect", () => {
-  //     setConnectSocket(false);
-  //   });
-
-  //   socket.on("order-present", (data: { code: number; message: string }) => {
-  //     if (data.code === 1) handleRefetch();
-  //   });
-
-  //   window.addEventListener("online", handleRefetch);
-
-  //   return () => {
-  //     socket.disconnect();
-  //     window.removeEventListener("online", handleRefetch);
-  //   };
-  // }, []);
-
   const onClickAccept = async ({ table_id }: { table_id: string }) => {
     const access_token = sessionStorage.getItem("access_token") || "";
     const factor = orders

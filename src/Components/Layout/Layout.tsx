@@ -27,11 +27,10 @@ function Dashboard({
   return (
     <main className="flex flex-col gap-2 bg-primary-12 text-primary-84 font-iranyekan">
       <div className="bg-[url(/assets/image/background/bg-coffee.jpg)] bg-no-repeat bg-center bg-fixed fixed right-0 left-0 top-0 bottom-0 opacity-[10%]"></div>
-      <div className="min-h-dvh relative">
-        <div className="py-3 min-h-dvh">
-          {children}
-        </div>
+      <div className="min-h-dvh relative mb-7 md:mb-5">
+        <div className="py-3 min-h-dvh">{children}</div>
       </div>
+      <MenuMobile />
     </main>
   );
 }
