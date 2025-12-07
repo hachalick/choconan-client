@@ -11,7 +11,6 @@ import { digitsEnToFa } from "@persian-tools/persian-tools";
 import React, { useContext, useEffect, useState } from "react";
 import { BsCheckSquare, BsDashSquare } from "react-icons/bs";
 import { MdWifiTethering, MdWifiTetheringOff } from "react-icons/md";
-import { io } from "socket.io-client";
 import Swal from "sweetalert2";
 
 export default function ReadOrder() {
@@ -21,13 +20,14 @@ export default function ReadOrder() {
 
   useEffect(() => {
     if (setting?.orders.state) {
-      const fetchData = async () => {
-        const orders = await FetchApi.Order.fetchOrderPanel();
-        setData(orders);
-      };
-      fetchData();
       setting?.orders.setState(false);
+      return;
     }
+    const fetchData = async () => {
+      const orders = await FetchApi.Order.fetchOrderPanel();
+      setData(orders);
+    };
+    fetchData();
   }, [setting?.orders.state]);
 
   const onClickAccept = async ({ table_id }: { table_id: string }) => {
@@ -93,9 +93,15 @@ export default function ReadOrder() {
         <div className="flex items-center gap-4 justify-between">
           <H size={2}>سفارشات</H>
           <Button
-            variant={setting?.connectServerSocketIo.setState ? "success" : "error"}
+            variant={
+              setting?.connectServerSocketIo.setState ? "success" : "error"
+            }
             title="online"
-            StartIcon={setting?.connectServerSocketIo.setState ? MdWifiTethering : MdWifiTetheringOff}
+            StartIcon={
+              setting?.connectServerSocketIo.setState
+                ? MdWifiTethering
+                : MdWifiTetheringOff
+            }
           >
             اتصال به سرور
           </Button>

@@ -99,24 +99,28 @@ type TMenu = {
 export default function Dashboard() {
   const setting = useContext(AccountContext);
   const [isOpenAccordion, setIsOpenAccordion] = useState<boolean>(false);
+  const socketRef = useRef<any>(null);
 
   useEffect(() => {
-    const socket = io(ERoute.HOST);
-    const audio = new Audio("/assets/sound/notification-sound.wav");
+    if (!socketRef.current) {
+      socketRef.current = io(ERoute.HOST);
 
-    const allowAudioPlay = () => {
-      audio.play().catch(() => {}); // اجرای بی‌صدا برای گرفتن مجوز
-      audio.pause();
-      audio.currentTime = 0;
-      document.removeEventListener("click", allowAudioPlay);
-    };
-    document.addEventListener("click", allowAudioPlay);
+      socketRef.current.on("connect", () => {
+        setting?.connectServerSocketIo.setState(true);
+      });
+
+      socketRef.current.on("disconnect", () => {
+        setting?.connectServerSocketIo.setState(false);
+      });
+    }
+
+    console.log(
+      setting?.profile.access
+    );
 
     const handleRefetch = () => {
       if (setting?.profile.access.includes(EDashboardCapability.READ_ORDER)) {
         setting?.orders.setState(true);
-
-        audio.play().catch((err) => console.warn("cannot play sound:", err));
 
         Swal.fire({
           title: "سفارش جدید ثبت شده!",
@@ -133,24 +137,18 @@ export default function Dashboard() {
       }
     };
 
-    socket.on("connect", () => {
-      setting?.connectServerSocketIo.setState(true);
-    });
-
-    socket.on("disconnect", () => {
-      setting?.connectServerSocketIo.setState(false);
-    });
-
-    socket.on("order-present", (data: { code: number; message: string }) => {
-      if (data.code === 1) handleRefetch();
-    });
+    socketRef.current.on(
+      "order-present",
+      (data: { code: number; message: string }) => {
+        if (data.code === 1) handleRefetch();
+      }
+    );
 
     window.addEventListener("online", handleRefetch);
 
     return () => {
-      socket.disconnect();
+      socketRef.current?.off("order-present");
       window.removeEventListener("online", handleRefetch);
-      document.removeEventListener("click", allowAudioPlay);
     };
   }, [setting]);
 
@@ -657,14 +655,10 @@ export default function Dashboard() {
     <div className="flex flex-wrap md:flex-nowrap gap-2 gap-x-4 px-2 h-full">
       <audio src="/assets/sound/notification-sound.wav" />
       <aside
-        className={`basis-72 shrink-0 grow md:grow-0 overflow-y-auto z-10 md:h-[calc(100dvh-2rem)] ${
-          isOpenAccordion
-            ? ""
-            : ""
-        }`}
+        className={`basis-72 shrink-0 grow md:grow-0 z-10  md:h-[calc(100dvh-6rem)]`}
       >
-        <Box variant="guest">
-          <div className="flex flex-col gap-4">
+        <Box variant="guest" hFull>
+          <div className="flex flex-col gap-4 overflow-y-auto px-2 py-3">
             <div className="">
               <Box variant="primary">
                 <div className="flex flex-col gap-2 relative">
@@ -681,7 +675,9 @@ export default function Dashboard() {
                   </button>
                   <button
                     title="exit"
-                    className={`cursor-pointer absolute right-0 top-8 p-1 transition rounded-full text-sky-700 bg-sky-100 md:hidden block ${isOpenAccordion ? "rotate-0" : "rotate-180"}`}
+                    className={`cursor-pointer absolute right-0 top-8 p-1 transition rounded-full text-sky-700 bg-sky-100 md:hidden block ${
+                      isOpenAccordion ? "rotate-0" : "rotate-180"
+                    }`}
                     onClick={() => {
                       setIsOpenAccordion((val) => !val);
                     }}
@@ -753,9 +749,9 @@ export default function Dashboard() {
           </div>
         </Box>
       </aside>
-      <article className="grow basis-3xl h-[calc(100dvh-2rem)] overflow-y-auto">
+      <article className="grow basis-3xl mb-[4.5rem] md:mb-[4rem] h-[calc(100dvh-8rem)] md:h-[calc(100dvh-6rem)]">
         <Box variant="guest" hFull>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 px-2 py-3 overflow-y-auto">
             <Container state={setting?.dashboard.state || EDashboard.DEFAULT} />
           </div>
         </Box>

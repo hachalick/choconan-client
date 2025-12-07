@@ -53,9 +53,9 @@ function MenuMobile() {
           />
           <span className="relative flex justify-center items-center">
             <span
-              className="animate-ping duration-600 absolute bg-error-60 w-full h-full -z-1 rounded-full"
+              className="animate-ping duration-1000 absolute bg-pink-600 w-full h-full -z-1 rounded-full"
               id="pulsIsBasketFull"
-              hidden
+              hidden={countBasket === 0}
             />
             <Button
               title="order"

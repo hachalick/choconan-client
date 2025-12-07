@@ -130,7 +130,7 @@ export default function ReadUser() {
                               CTranslateWorld[
                                 val as keyof typeof CTranslateWorld
                               ]
-                            }
+                            } {val}
                           </span>
                         </li>
                       ))

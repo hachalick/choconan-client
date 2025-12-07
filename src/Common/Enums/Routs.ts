@@ -1,7 +1,7 @@
 export enum ERoute {
   // HOST = "http://127.0.0.1:8080",
-  // HOST = "http://192.168.1.100:8080",
-  HOST = "https://api.choconan.ir",
+  HOST = "http://192.168.1.100:8080",
+  // HOST = "https://api.choconan.ir",
   // app
   GET_VIDEO      = "/get-video",
   GET_LAST_VIDEO = "/get-last-video",
@@ -34,7 +34,9 @@ export enum ERoute {
   GET_ORDER_TABLES      = "/order/order-table",
   ORDER_TABLE           = "/order/order-table",
   ORDER                 = "/order/order",
+  ORDER_PAY_STATUS      = "/order/order/pay-status",
   ORDER_ITEM            = "/order/order-item",
+  REPORT_MONTHLY        = "/order/order/monthly",
   // blog
   GET_LIST_BLOG    = "/blog/get-list-blog",
   GET_BLOG         = "/blog/get-blog",

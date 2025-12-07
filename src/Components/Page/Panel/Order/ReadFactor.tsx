@@ -14,7 +14,11 @@ import { InputContainer, Label } from "@/Components/Ui/Input";
 import { Option, Select } from "@/Components/Ui/Select";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { FaRegEdit } from "react-icons/fa";
-import { MdOutlineLocalPrintshop } from "react-icons/md";
+import {
+  MdOutlineAttachMoney,
+  MdOutlineLocalPrintshop,
+  MdOutlineMoneyOff,
+} from "react-icons/md";
 import Swal from "sweetalert2";
 import { AccountContext } from "@/Contexts/Account.Context";
 import { EDashboard } from "@/Common/Enums/Dashboard";
@@ -81,7 +85,10 @@ export default function ReadFactor() {
         confirmButtonText: "پاک بشه",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          await FetchApi.Order.fetchDeleteOrder({ access_token, order_id: factor_id });
+          await FetchApi.Order.fetchDeleteOrder({
+            access_token,
+            order_id: factor_id,
+          });
           Swal.fire({
             title: "با موفقیت حذف شد!",
             text: "فاکتور مورد نظر با موفقیت حذف شد",
@@ -108,6 +115,25 @@ export default function ReadFactor() {
   const onClickEditFactor = ({ factor_id }: { factor_id: string }) => {
     setting?.factor.setState(factor_id);
     setting?.dashboard.setState(EDashboard.CREATE_FACTOR);
+  };
+
+  const onClickChangePayStatus = async ({
+    factor_id,
+    pay_status,
+  }: {
+    factor_id: string;
+    pay_status: boolean;
+  }) => {
+    const access_token = sessionStorage.getItem("access_token") || "";
+
+    try {
+      await FetchApi.Order.fetchUpdatePayStatusOrder({
+        access_token,
+        order_id: factor_id,
+        pay_status,
+      });
+      setGetList(true);
+    } catch {}
   };
 
   //#endregion
@@ -198,6 +224,20 @@ export default function ReadFactor() {
                   type="button"
                   href={`/account/factor/${value.factor_id}`}
                   StartIcon={MdOutlineLocalPrintshop}
+                />
+                <Button
+                  variant={value.pay_status ? "success" : "error"}
+                  title="وضعیت پرداخت"
+                  type="button"
+                  StartIcon={
+                    value.pay_status ? MdOutlineAttachMoney : MdOutlineMoneyOff
+                  }
+                  onClick={() =>
+                    onClickChangePayStatus({
+                      factor_id: value.factor_id,
+                      pay_status: !value.pay_status,
+                    })
+                  }
                 />
               </div>
               <div className="w-full flex flex-col gap-4">

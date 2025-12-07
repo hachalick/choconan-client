@@ -554,6 +554,60 @@ export class ApiOrder {
     return res.json();
   }
 
+  static async fetchUpdatePayStatusOrder({
+    order_id,
+    access_token,
+    pay_status,
+  }: {
+    order_id: string;
+    access_token: string;
+    pay_status: boolean;
+  }): Promise<{
+    update: boolean;
+  }> {
+    const query = `token=${access_token}`;
+    const res = await fetch(
+      ERoute.HOST + ERoute.ORDER_PAY_STATUS + `/${order_id}?${query}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+        method: EMethodRequest.PUT,
+        body: JSON.stringify({
+          pay_status,
+        }),
+      }
+    );
+    if (!res.ok) {
+      throw new Error((await res.json())?.message || "Failed to fetch data");
+    }
+    return res.json();
+  }
+
+  static async fetchReportMonthlyOrder({
+    access_token,
+  }: {
+    access_token: string;
+  }): Promise<
+    Array<{ month: string; totalFactors: number; totalItems: number }>
+  > {
+    const query = `token=${access_token}`;
+    const res = await fetch(ERoute.HOST + ERoute.REPORT_MONTHLY + `?${query}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+      method: EMethodRequest.GET,
+    });
+    if (!res.ok) {
+      throw new Error((await res.json())?.message || "Failed to fetch data");
+    }
+    return res.json();
+  }
+
   static async fetchCreateOrderItem({
     access_token,
     order_id,

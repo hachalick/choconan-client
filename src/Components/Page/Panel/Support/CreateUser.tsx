@@ -272,7 +272,7 @@ export default function CreateUser() {
                       checked={defaultUser.access.includes(val)}
                     />
                     <Label>
-                      {CTranslateWorld[val as keyof typeof CTranslateWorld]}
+                      {CTranslateWorld[val as keyof typeof CTranslateWorld]} {val}
                     </Label>
                   </InputContainer>
                 ))}
