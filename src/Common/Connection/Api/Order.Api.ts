@@ -591,7 +591,15 @@ export class ApiOrder {
   }: {
     access_token: string;
   }): Promise<
-    Array<{ month: string; totalFactors: number; totalItems: number }>
+    Array<{
+      month: string;
+      totalFactors: number;
+      averageFactors: number;
+      totalItems: number;
+      averageItems: number;
+      totalPrice: number;
+      averagePrice: number;
+    }>
   > {
     const query = `token=${access_token}`;
     const res = await fetch(ERoute.HOST + ERoute.REPORT_MONTHLY + `?${query}`, {

@@ -10,25 +10,43 @@ export default function Default() {
     const fetchData = async () => {
       const access_token = sessionStorage.getItem("access_token") || "";
 
-      const data = (await FetchApi.Order.fetchReportMonthlyOrder({
-        access_token,
-      })).reverse();
+      const data = (
+        await FetchApi.Order.fetchReportMonthlyOrder({
+          access_token,
+        })
+      ).reverse();
 
       setState({
         series: [
           {
-            name: "فاکتور",
+            name: "مجموع فاکتور",
             data: data.map((val) => val.totalFactors),
           },
           {
-            name: "آیتم",
+            name: "مجموع آیتم",
             data: data.map((val) => val.totalItems),
+          },
+          {
+            name: "مجموع فروش",
+            data: data.map((val) => val.totalPrice),
+          },
+          {
+            name: "میانگین فاکتور",
+            data: data.map((val) => val.averageFactors),
+          },
+          {
+            name: "میانگین آیتم",
+            data: data.map((val) => val.averageItems),
+          },
+          {
+            name: "میانگین فروش",
+            data: data.map((val) => val.averagePrice),
           },
         ],
         options: {
           chart: {
             height: 10,
-            type: "line" as const, // اضافه کردن as const
+            type: "line" as const,
             zoom: {
               enabled: true,
             },
@@ -37,7 +55,7 @@ export default function Default() {
             enabled: true,
           },
           stroke: {
-            curve: "straight" as const, // این هم نیاز دارد
+            curve: "straight" as const,
           },
           title: {
             text: "فروش محصول در این ماه",

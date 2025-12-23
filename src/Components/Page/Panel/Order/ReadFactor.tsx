@@ -140,6 +140,18 @@ export default function ReadFactor() {
 
   //#region utility
 
+  const sumAllFactor = (items: TGetFactors) => {
+    let sum = 0;
+    items.forEach((item) => {
+      item.factor_items.forEach((product) => {
+        sum +=
+          product.product_count *
+          (product.product_price - product.product_discount);
+      });
+    });
+    return sum;
+  };
+
   const sumFactor = (items: TGetFactorItem[]) => {
     let sum = 0;
     items.forEach((item) => {
@@ -158,41 +170,48 @@ export default function ReadFactor() {
         </H>
       </Box>
       <Box variant="primary">
-        <div className="flex flex-col gap-4">
-          <InputContainer>
-            <Label htmlFor="end_day">بازه روز</Label>
-            <div className="text-black bg-white pr-4 py-2 rounded-lg ">
-              <DatePicker
-                hideOnScroll
-                arrow={false}
-                calendar={persian}
-                locale={persian_fa}
-                calendarPosition="bottom-right"
-                value={rangeDay}
-                onChange={(e) => {
-                  setRangeDay(e);
-                  setGetList(true);
-                }}
-                className="hours-datapicker green"
-                inputClass="hours-datapicker"
-                range
-              />
-            </div>
-          </InputContainer>
-          <InputContainer>
-            <Label htmlFor="pay_status">وضعیت پرداخت</Label>
-            <Select
-              name={payStatus}
-              title="pay_status"
-              id="pay_status"
-              onChange={(e) => onChangePayStatus(e)}
-              defaultValue={payStatus}
-            >
-              <Option value="all">همه</Option>
-              <Option value="true">شده</Option>
-              <Option value="false">نشده</Option>
-            </Select>
-          </InputContainer>
+        <div className="flex gap-4 justify-between flex-wrap">
+          <div className="flex flex-col gap-4">
+            <InputContainer>
+              <Label htmlFor="end_day">بازه روز</Label>
+              <div className="text-black bg-white pr-4 py-2 rounded-lg ">
+                <DatePicker
+                  hideOnScroll
+                  arrow={false}
+                  calendar={persian}
+                  locale={persian_fa}
+                  calendarPosition="bottom-right"
+                  value={rangeDay}
+                  onChange={(e) => {
+                    setRangeDay(e);
+                    setGetList(true);
+                  }}
+                  className="hours-datapicker green"
+                  inputClass="hours-datapicker"
+                  range
+                />
+              </div>
+            </InputContainer>
+            <InputContainer>
+              <Label htmlFor="pay_status">وضعیت پرداخت</Label>
+              <Select
+                name={payStatus}
+                title="pay_status"
+                id="pay_status"
+                onChange={(e) => onChangePayStatus(e)}
+                defaultValue={payStatus}
+              >
+                <Option value="all">همه</Option>
+                <Option value="true">شده</Option>
+                <Option value="false">نشده</Option>
+              </Select>
+            </InputContainer>
+          </div>
+          <div className="flex flex-col gap-4">
+            <span>
+              {digitsEnToFa(addCommas(sumAllFactor(factors)))} هزار تومان
+            </span>
+          </div>
         </div>
       </Box>
       <div className="flex flex-col gap-4">
@@ -242,21 +261,6 @@ export default function ReadFactor() {
               </div>
               <div className="w-full flex flex-col gap-4">
                 <div className="flex justify-between items-center">
-                  <span>شناسه فاکتور</span>
-                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                  <span>{value.factor_id}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>تاریخ ایجاد</span>
-                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                  <span>{digitsEnToFa(value.create_at)}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>تاریخ بروزرسانی</span>
-                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                  <span>{digitsEnToFa(value.update_at)}</span>
-                </div>
-                <div className="flex justify-between items-center">
                   <span>شماره فاکتور</span>
                   <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
                   <span>{value.factor_number}</span>
@@ -270,19 +274,6 @@ export default function ReadFactor() {
                   <span>تحویل سفارش</span>
                   <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
                   <span>{value.location}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>وضعیت پرداخت</span>
-                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                  <span>{value.pay_status ? "شده" : "نشده"}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>مجموع قابل پرداخت</span>
-                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                  <span>
-                    {digitsEnToFa(addCommas(sumFactor(value.factor_items)))}{" "}
-                    هزار تومان
-                  </span>
                 </div>
                 <hr />
                 <div className="flex flex-col gap-4">
@@ -309,6 +300,15 @@ export default function ReadFactor() {
                       </li>
                     ))}
                   </ul>
+                  <hr />
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>مجموع قابل پرداخت</span>
+                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
+                  <span>
+                    {digitsEnToFa(addCommas(sumFactor(value.factor_items)))}{" "}
+                    هزار تومان
+                  </span>
                 </div>
               </div>
             </div>
