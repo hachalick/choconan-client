@@ -13,7 +13,7 @@ function HorizontalScroll({
   title: string;
   category: string;
   icon: string;
-  products: TIdProductsMenu;
+  products: Array<TGetProductMenuResponseDto>;
 }) {
   return (
     <div className="relative mt-3">

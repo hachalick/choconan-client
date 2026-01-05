@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import HorizontalScrollEconomicPackage from "@/Components/Customs/HorizontalScrollEconomicPackage";
 import ShowNestedRoute from "@/Components/Customs/ShowNestedRoute";
 import Layout from "@/Components/Layout/Layout";

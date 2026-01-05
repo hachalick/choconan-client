@@ -17,7 +17,7 @@ import { IoIosAddCircleOutline, IoMdCloseCircleOutline } from "react-icons/io";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
 export default function CreateFactor() {
-  const baseDefaultFactor: TGetFactor = useMemo(
+  const baseDefaultFactor: TGetFactorResponseDto = useMemo(
     () => ({
       factor_id: "",
       customer_mobile: "",
@@ -35,12 +35,15 @@ export default function CreateFactor() {
   const setting = useContext(AccountContext);
 
   const [defaultFactor, setDefaultFactor] =
-    useState<TGetFactor>(baseDefaultFactor);
-  const [detailFactor, setDetailFactors] = useState<TGetFactor>(defaultFactor);
+    useState<TGetFactorResponseDto>(baseDefaultFactor);
+  const [detailFactor, setDetailFactors] =
+    useState<TGetFactorResponseDto>(defaultFactor);
   const [saveChange, setSaveChange] = useState(false);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
   const [cloud, setCloud] = useState(true);
-  const [productList, setProductList] = useState<TIdCategoriesMenu>([]);
+  const [productList, setProductList] = useState<
+    Array<TGetCategoryMenuResponseDto>
+  >([]);
 
   //#region use effect
 
@@ -215,13 +218,13 @@ export default function CreateFactor() {
       location: detailFactor.location,
       pay_status: detailFactor.pay_status,
       tax: detailFactor.tax,
-      order_id: newFactor.factor_id,
+      order_id: newFactor.order_id,
     });
 
     for (const item of detailFactor.factor_items) {
       const newItemFactor = await FetchApi.Order.fetchCreateOrderItem({
         access_token,
-        order_id: newFactor.factor_id,
+        order_id: newFactor.order_id,
       });
 
       await FetchApi.Order.fetchUpdateOrderItem({

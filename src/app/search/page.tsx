@@ -9,11 +9,21 @@ import { H } from "@/Components/Ui/H";
 import P from "@/Components/Ui/P";
 import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
 
-async function Search({ searchParams }: { searchParams: { q?: string } }) {
-  let result: TIdProductsSearchMenu = [];
-  if (searchParams.q) {
-    result = await FetchApi.Menu.fetchSearch({ query: searchParams.q.trim() });
+async function Search({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  let result: Array<TGetProductMenuSearchResponseDto> = [];
+
+  const { q } = await searchParams;
+
+  if (q) {
+    result = await FetchApi.Menu.fetchSearch({
+      query: decodeURI(q.trim()),
+    });
   }
+
   return (
     <Layout variant="website">
       <ShowNestedRoute
@@ -22,7 +32,7 @@ async function Search({ searchParams }: { searchParams: { q?: string } }) {
           { path: "/search", name: "جستجو" },
         ]}
       />
-      <SearchBoxMenu value={searchParams.q?.trim()} />
+      <SearchBoxMenu value={q?.trim()} />
       <div className="flex flex-wrap flex-col gap-4">
         {result.map((card, i) => (
           <Box variant="primary" key={i}>

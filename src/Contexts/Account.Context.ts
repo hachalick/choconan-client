@@ -3,7 +3,7 @@ import { createContext } from "react";
 
 export const AccountContext = createContext<
   | {
-      profile: TProfile;
+      profile: TGetProfileResponseDto;
       dashboard: {
         state: EDashboard;
         setState: React.Dispatch<React.SetStateAction<EDashboard>>;

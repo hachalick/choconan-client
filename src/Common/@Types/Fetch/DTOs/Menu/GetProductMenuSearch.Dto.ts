@@ -1,0 +1,3 @@
+type TGetProductMenuSearchDto = {
+  query: string;
+};

@@ -1,0 +1,1 @@
+type TUpdateOrderItemResponseDto = { update: boolean }

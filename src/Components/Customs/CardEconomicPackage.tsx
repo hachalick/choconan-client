@@ -1,10 +1,8 @@
 import { ERoute } from "@/Common/Enums/Routs";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import Image from "next/image";
-import React from "react";
 import ImageClient from "./ImageClient";
 
-function CardEconomicPackage({ details }: { details: TGetEconomicPackage }) {
+function CardEconomicPackage({ details }: { details: TGetEconomicPackageResponseDto }) {
   function sum() {
     let sum = 0;
     details.contentEconomicPackage.forEach((val) => {
@@ -14,7 +12,7 @@ function CardEconomicPackage({ details }: { details: TGetEconomicPackage }) {
   }
 
   return (
-    <div className="rounded-xl bg-gradient-to-br from-cooooooooooooooooooloooooooooo to-[#4e3751] shadow-primary-sm p-3 flex flex-wrap justify-center items-center gap-3">
+    <div className="rounded-xl shadow-primary-sm p-3 flex flex-wrap justify-center items-center gap-3">
       <div className="flex flex-col justify-center items-center">
         <ImageClient
           alt={details.title}

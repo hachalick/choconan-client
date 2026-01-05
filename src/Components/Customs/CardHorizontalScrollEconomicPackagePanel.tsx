@@ -17,7 +17,7 @@ function CardHorizontalScrollEconomicPackagePanel({
   prop,
   setGetListEconomicStatus,
 }: {
-  prop: TGetEconomicPackage;
+  prop: TGetEconomicPackageResponseDto;
   setGetListEconomicStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [s_hours, s_minute, s_second] = prop.start_hours.split(":");
@@ -76,8 +76,9 @@ function CardHorizontalScrollEconomicPackagePanel({
     name: "",
     price: 0,
   });
-  const [selectProducts, setSelectProducts] =
-    useState<TGetContentEconomicPackages>(prop.contentEconomicPackage);
+  const [selectProducts, setSelectProducts] = useState<
+    Array<TGetContentEconomicPackageResponseDto>
+  >(prop.contentEconomicPackage);
   const [countProductEconomicPackage, setCountProductEconomicPackage] =
     useState(1);
 
@@ -95,18 +96,16 @@ function CardHorizontalScrollEconomicPackagePanel({
           data.end_hours = digitsFaToEn(String(endHours));
           data.start_day = day[0];
           data.end_day = day[1];
-          await FetchApi.Order.fetchUpdateEconomicPackage({
+          await FetchApi.Menu.fetchUpdateEconomicPackage({
             access_token,
-            economic_package: {
-              end_day: data.end_day,
-              end_hours: data.end_hours,
-              is_active: data.is_active,
-              price: data.price,
-              src: data.src,
-              start_day: data.start_day,
-              start_hours: data.start_hours,
-              title: data.title,
-            },
+            end_day: data.end_day,
+            end_hours: data.end_hours,
+            is_active: data.is_active,
+            price: data.price,
+            src: data.src,
+            start_day: data.start_day,
+            start_hours: data.start_hours,
+            title: data.title,
             economic_package_id: prop.economic_package_id,
           });
           setStatusChange(true);
@@ -116,7 +115,9 @@ function CardHorizontalScrollEconomicPackagePanel({
     );
   }, [startHours, endHours, rangeDay, economicPackage]);
 
-  function sumPrice(list: TGetContentEconomicPackages): number {
+  function sumPrice(
+    list: Array<TGetContentEconomicPackageResponseDto>
+  ): number {
     let sum = 0;
     for (const item of list) {
       sum += item.count * item.productMenu.price;
@@ -126,7 +127,7 @@ function CardHorizontalScrollEconomicPackagePanel({
 
   const onClickDelete = async (economic_package_id: string) => {
     const access_token = sessionStorage.getItem("access_token") || "";
-    await FetchApi.Order.fetchDeleteEconomicPackage({
+    await FetchApi.Menu.fetchDeleteEconomicPackage({
       access_token,
       economic_package_id,
     });
@@ -157,7 +158,7 @@ function CardHorizontalScrollEconomicPackagePanel({
       ) {
         try {
           const access_token = sessionStorage.getItem("access_token") || "";
-          const res = await FetchApi.Order.fetchAddContentEconomicPackage({
+          const res = await FetchApi.Menu.fetchAddContentEconomicPackage({
             access_token,
             count: countProductEconomicPackage,
             economic_package_id: prop.economic_package_id,
@@ -192,7 +193,7 @@ function CardHorizontalScrollEconomicPackagePanel({
         );
         return prev.filter((_, idx) => idx !== index);
       });
-      await FetchApi.Order.fetchDeleteContentEconomicPackage({
+      await FetchApi.Menu.fetchDeleteContentEconomicPackage({
         access_token,
         content_economic_package_id,
       });
@@ -200,7 +201,7 @@ function CardHorizontalScrollEconomicPackagePanel({
   };
 
   return (
-    <div className="p-3 rounded-lg bg-gradient-to-br from-cooooooooooooooooooloooooooooo to-[#4e3751] shadow-primary-sm flex flex-col gap-1 relative">
+    <div className="p-3 rounded-lg shadow-primary-sm flex flex-col gap-1 relative">
       <div className="absolute left-3 flex flex-col gap-2">
         {editable ? (
           <>
@@ -262,7 +263,7 @@ function CardHorizontalScrollEconomicPackagePanel({
               title="price"
               id="price"
               value={countProductEconomicPackage}
-              className="focus:outline-none no-spinner rounded-md bgcooooooooooooooooooloooooooooo100 px-2 py-1 text-[#4e3751]"
+              className="focus:outline-none no-spinner rounded-md px-2 py-1 text-[#4e3751]"
               onChange={(e) => {
                 if (parseInt(e.target.value) > 0) {
                   setCountProductEconomicPackage(parseInt(e.target.value));
@@ -311,7 +312,7 @@ function CardHorizontalScrollEconomicPackagePanel({
             id="src"
             dir="ltr"
             value={economicPackage.src}
-            className="focus:outline-none focus:cursor-default bgcooooooooooooooooooloooooooooo100 rounded-md text-[#4e3751] px-2 py-1"
+            className="focus:outline-none focus:cursor-default rounded-md text-[#4e3751] px-2 py-1"
             onChange={(e) => onChange(e)}
           />
           <label htmlFor="title">نام پک اقصادی</label>
@@ -321,7 +322,7 @@ function CardHorizontalScrollEconomicPackagePanel({
             title="title"
             id="title"
             value={economicPackage.title}
-            className="focus:outline-none focus:cursor-default bgcooooooooooooooooooloooooooooo100 rounded-md text-[#4e3751] px-2 py-1"
+            className="focus:outline-none focus:cursor-default rounded-md text-[#4e3751] px-2 py-1"
             onChange={(e) => onChange(e)}
           />
           <div className="flex flex-wrap">
@@ -391,7 +392,7 @@ function CardHorizontalScrollEconomicPackagePanel({
                 name="price"
                 title="price"
                 id="price"
-                className="focus:outline-none no-spinner rounded-md bgcooooooooooooooooooloooooooooo100 px-2 py-1 text-[#4e3751] "
+                className="focus:outline-none no-spinner rounded-md px-2 py-1 text-[#4e3751] "
                 onChange={(e) => onChange(e)}
               />
             </div>
@@ -405,7 +406,7 @@ function CardHorizontalScrollEconomicPackagePanel({
             title="is_active"
             id="is_active"
             onClick={() => onClickChangeStatuesActive()}
-            className="mb-4 bgcooooooooooooooooooloooooooooo200/20 w-32 mx-auto py-1 rounded-lg shadow-primary-sm"
+            className="mb-4 w-32 mx-auto py-1 rounded-lg shadow-primary-sm"
           >
             تغییر وضعیت
           </button>

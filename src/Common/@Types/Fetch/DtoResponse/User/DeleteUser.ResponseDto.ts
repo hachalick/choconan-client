@@ -1,0 +1,1 @@
+type TDeleteUserResponseDto = { delete: boolean };

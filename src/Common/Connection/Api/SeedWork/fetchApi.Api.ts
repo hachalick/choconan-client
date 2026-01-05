@@ -4,6 +4,7 @@ import { ApiFile } from "../File.Api";
 import { ApiMenu } from "../Menu.Api";
 import { ApiOnlineShop } from "../OnlineShop.Api";
 import { ApiOrder } from "../Order.Api";
+import { ApiPricing } from "../Pricing.Api";
 import { ApiUser } from "../User.Api";
 import { ApiVideo } from "../Video.Api";
 
@@ -16,4 +17,5 @@ export class FetchApi {
   static Order = ApiOrder;
   static User = ApiUser;
   static Video = ApiVideo;
+  static Pricing = ApiPricing;
 }

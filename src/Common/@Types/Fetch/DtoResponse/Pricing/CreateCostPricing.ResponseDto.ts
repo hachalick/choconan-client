@@ -1,0 +1,3 @@
+type TCreateCostPricingResponseDto = {
+  created: boolean;
+};

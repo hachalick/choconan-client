@@ -1,0 +1,3 @@
+type TCategoryVideoDto = {
+  category: "aparat";
+};

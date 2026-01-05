@@ -13,7 +13,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 export default function ReadUser() {
   const setting = useContext(AccountContext);
 
-  const [listUser, setListUser] = useState<TAllUserAccessId>([]);
+  const [listUser, setListUser] = useState<Array<TGetUserAccessResponseDto>>([]);
   const [fetchAgain, setFetchAgain] = useState(true);
 
   useEffect(() => {

@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
 import { MetadataRoute } from "next";
 type ItemSitemap = MetadataRoute.Sitemap[0];

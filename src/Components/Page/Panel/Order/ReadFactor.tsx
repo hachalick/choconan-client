@@ -29,7 +29,7 @@ export default function ReadFactor() {
 
   //#region state
 
-  const [factors, setFactors] = useState<TGetFactors>([]);
+  const [factors, setFactors] = useState<Array<TGetFactorResponseDto>>([]);
   const [getList, setGetList] = useState(true);
   const [payStatus, setPayStatus] = useState<"false" | "true" | "all">("false");
 
@@ -140,7 +140,7 @@ export default function ReadFactor() {
 
   //#region utility
 
-  const sumAllFactor = (items: TGetFactors) => {
+  const sumAllFactor = (items: Array<TGetFactorResponseDto>) => {
     let sum = 0;
     items.forEach((item) => {
       item.factor_items.forEach((product) => {
@@ -152,7 +152,7 @@ export default function ReadFactor() {
     return sum;
   };
 
-  const sumFactor = (items: TGetFactorItem[]) => {
+  const sumFactor = (items: Array<TGetFactorItemResponseDto>) => {
     let sum = 0;
     items.forEach((item) => {
       sum += item.product_count * (item.product_price - item.product_discount);

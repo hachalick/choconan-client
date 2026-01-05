@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 
-import "@/Assets/Styles/SliderHome.style.css"
+import "@/Assets/Styles/SliderHome.style.css";
 
 // import required modules
 // import required modules
@@ -17,16 +17,18 @@ import { digitsEnToFa, addCommas } from "@persian-tools/persian-tools";
 import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
 
 function EconomicSlider() {
-  const [pack, setPack] = useState<TGetEconomicPackages>([]);
+  const [pack, setPack] = useState<Array<TGetEconomicPackageResponseDto>>([]);
 
   useEffect(() => {
     const getData = async () => {
-      setPack(await FetchApi.Order.fetchGetEconomicPackages({ all: "a" }));
+      setPack(await FetchApi.Menu.fetchGetEconomicPackages({ all: "a" }));
     };
     getData();
   }, []);
 
-  const sumPack = (val: TGetContentEconomicPackages): number => {
+  const sumPack = (
+    val: Array<TGetContentEconomicPackageResponseDto>
+  ): number => {
     let s = 0;
     for (const i in val) {
       s += val[i].productMenu.price;
@@ -75,7 +77,11 @@ function EconomicSlider() {
             className="flex relative justify-center items-center w-fit"
             slot="container-end"
           >
-            <svg viewBox="0 0 48 48" ref={progressCircle} className="w-8 hidden">
+            <svg
+              viewBox="0 0 48 48"
+              ref={progressCircle}
+              className="w-8 hidden"
+            >
               <circle cx="24" cy="24" r="20"></circle>
             </svg>
             <span ref={progressContent} className="absolute hidden"></span>

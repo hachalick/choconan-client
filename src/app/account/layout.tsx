@@ -12,7 +12,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [profile, setProfile] = useState<TProfile>({
+  const [profile, setProfile] = useState<TGetProfileResponseDto>({
     access: [],
     family: "",
     name: "",
@@ -37,10 +37,12 @@ export default function DashboardLayout({
 
       if (refresh_token && access_token) {
         try {
+          console.log(access_token)
           const profile = await FetchApi.User.fetchGetAccount({ access_token });
           setProfile(profile);
           setIsLogin(false);
         } catch (error) {
+          console.log(error)
           try {
             const res = await FetchApi.Auth.fetchRefreshToken({
               refresh_token,
@@ -51,8 +53,9 @@ export default function DashboardLayout({
               location.reload();
             }
           } catch (error) {
-            localStorage.clear();
-            sessionStorage.clear();
+            console.log(error)
+            // localStorage.clear();
+            // sessionStorage.clear();
           }
         }
       } else if (refresh_token) {
@@ -64,8 +67,9 @@ export default function DashboardLayout({
             location.reload();
           }
         } catch (error) {
-          localStorage.clear();
-          sessionStorage.clear();
+          console.log(error)
+          // localStorage.clear();
+          // sessionStorage.clear();
         }
       }
     };

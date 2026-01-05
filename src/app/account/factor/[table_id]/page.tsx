@@ -13,7 +13,7 @@ function OrderTablePanel({
 }: {
   params: Promise<{ table_id: string }>;
 }) {
-  const [table, setTable] = useState<TGetFactor>();
+  const [table, setTable] = useState<TGetFactorResponseDto>();
   const [show, setShow] = useState(false);
   const [total, setTotal] = useState(0);
 

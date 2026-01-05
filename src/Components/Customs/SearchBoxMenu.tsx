@@ -21,7 +21,7 @@ export default function SearchBoxMenu({ value }: { value?: string }) {
               placeholder="جستجو در منو"
               name="q"
               spellCheck="false"
-              value={value}
+              defaultValue={value}
               autoComplete="off"
               title="search"
             />

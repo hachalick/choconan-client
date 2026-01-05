@@ -1,59 +1,46 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
 import { ERoute } from "@/Common/Enums/Routs";
+import { BaseApi } from "./SeedWork/Base.Api";
+import { ApiBuilder } from "./SeedWork/Builder.Api";
 
-export class ApiBlog {
+export class ApiBlog extends BaseApi {
+  constructor() {
+    super("/blog");
+  }
+
+  static builder(): ApiBuilder {
+    return new ApiBuilder(new ApiBlog());
+  }
+
   static async fetchCreateBlogPanel({
     access_token,
-  }: {
-    access_token: string;
-  }): Promise<TCreateBlog> {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.CREATE_BLOG + `?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.POST,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TCreateBlogDto): Promise<TCreateBlogResponseDto> {
+    return await ApiBlog.builder()
+      .cache("no-store")
+      .method("POST")
+      .route(ERoute.CREATE_BLOG)
+      .header("access_token", access_token)
+      .fetch();
   }
 
-  static async fetchBlogsPanel(): Promise<TGetIdBlogs> {
-    const res = await fetch(ERoute.HOST + ERoute.GET_LIST_BLOG, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async fetchListBlogs(): Promise<TGetBlogItemResponseDto> {
+    return await ApiBlog.builder()
+      .cache("no-store")
+      .method("GET")
+      .route(ERoute.GET_LIST_BLOG)
+      .fetch();
   }
 
-  static async fetchBLog({
+  static async fetchGetBLog({
     blog_id,
   }: {
     blog_id: string;
-  }): Promise<TGetIdBlog> {
-    const res = await fetch(ERoute.HOST + ERoute.GET_BLOG + `/${blog_id}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }): Promise<TGetBlogResponseDto> {
+    return await ApiBlog.builder()
+      .cache("no-store")
+      .method("GET")
+      .route(`${ERoute.GET_BLOG}/${blog_id}`)
+      .fetch();
   }
 
   static async fetchUpdateBlogPanel({
@@ -65,30 +52,18 @@ export class ApiBlog {
     src_banner,
     title,
     access_token,
-  }: TIdBlog & { access_token: string }): Promise<TGetIdBlogs> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.UPDATE_BLOG + `/${blog_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-        body: JSON.stringify({
-          blog,
-          meta_title,
-          publish,
-          short_description,
-          src_banner,
-          title,
-        }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TUpdateBlogDto): Promise<TUpdateBlogResponseDto> {
+    return await ApiBlog.builder()
+      .cache("no-store")
+      .method("PUT")
+      .route(`${ERoute.UPDATE_BLOG}/${blog_id}`)
+      .header("access_token", access_token)
+      .bodyParam("blog", blog)
+      .bodyParam("meta_title", meta_title)
+      .bodyParam("publish", publish)
+      .bodyParam("short_description", short_description)
+      .bodyParam("src_banner", src_banner)
+      .bodyParam("title", title)
+      .fetch();
   }
 }

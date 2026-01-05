@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import Category from "@/Components/Customs/Category";
 import { H } from "@/Components/Ui/H";
 import ShowNestedRoute from "@/Components/Customs/ShowNestedRoute";

@@ -16,7 +16,9 @@ import Swal from "sweetalert2";
 export default function ReadOrder() {
   const setting = useContext(AccountContext);
 
-  const [orders, setData] = useState<TIdPresentOrdersTable>([]);
+  const [orders, setData] = useState<
+    Array<TGetFactorPresentOrderTableResponseDto>
+  >([]);
 
   useEffect(() => {
     if (setting?.orders.state) {
@@ -35,14 +37,14 @@ export default function ReadOrder() {
     const factor = orders
       .map((val) =>
         val.factorPresentOrderTable.map((v) => ({
-          name: v.products.name,
-          price: v.products.price,
+          name: v.product.name,
+          price: v.product.price,
           count: v.count,
         }))
       )
       .flat();
     try {
-      const { factor_number, tax, customer_mobile, factor_id } =
+      const { factor_number, tax, customer_mobile, order_id } =
         await FetchApi.Order.fetchCreateOrder({ access_token });
       await FetchApi.Order.fetchUpdateOrder({
         access_token,
@@ -53,12 +55,12 @@ export default function ReadOrder() {
         factor_number,
         customer_mobile,
         pay_status: false,
-        order_id: factor_id,
+        order_id,
       });
       factor.forEach(async (val) => {
         const { factor_item_id } = await FetchApi.Order.fetchCreateOrderItem({
           access_token,
-          order_id: factor_id,
+          order_id,
         });
         await FetchApi.Order.fetchUpdateOrderItem({
           access_token,
@@ -147,7 +149,7 @@ export default function ReadOrder() {
                     key={i}
                     className="font-semibold text-md mb-2 list-decimal mr-5"
                   >
-                    {order.products.name} {digitsEnToFa(order.count)} عدد
+                    {order.product.name} {digitsEnToFa(order.count)} عدد
                   </li>
                 ))}
               </ul>

@@ -1,0 +1,1 @@
+type TUpdateProductMenuResponseDto = { update: boolean }

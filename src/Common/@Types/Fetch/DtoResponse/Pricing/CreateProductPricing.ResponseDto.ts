@@ -1,0 +1,3 @@
+type TCreateProductPricingResponseDto = {
+  created: boolean;
+};

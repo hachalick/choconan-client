@@ -20,9 +20,8 @@ import Box from "@/Components/Ui/Box";
 import { Button } from "@/Components/Ui/Button";
 import { Input, InputContainer, Label } from "@/Components/Ui/Input";
 import Form from "@/Components/Ui/Form";
-import "react-multi-date-picker/styles/colors/green.css"
+import "react-multi-date-picker/styles/colors/green.css";
 import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
-
 
 export default function PackagePanel() {
   const defaultEconomic = {
@@ -53,7 +52,7 @@ export default function PackagePanel() {
   const [countProductEconomicPackage, setCountProductEconomicPackage] =
     useState(1);
   const [economicPackage, setEconomicPackage] =
-    useState<TEconomicPackage>(defaultEconomic);
+    useState<Omit<TCreateEconomicPackageDto, "access_token">>(defaultEconomic);
   const [selectProduct, setSelectProduct] = useState({
     product_id: "",
     name: "",
@@ -68,8 +67,9 @@ export default function PackagePanel() {
     }[]
   >([]);
 
-  const [listEconomicPackage, setListEconomicPackage] =
-    useState<TGetEconomicPackages>([]);
+  const [listEconomicPackage, setListEconomicPackage] = useState<
+    Array<TGetEconomicPackageResponseDto>
+  >([]);
 
   //#endregion
 
@@ -78,7 +78,7 @@ export default function PackagePanel() {
   useEffect(() => {
     if (getListEconomicStatus) {
       const fetchData = async () => {
-        const res = await FetchApi.Order.fetchGetEconomicPackages({ all: "a" });
+        const res = await FetchApi.Menu.fetchGetEconomicPackages({ all: "a" });
         setListEconomicPackage(res);
       };
       fetchData();
@@ -118,12 +118,19 @@ export default function PackagePanel() {
     try {
       setEconomicPackage(defaultEconomic);
       onClickChangeStatuesAdd();
-      const res = await FetchApi.Order.fetchAddEconomicPackage({
+      const res = await FetchApi.Menu.fetchAddEconomicPackage({
         access_token,
-        economic_package: data,
+        end_day: data.end_day,
+        end_hours: data.end_hours,
+        is_active: data.is_active,
+        price: data.price,
+        src: data.src,
+        start_day: data.start_day,
+        start_hours: data.start_hours,
+        title: data.title,
       });
       for (const item of selectProducts) {
-        await FetchApi.Order.fetchAddContentEconomicPackage({
+        await FetchApi.Menu.fetchAddContentEconomicPackage({
           access_token,
           economic_package_id: res.economic_package_id,
           product_id: item.product_id,

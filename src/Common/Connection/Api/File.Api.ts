@@ -1,25 +1,28 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
 import { ERoute } from "@/Common/Enums/Routs";
+import { BaseApi } from "./SeedWork/Base.Api";
+import { ApiBuilder } from "./SeedWork/Builder.Api";
 
-export class ApiFile {
+export class ApiFile extends BaseApi {
+  constructor() {
+    super("/file");
+  }
+
+  static builder(): ApiBuilder {
+    return new ApiBuilder(new ApiFile());
+  }
+
   static async fetchGetImages({
     access_token,
   }: {
     access_token: string;
-  }): Promise<TIdImages> {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.GET_IMAGES + `?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }): Promise<Array<TGetImageResponseDto>> {
+    return await ApiFile.builder()
+      .cache("no-store")
+      .route(ERoute.GET_IMAGES)
+      .header("access_token", access_token)
+      .method(EMethodRequest.GET)
+      .fetch<Array<TGetImageResponseDto>>();
   }
 
   static async fetchDeleteImage({
@@ -28,118 +31,101 @@ export class ApiFile {
   }: {
     access_token: string;
     image_id: string;
-  }): Promise<TIdImages> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.DELETE_IMAGE + `/${image_id}` + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+  }): Promise<TDeleteImageResponseDto> {
+    return await ApiFile.builder()
+      .cache("no-store")
+      .route(`${ERoute.DELETE_IMAGE}/${image_id}`)
+      .header("access_token", access_token)
+      .method(EMethodRequest.DELETE)
+      .fetch<TDeleteImageResponseDto>();
+  }
+
+  // static async fetchImageProduct({
+  //   access_token,
+  //   onProgress,
+  //   onSuccess,
+  //   onError,
+  // }: {
+  //   access_token: string;
+  //   onProgress?: (percent: number, loaded: number, total: number) => void;
+  //   onSuccess?: () => void;
+  //   onError?: (error: string) => void;
+  // }) {
+  //   return await ApiFile.builder()
+  //     .cache("no-store")
+  //     .route(ERoute.UPLOAD_IMAGE_PRODUCT)
+  //     .header("access_token", access_token)
+  //     .method(EMethodRequest.POST)
+  //     .uploadWithProgress({ onError, onProgress, onSuccess });
+  // }
+
+  static async uploadImage({
+    access_token,
+    newForm,
+    setSrcImage,
+    setUploadImage,
+    setUploadProgress,
+  }: {
+    access_token: string;
+    newForm: FormData;
+    setSrcImage: React.Dispatch<React.SetStateAction<string>>;
+    setUploadImage: React.Dispatch<React.SetStateAction<boolean>>;
+    setUploadProgress: React.Dispatch<React.SetStateAction<number>>;
+  }): Promise<void> {
+    return await ApiFile.builder()
+      .cache("no-store")
+      .route(ERoute.UPLOAD_IMAGE)
+      .header("access_token", access_token)
+      .method(EMethodRequest.POST)
+      .body(newForm)
+      .uploadWithProgress({
+        onError: (error) => {
+          console.error("Upload error:", error);
         },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+        onProgress: (percent, loaded, total) => {
+          setUploadProgress(percent);
+        },
+        onSuccess: () => {
+          setSrcImage("/s-logo.jpg");
+          setUploadImage(true);
+          setUploadProgress(100);
+          setTimeout(() => setUploadProgress(0), 1000);
+        },
+      });
   }
 
-  static async fetchImageProduct({
+  static async uploadImageProduct({
     access_token,
     newForm,
-    setUploadProgress,
     setSrcImage,
     setUploadImage,
+    setUploadProgress,
   }: {
     access_token: string;
     newForm: FormData;
-    setUploadProgress: React.Dispatch<React.SetStateAction<number>>;
     setSrcImage: React.Dispatch<React.SetStateAction<string>>;
     setUploadImage: React.Dispatch<React.SetStateAction<boolean>>;
-  }) {
-    const xhr = new XMLHttpRequest();
-
-    xhr.open(
-      EMethodRequest.POST,
-      ERoute.HOST + ERoute.UPLOAD_IMAGE_PRODUCT + `?token=${access_token}`,
-      true
-    );
-
-    xhr.setRequestHeader("Authorization", `Bearer ${access_token}`);
-
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable) {
-        const percentComplete = Math.round((event.loaded / event.total) * 100);
-        setUploadProgress(percentComplete);
-      }
-    };
-
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        setSrcImage("/s-logo.jpg");
-        setUploadImage(true);
-        setUploadProgress(100);
-        setUploadProgress(0);
-      } else {
-        // setMessage("آپلود با خطا مواجه شد.");
-      }
-    };
-
-    xhr.onerror = () => {
-      // setMessage("خطا در آپلود فایل.");
-    };
-
-    xhr.send(newForm);
-  }
-
-  static async fetchImage({
-    access_token,
-    newForm,
-    setUploadProgress,
-    setSrcImage,
-    setUploadImage,
-  }: {
-    access_token: string;
-    newForm: FormData;
     setUploadProgress: React.Dispatch<React.SetStateAction<number>>;
-    setSrcImage: React.Dispatch<React.SetStateAction<string>>;
-    setUploadImage: React.Dispatch<React.SetStateAction<boolean>>;
-  }) {
-    const xhr = new XMLHttpRequest();
-
-    xhr.open(
-      EMethodRequest.POST,
-      ERoute.HOST + ERoute.UPLOAD_IMAGE + `?token=${access_token}`,
-      true
-    );
-
-    xhr.setRequestHeader("Authorization", `Bearer ${access_token}`);
-
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable) {
-        const percentComplete = Math.round((event.loaded / event.total) * 100);
-        setUploadProgress(percentComplete);
-      }
-    };
-
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        setSrcImage("/s-logo.jpg");
-        setUploadImage(true);
-        setUploadProgress(100);
-        setUploadProgress(0);
-      } else {
-        // setMessage("آپلود با خطا مواجه شد.");
-      }
-    };
-
-    xhr.onerror = () => {
-      // setMessage("خطا در آپلود فایل.");
-    };
-
-    xhr.send(newForm);
+  }): Promise<void> {
+    return await ApiFile.builder()
+      .cache("no-store")
+      .route(ERoute.UPLOAD_IMAGE_PRODUCT)
+      .header("access_token", access_token)
+      .method(EMethodRequest.POST)
+      .body(newForm)
+      .uploadWithProgress({
+        onError: (error) => {
+          console.error("Upload error:", error);
+        },
+        onProgress: (percent) => {
+          setUploadProgress(percent);
+        },
+        onSuccess: () => {
+          setSrcImage("/s-logo.jpg");
+          setUploadImage(true);
+          setUploadProgress(100);
+          setTimeout(() => setUploadProgress(0), 1000);
+        },
+      });
   }
 }

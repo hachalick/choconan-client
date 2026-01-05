@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 
 export default function ReadImage() {
   const [uploadImage, setUploadImage] = useState(true);
-  const [listImg, setListImg] = useState<TIdImages>([]);
+  const [listImg, setListImg] = useState<Array<TGetImageResponseDto>>([]);
 
   useEffect(() => {
     if (uploadImage) {

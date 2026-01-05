@@ -1,0 +1,1 @@
+type TDeleteDashboardCapabilityToUserResponseDto = { add: boolean };

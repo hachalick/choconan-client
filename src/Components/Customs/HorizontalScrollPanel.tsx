@@ -19,7 +19,7 @@ function HorizontalScrollPanel({
   title: string;
   category: string;
   icon: string;
-  products: TIdProductsMenu;
+  products: Array<TGetProductMenuResponseDto>;
 }) {
   const [data, setData] = useState({
     category_product_id,
@@ -61,7 +61,7 @@ function HorizontalScrollPanel({
     try {
       await FetchApi.Menu.fetchDeleteCategoryMenu({
         access_token,
-        category_id: category_product_id
+        category_id: category_product_id,
       });
       Swal.fire({
         title: "با موفقیت حذف شد!",

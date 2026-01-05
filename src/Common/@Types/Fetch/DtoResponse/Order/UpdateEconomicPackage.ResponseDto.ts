@@ -1,0 +1,1 @@
+type TUpdateEconomicPackageResponseDto = { change: boolean }

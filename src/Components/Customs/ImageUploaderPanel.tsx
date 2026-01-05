@@ -41,9 +41,10 @@ export default function ImageUploaderPanel({
       setUploadImage(false);
       const newForm = new FormData();
       newForm.append("file", image);
+
       switch (uploadImageSrc) {
         case "main":
-          await FetchApi.File.fetchImage({
+          await FetchApi.File.uploadImage({
             access_token,
             newForm,
             setSrcImage,
@@ -52,7 +53,7 @@ export default function ImageUploaderPanel({
           });
           break;
         case "product":
-          await FetchApi.File.fetchImageProduct({
+          await FetchApi.File.uploadImageProduct({
             access_token,
             newForm,
             setSrcImage,

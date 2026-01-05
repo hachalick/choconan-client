@@ -114,10 +114,6 @@ export default function Dashboard() {
       });
     }
 
-    console.log(
-      setting?.profile.access
-    );
-
     const handleRefetch = () => {
       if (setting?.profile.access.includes(EDashboardCapability.READ_ORDER)) {
         setting?.orders.setState(true);

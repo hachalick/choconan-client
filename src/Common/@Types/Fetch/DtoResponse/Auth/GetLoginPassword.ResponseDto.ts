@@ -1,0 +1,1 @@
+type TGetLoginPasswordResponseDto = { login: boolean };

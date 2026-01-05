@@ -19,7 +19,7 @@ import { IoIosAddCircleOutline, IoMdCloseCircleOutline } from "react-icons/io";
 export default function CreateMenuCategory() {
   const setting = useContext(AccountContext);
 
-  const baseDefaultCategory: Omit<TIdCategoryMenu, "products"> = useMemo(
+  const baseDefaultCategory: Omit<TGetCategoryMenuResponseDto, "products"> = useMemo(
     () => ({
       category_product_id: "",
       category: "",
@@ -40,7 +40,7 @@ export default function CreateMenuCategory() {
       if (setting?.categoryMenu.state) {
         const { category, icon, category_product_id } =
           await FetchApi.Menu.fetchCategoryMenu({
-            category: setting.categoryMenu.state,
+            category_name: setting.categoryMenu.state,
           });
         setDefaultCategory({ category, category_product_id, icon });
       }

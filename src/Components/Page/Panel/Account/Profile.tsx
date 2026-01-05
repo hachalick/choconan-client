@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 
 export default function Profile() {
   const setting = useContext(AccountContext);
-  const [profile, setProfile] = useState<TProfile>(
+  const [profile, setProfile] = useState<TGetProfileResponseDto>(
     setting?.profile || {
       name: "",
       family: "",

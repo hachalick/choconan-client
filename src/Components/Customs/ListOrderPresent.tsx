@@ -36,8 +36,8 @@ function ListOrder({
           snap,
           tapsi,
         } = await FetchApi.Menu.fetchProductMenu({
-          category: dataDb[i].category,
-          id: String(dataDb[i].id_product_menu),
+          category_name: dataDb[i].category,
+          product_id: String(dataDb[i].id_product_menu),
         });
         listAllData.push({
           available,

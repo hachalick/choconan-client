@@ -1,419 +1,115 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
 import { ERoute } from "@/Common/Enums/Routs";
+import { ApiBuilder } from "./SeedWork/Builder.Api";
+import { BaseApi } from "./SeedWork/Base.Api";
 
-export class ApiOrder {
-  static async fetchTables(): Promise<{ table_id: string; table: number }[]> {
-    const res = await fetch(ERoute.HOST + ERoute.GET_TABLES, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+export class ApiOrder extends BaseApi {
+  constructor() {
+    super("/order");
   }
 
-  static async fetchOrderPanel(): Promise<TIdPresentOrdersTable> {
-    const res = await fetch(ERoute.HOST + ERoute.GET_ORDER_TABLES, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static builder(): ApiBuilder {
+    return new ApiBuilder(new ApiOrder());
+  }
+
+  static async fetchTables(): Promise<Array<TGetTableOrderResponseDto>> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(ERoute.GET_TABLES)
+      .method(EMethodRequest.GET)
+      .fetch<Array<TGetTableOrderResponseDto>>();
+  }
+
+  static async fetchOrderPanel(): Promise<
+    Array<TGetFactorPresentOrderTableResponseDto>
+  > {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(ERoute.GET_ORDER_TABLES)
+      .method(EMethodRequest.GET)
+      .fetch<Array<TGetFactorPresentOrderTableResponseDto>>();
   }
 
   static async fetchOrderTablePanel({
     table_id,
-  }: {
-    table_id: string;
-  }): Promise<TIdPresentOrderTable> {
-    const res = await fetch(
-      ERoute.HOST + ERoute.GET_ORDER_TABLES + `/${table_id}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TGetFactorPresentOrderTableDto): Promise<TGetFactorPresentOrderTableResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.GET_ORDER_TABLES}/${table_id}`)
+      .method(EMethodRequest.GET)
+      .fetch<TGetFactorPresentOrderTableResponseDto>();
   }
 
   static async fetchOrderTable({
     table_id,
     list_order,
-  }: {
-    table_id: string;
-    list_order: { count: number; product_id: string }[];
-  }): Promise<{ submit: boolean }> {
-    const res = await fetch(ERoute.HOST + ERoute.ORDER_TABLE + `/${table_id}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.POST,
-      body: JSON.stringify({ list_order }),
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TCreateOrderTableDto): Promise<TCreateOrderTableResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.ORDER_TABLE}/${table_id}`)
+      .method(EMethodRequest.POST)
+      .bodyParam("list_order", list_order)
+      .fetch<TCreateOrderTableResponseDto>();
   }
 
   static async fetchCreateTable({
     table_number,
     access_token,
-  }: {
-    table_number: number;
-    access_token: string;
-  }): Promise<{ create: boolean; table_id: string }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.CREATE_TABLE + `/${table_number}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.POST,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TCreateTableDto): Promise<TCreateTableResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.CREATE_TABLE}/${table_number}`)
+      .method(EMethodRequest.POST)
+      .header("access_token", access_token)
+      .fetch<TCreateTableResponseDto>();
   }
 
   static async fetchDeleteTable({
     table_id,
     access_token,
-  }: {
-    table_id: string;
-    access_token: string;
-  }): Promise<{ delete: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.DELETE_TABLE + `/${table_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TDeleteTableDto): Promise<TDeleteTableDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.DELETE_TABLE}/${table_id}`)
+      .method(EMethodRequest.POST)
+      .header("access_token", access_token)
+      .fetch<TDeleteTableDto>();
   }
 
   static async fetchStatusTable({
     table_id,
     access_token,
-  }: {
-    table_id: string;
-    access_token: string;
-  }): Promise<{ can_order: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.GET_STATUS_TABLE + `/${table_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TGetStatusTableDto): Promise<TGetStatusTableResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.GET_STATUS_TABLE}/${table_id}`)
+      .method(EMethodRequest.GET)
+      .header("access_token", access_token)
+      .fetch<TGetStatusTableResponseDto>();
   }
 
   static async fetchAcceptStatusTable({
     table_id,
     access_token,
-  }: {
-    table_id: string;
-    access_token: string;
-  }): Promise<{ delete: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ACCEPT_STATUS_TABLE + `/${table_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.POST,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TCreateAcceptStatusTableOrderDto): Promise<TCreateAcceptStatusTableOrderResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.ACCEPT_STATUS_TABLE}/${table_id}`)
+      .method(EMethodRequest.POST)
+      .header("access_token", access_token)
+      .fetch<TCreateAcceptStatusTableOrderResponseDto>();
   }
 
   static async fetchDeleteStatusTable({
     table_id,
     access_token,
-  }: {
-    table_id: string;
-    access_token: string;
-  }): Promise<{ delete: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.DELETE_STATUS_TABLE + `/${table_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
-  }
-
-  static async fetchEditableStatusTable({
-    table_id,
-    access_token,
-  }: {
-    table_id: string;
-    access_token: string;
-  }): Promise<{ change: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.EDITABLE_STATUS_TABLE + `/${table_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
-  }
-
-  static async fetchGetEconomicPackage({
-    access_token,
-  }: {
-    access_token: string;
-  }): Promise<TGetEconomicPackage> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.GET_ECONOMIC_PACKAGES + `/?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
-  }
-
-  static async fetchGetEconomicPackages({
-    all,
-  }: {
-    all?: string | undefined;
-  }): Promise<TGetEconomicPackages> {
-    let url = ERoute.HOST + ERoute.GET_ECONOMIC_PACKAGES;
-    if (all) {
-      url += "?all=" + all;
-    }
-    const res = await fetch(url, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
-  }
-
-  static async fetchAddEconomicPackage({
-    economic_package,
-    access_token,
-  }: {
-    economic_package: TEconomicPackage;
-    access_token: string;
-  }): Promise<TGetEconomicPackage> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ADD_ECONOMIC_PACKAGE + `/?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.POST,
-        body: JSON.stringify({ ...economic_package }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
-  }
-
-  static async fetchUpdateEconomicPackage({
-    economic_package,
-    access_token,
-    economic_package_id,
-  }: {
-    economic_package: TEconomicPackage;
-    access_token: string;
-    economic_package_id: string;
-  }): Promise<{ change: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST +
-        ERoute.UPDATE_ECONOMIC_PACKAGE +
-        `/${economic_package_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-        body: JSON.stringify({ ...economic_package }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
-  }
-
-  static async fetchDeleteEconomicPackage({
-    economic_package_id,
-    access_token,
-  }: {
-    economic_package_id: string;
-    access_token: string;
-  }): Promise<{ change: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST +
-        ERoute.DELETE_ECONOMIC_PACKAGE +
-        `/${economic_package_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
-  }
-
-  static async fetchAddContentEconomicPackage({
-    economic_package_id,
-    product_id,
-    access_token,
-    count,
-  }: {
-    economic_package_id: string;
-    product_id: string;
-    count: number;
-    access_token: string;
-  }): Promise<{
-    content_economic_package_id: string;
-    count: number;
-    productMenu: TIdProductMenu;
-  }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ADD_CONTENT_ECONOMIC_PACKAGE + `/?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.POST,
-        body: JSON.stringify({ economic_package_id, product_id, count }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
-  }
-
-  static async fetchDeleteContentEconomicPackage({
-    content_economic_package_id,
-    access_token,
-  }: {
-    content_economic_package_id: string;
-    access_token: string;
-  }): Promise<{ change: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST +
-        ERoute.DELETE_CONTENT_ECONOMIC_PACKAGE +
-        `/${content_economic_package_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TCreateDeleteStatusTableOrderDto): Promise<TCreateDeleteStatusTableOrderResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.DELETE_STATUS_TABLE}/${table_id}`)
+      .method(EMethodRequest.DELETE)
+      .header("access_token", access_token)
+      .fetch<TCreateDeleteStatusTableOrderResponseDto>();
   }
 
   static async fetchGetOrders({
@@ -421,137 +117,75 @@ export class ApiOrder {
     start_day,
     end_day,
     pay_status,
-  }: {
-    access_token: string;
-    start_day?: string;
-    end_day?: string;
-    pay_status?: boolean;
-  }): Promise<TGetFactors> {
-    let query = `token=${access_token}`;
-    start_day && (query += `&start_day=${start_day}`);
-    end_day && (query += `&end_day=${end_day}`);
-    pay_status !== undefined && (query += `&pay_status=${pay_status}`);
-    const res = await fetch(ERoute.HOST + ERoute.ORDER + `/?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TGetOrdersDto): Promise<Array<TGetFactorResponseDto>> {
+    let fetchRes = ApiOrder.builder()
+      .cache("no-store")
+      .route(ERoute.ORDER)
+      .method(EMethodRequest.GET)
+      .header("access_token", access_token);
+
+    start_day && fetchRes.param("start_day", start_day);
+    end_day && fetchRes.param("end_day", end_day);
+    pay_status && fetchRes.param("pay_status", pay_status);
+
+    return fetchRes.fetch<Array<TGetFactorResponseDto>>();
   }
 
   static async fetchGetOrder({
     order_id,
     access_token,
-  }: {
-    order_id: string;
-    access_token: string;
-  }): Promise<TGetFactor> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ORDER + `/${order_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TGetOrderDto): Promise<TGetFactorResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.ORDER}/${order_id}`)
+      .method(EMethodRequest.GET)
+      .header("access_token", access_token)
+      .fetch<TGetFactorResponseDto>();
   }
 
   static async fetchCreateOrder({
     access_token,
-  }: {
-    access_token: string;
-  }): Promise<TFactor & { factor_id: string }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.ORDER + `/?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.POST,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TCreateOrderDto): Promise<TCreateFactorResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(ERoute.ORDER)
+      .method(EMethodRequest.POST)
+      .header("access_token", access_token)
+      .fetch<TCreateFactorResponseDto>();
   }
 
   static async fetchDeleteOrder({
     access_token,
     order_id,
-  }: {
-    access_token: string;
-    order_id: string;
-  }): Promise<TFactor> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ORDER + `/${order_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TDeleteFactorDto): Promise<TDeleteFactorResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.ORDER}/${order_id}`)
+      .method(EMethodRequest.DELETE)
+      .header("access_token", access_token)
+      .fetch<TDeleteFactorResponseDto>();
   }
 
   static async fetchUpdateOrder({
-    order_id,
     access_token,
     customer_mobile,
     factor_number,
     location,
     pay_status,
     tax,
-  }: {
-    order_id: string;
-    access_token: string;
-  } & Omit<TFactor, "update_at" | "create_at" | "factor_items">): Promise<{
-    update: boolean;
-  }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ORDER + `/${order_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-        body: JSON.stringify({
-          customer_mobile,
-          factor_number,
-          location,
-          pay_status,
-          tax,
-        }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+    order_id,
+  }: TUpdateFactorDto): Promise<TUpdateFactorResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.ORDER}/${order_id}`)
+      .method(EMethodRequest.PUT)
+      .header("access_token", access_token)
+      .bodyParam("pay_status", pay_status)
+      .bodyParam("customer_mobile", customer_mobile)
+      .bodyParam("location", location)
+      .bodyParam("factor_number", factor_number)
+      .bodyParam("tax", tax)
+      .fetch<TUpdateFactorResponseDto>();
   }
 
   static async fetchUpdatePayStatusOrder({
@@ -562,108 +196,51 @@ export class ApiOrder {
     order_id: string;
     access_token: string;
     pay_status: boolean;
-  }): Promise<{
-    update: boolean;
-  }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ORDER_PAY_STATUS + `/${order_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-        body: JSON.stringify({
-          pay_status,
-        }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }): Promise<TUpdatePayStatusOrderResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.ORDER_PAY_STATUS}/${order_id}`)
+      .method(EMethodRequest.PUT)
+      .header("access_token", access_token)
+      .bodyParam("pay_status", pay_status)
+      .fetch<TUpdatePayStatusOrderResponseDto>();
   }
 
   static async fetchReportMonthlyOrder({
     access_token,
-  }: {
-    access_token: string;
-  }): Promise<
-    Array<{
-      month: string;
-      totalFactors: number;
-      averageFactors: number;
-      totalItems: number;
-      averageItems: number;
-      totalPrice: number;
-      averagePrice: number;
-    }>
+  }: TGetReportMonthlyOrderDto): Promise<
+    Array<TGetReportMonthlyOrderResponseDto>
   > {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.REPORT_MONTHLY + `?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(ERoute.REPORT_MONTHLY)
+      .method(EMethodRequest.GET)
+      .header("access_token", access_token)
+      .fetch<Array<TGetReportMonthlyOrderResponseDto>>();
   }
 
   static async fetchCreateOrderItem({
     access_token,
     order_id,
-  }: {
-    access_token: string;
-    order_id: string;
-  }): Promise<TGetFactorItem> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ORDER_ITEM + `/${order_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.POST,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: CreateFactorItemDto): Promise<TCreateFactorItemResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.ORDER_ITEM}/${order_id}`)
+      .method(EMethodRequest.POST)
+      .header("access_token", access_token)
+      .fetch<TCreateFactorItemResponseDto>();
   }
 
   static async fetchDeleteOrderItem({
     access_token,
     order_item_id,
-  }: {
-    access_token: string;
-    order_item_id: string;
-  }): Promise<TFactor> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ORDER_ITEM + `/${order_item_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TDeleteOrderItemResponseDto): Promise<TGetFactorResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.ORDER_ITEM}/${order_item_id}`)
+      .method(EMethodRequest.DELETE)
+      .header("access_token", access_token)
+      .fetch<TGetFactorResponseDto>();
   }
 
   static async fetchUpdateOrderItem({
@@ -673,31 +250,16 @@ export class ApiOrder {
     product_discount,
     product_name,
     product_price,
-  }: {
-    order_item_id: string;
-    access_token: string;
-  } & TFactorItem): Promise<{ update: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ORDER_ITEM + `/${order_item_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-        body: JSON.stringify({
-          product_count,
-          product_discount,
-          product_name,
-          product_price,
-        }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TUpdateFactorItemResponseDto): Promise<TUpdateOrderItemResponseDto> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${ERoute.ORDER_ITEM}/${order_item_id}`)
+      .method(EMethodRequest.PUT)
+      .header("access_token", access_token)
+      .bodyParam("product_count", product_count)
+      .bodyParam("product_discount", product_discount)
+      .bodyParam("product_name", product_name)
+      .bodyParam("product_price", product_price)
+      .fetch<TUpdateOrderItemResponseDto>();
   }
 }
