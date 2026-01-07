@@ -40,6 +40,14 @@ export const AccountContext = createContext<
         state: boolean;
         setState: React.Dispatch<React.SetStateAction<boolean>>;
       };
+      unitPricing: {
+        state: string;
+        setState: React.Dispatch<React.SetStateAction<string>>;
+      };
+      productPricing: {
+        state: string;
+        setState: React.Dispatch<React.SetStateAction<string>>;
+      };
     }
   | undefined
 >(undefined);

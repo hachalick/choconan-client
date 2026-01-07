@@ -11,7 +11,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useState<boolean | null>(false);
   const [profile, setProfile] = useState<TGetProfileResponseDto>({
     access: [],
     family: "",
@@ -19,7 +19,9 @@ export default function DashboardLayout({
     profile: "",
     role: [],
   });
-  const [state, setState] = useState<EDashboard>(EDashboard.DEFAULT);
+  const [state, setState] = useState<EDashboard>(
+    EDashboard.CREATE_PRODUCT_PRICING
+  );
   const [getOrder, setGetOrder] = useState<boolean>(true);
   const [getConnectServerSocketIo, setGetConnectServerSocketIo] =
     useState<boolean>(false);
@@ -29,6 +31,8 @@ export default function DashboardLayout({
   const [idUserAccess, setIdUserAccess] = useState<string>("");
   const [idRoleAccess, setIdRoleAccess] = useState<string>("");
   const [idLocation, setIdLocation] = useState<string>("");
+  const [idUnitPricing, setIdUnitPricing] = useState<string>("");
+  const [idProductUnitPricing, setIdProductUnitPricing] = useState<string>("");
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -37,12 +41,10 @@ export default function DashboardLayout({
 
       if (refresh_token && access_token) {
         try {
-          console.log(access_token)
           const profile = await FetchApi.User.fetchGetAccount({ access_token });
           setProfile(profile);
-          setIsLogin(false);
+          setIsLogin(true);
         } catch (error) {
-          console.log(error)
           try {
             const res = await FetchApi.Auth.fetchRefreshToken({
               refresh_token,
@@ -53,9 +55,9 @@ export default function DashboardLayout({
               location.reload();
             }
           } catch (error) {
-            console.log(error)
-            // localStorage.clear();
-            // sessionStorage.clear();
+            // console.log(error)
+            localStorage.clear();
+            sessionStorage.clear();
           }
         }
       } else if (refresh_token) {
@@ -67,17 +69,18 @@ export default function DashboardLayout({
             location.reload();
           }
         } catch (error) {
-          console.log(error)
-          // localStorage.clear();
-          // sessionStorage.clear();
+          localStorage.clear();
+          sessionStorage.clear();
         }
+      } else {
+        setIsLogin(null);
       }
     };
 
     fetchRoles();
   }, []);
 
-  if (!isLogin) {
+  if (isLogin === true) {
     return (
       <AccountContext.Provider
         value={{
@@ -94,10 +97,24 @@ export default function DashboardLayout({
             state: getConnectServerSocketIo,
             setState: setGetConnectServerSocketIo,
           },
+          unitPricing: {
+            state: idUnitPricing,
+            setState: setIdUnitPricing,
+          },
+          productPricing: {
+            setState: setIdProductUnitPricing,
+            state: idProductUnitPricing,
+          },
         }}
       >
         {children}
       </AccountContext.Provider>
+    );
+  } else if (isLogin === false) {
+    return (
+      <Layout variant="dashboard">
+        <div></div>
+      </Layout>
     );
   } else {
     return (

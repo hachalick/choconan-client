@@ -14,6 +14,7 @@ import {
   MdOutlineKeyboardDoubleArrowUp,
   MdOutlinePassword,
   MdOutlineRestaurantMenu,
+  MdOutlineScale,
   MdWifiTethering,
   MdWifiTetheringOff,
 } from "react-icons/md";
@@ -42,10 +43,11 @@ import {
 import {
   HiOutlineDocumentDuplicate,
   HiOutlineDocumentText,
+  HiOutlineScale,
 } from "react-icons/hi";
 import { HiOutlineDocumentPlus } from "react-icons/hi2";
-import { PiCoins } from "react-icons/pi";
-import { IoSettingsOutline } from "react-icons/io5";
+import { PiCoffeeBeanBold, PiCoins, PiHandCoins } from "react-icons/pi";
+import { IoScaleOutline, IoSettingsOutline } from "react-icons/io5";
 import { EDashboardCapability } from "@/Common/Enums/DashboardCapability.enum";
 import { EDashboard } from "@/Common/Enums/Dashboard";
 import Profile from "../Page/Panel/Account/Profile";
@@ -86,6 +88,14 @@ import CreateUser from "../Page/Panel/Support/CreateUser";
 import CreateRole from "../Page/Panel/Support/CreateRole";
 import { io } from "socket.io-client";
 import Swal from "sweetalert2";
+import CreateCostPricing from "../Page/Panel/Pricing/CreateCostPricing";
+import ReadUnitPricing from "../Page/Panel/Pricing/ReadUnitPricing";
+import CreateUnitPricing from "../Page/Panel/Pricing/CreateUnitPricing";
+import ReadProductPricing from "../Page/Panel/Pricing/ReadProductPricing";
+import CreateProductPricing from "../Page/Panel/Pricing/CreateProductPricing";
+import { TfiRuler, TfiRulerPencil } from "react-icons/tfi";
+import { CiCoffeeCup } from "react-icons/ci";
+import { SiCoffeescript } from "react-icons/si";
 
 type TMenu = {
   title: string;
@@ -149,6 +159,88 @@ export default function Dashboard() {
   }, [setting]);
 
   const menuUl: TMenu[] = [
+    {
+      isOpen: true,
+      title: "قیمت گذاری",
+      Icon: HiOutlineScale,
+      isActive:
+        setting?.profile.role.includes("پشتیبان") ||
+        setting?.profile.access.includes(
+          EDashboardCapability.CREATE_COST_PRICING
+        ) ||
+        setting?.profile.access.includes(
+          EDashboardCapability.READ_UNIT_PRICING
+        ) ||
+        setting?.profile.access.includes(
+          EDashboardCapability.CREATE_UNIT_PRICING
+        ) ||
+        setting?.profile.access.includes(
+          EDashboardCapability.READ_PRODUCT_PRICING
+        ) ||
+        setting?.profile.access.includes(
+          EDashboardCapability.CREATE_PRODUCT_PRICING
+        ) ||
+        setting?.profile.access.includes(
+          EDashboardCapability.CREATE_COST_PRICING
+        ),
+      li: [
+        {
+          title: "لیست واحد",
+          isActive:
+            setting?.profile.role.includes("پشتیبان") ||
+            setting?.profile.access.includes(
+              EDashboardCapability.READ_UNIT_PRICING
+            ),
+          state: EDashboard.READ_UNIT_PRICING,
+          isOpen: false,
+          Icon: TfiRuler,
+        },
+        {
+          title: "ایجاد واحد",
+          isActive:
+            setting?.profile.role.includes("پشتیبان") ||
+            setting?.profile.access.includes(
+              EDashboardCapability.CREATE_UNIT_PRICING
+            ),
+          state: EDashboard.CREATE_UNIT_PRICING,
+          isOpen: false,
+          Icon: TfiRulerPencil,
+        },
+        {
+          title: "لیست محصولات",
+          isActive:
+            setting?.profile.role.includes("پشتیبان") ||
+            setting?.profile.access.includes(
+              EDashboardCapability.READ_PRODUCT_PRICING
+            ),
+          state: EDashboard.READ_PRODUCT_PRICING,
+          isOpen: false,
+          Icon: SiCoffeescript,
+        },
+        {
+          title: "ایجاد محصول",
+          isActive:
+            setting?.profile.role.includes("پشتیبان") ||
+            setting?.profile.access.includes(
+              EDashboardCapability.CREATE_PRODUCT_PRICING
+            ),
+          state: EDashboard.CREATE_PRODUCT_PRICING,
+          isOpen: false,
+          Icon: PiCoffeeBeanBold,
+        },
+        {
+          title: "ایجاد هزینه",
+          isActive:
+            setting?.profile.role.includes("پشتیبان") ||
+            setting?.profile.access.includes(
+              EDashboardCapability.CREATE_COST_PRICING
+            ),
+          state: EDashboard.CREATE_COST_PRICING,
+          isOpen: false,
+          Icon: PiHandCoins,
+        },
+      ],
+    },
     {
       title: "پشتیبانی",
       isActive:
@@ -828,6 +920,16 @@ function Container({ state }: { state: number }) {
       return <ReadRole />;
     case EDashboard.CREATE_ROLE:
       return <CreateRole />;
+    case EDashboard.CREATE_COST_PRICING:
+      return <CreateCostPricing />;
+    case EDashboard.READ_UNIT_PRICING:
+      return <ReadUnitPricing />;
+    case EDashboard.CREATE_UNIT_PRICING:
+      return <CreateUnitPricing />;
+    case EDashboard.READ_PRODUCT_PRICING:
+      return <ReadProductPricing />;
+    case EDashboard.CREATE_PRODUCT_PRICING:
+      return <CreateProductPricing />;
     default:
       break;
   }
@@ -842,7 +944,7 @@ function UlMenu({
   deep: number;
   setState: React.Dispatch<React.SetStateAction<EDashboard>>;
 }) {
-  const [open, setOpen] = React.useState(content.map(() => false));
+  const [open, setOpen] = React.useState(content.map((item) => item.isOpen));
 
   const onClickOpen = (index: number) => {
     setOpen((old) => old.map((val, i) => (i === index ? (val = !val) : val)));

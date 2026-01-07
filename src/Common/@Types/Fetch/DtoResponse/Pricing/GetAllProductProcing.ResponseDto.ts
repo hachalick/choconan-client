@@ -46,6 +46,7 @@ type TGetAllProductPricingResponseDto = {
         total_price_for_ratio: number;
         count_sell: number;
         detail: Array<{
+          product_unit_detail_id: string;
           name: string;
           unit: string;
           amount: number;

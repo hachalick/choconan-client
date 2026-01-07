@@ -22,7 +22,11 @@ export function Label({
     "className"
   >
 >) {
-  return <label {...restProps}>{children}</label>;
+  return (
+    <label {...restProps} className="font-bold">
+      {children}
+    </label>
+  );
 }
 
 export function Input({

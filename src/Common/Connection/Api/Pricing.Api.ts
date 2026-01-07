@@ -61,7 +61,7 @@ export class ApiPricing extends BaseApi {
 
   static async fetchCreateProductPricing({
     access_token,
-    gain,
+    buy,
     name,
   }: TCreateProductPricingDto): Promise<TCreateProductPricingResponseDto> {
     return await ApiPricing.builder()
@@ -69,9 +69,25 @@ export class ApiPricing extends BaseApi {
       .route(ERoute.CREATE_PRODUCT_PRICING)
       .header("access_token", access_token)
       .method(EMethodRequest.POST)
-      .bodyParam("gain", gain)
+      .bodyParam("buy", buy)
       .bodyParam("name", name)
       .fetch<TCreateProductPricingResponseDto>();
+  }
+
+  static async fetchUpdateProductPricing({
+    access_token,
+    product_pricing_id,
+    buy,
+    name,
+  }: TUpdateProductPricingDto): Promise<TUpdateProductPricingResponseDto> {
+    return await ApiPricing.builder()
+      .cache("no-store")
+      .route(`${ERoute.UPDATE_PRODUCT_PRICING}/${product_pricing_id}`)
+      .header("access_token", access_token)
+      .method(EMethodRequest.PUT)
+      .bodyParam("buy", buy)
+      .bodyParam("name", name)
+      .fetch<TUpdateProductPricingResponseDto>();
   }
 
   static async fetchDeleteProductPricing({
