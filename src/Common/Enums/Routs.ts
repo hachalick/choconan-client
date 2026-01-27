@@ -1,9 +1,9 @@
 export enum ERoute {
-  PROTOCOL = "http",
-  // PROTOCOL = "https",
-  DOMAIN = "127.0.0.1:8080",
+  // PROTOCOL = "http",
+  PROTOCOL = "https",
+  // DOMAIN = "127.0.0.1:8080",
   // DOMAIN = "192.168.1.109:8080",
-  // DOMAIN = "api.choconan.ir",
+  DOMAIN = "api.choconan.ir",
   HOST = `${PROTOCOL}://${DOMAIN}`,
   // app
   VIDEO      = "/video",
