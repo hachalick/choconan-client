@@ -44,8 +44,9 @@ export default function ReadOrder() {
       )
       .flat();
     try {
-      const { factor_number, tax, customer_mobile, order_id } =
+      const { factor_number, tax, customer_mobile, factor_id } =
         await FetchApi.Order.fetchCreateOrder({ access_token });
+        
       await FetchApi.Order.fetchUpdateOrder({
         access_token,
         tax,
@@ -55,12 +56,12 @@ export default function ReadOrder() {
         factor_number,
         customer_mobile,
         pay_status: false,
-        order_id,
+        factor_id,
       });
       factor.forEach(async (val) => {
         const { factor_item_id } = await FetchApi.Order.fetchCreateOrderItem({
           access_token,
-          order_id,
+          factor_id,
         });
         await FetchApi.Order.fetchUpdateOrderItem({
           access_token,
