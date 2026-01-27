@@ -15,7 +15,7 @@ export class ApiOnlineShop extends BaseApi {
   static async fetchCrawlerSnap(): Promise<TGetOnlineShopSnapResponseDto> {
     return await ApiOnlineShop.builder()
       .cache("no-store")
-      .route(ERoute.GET_CRAWLER_MENU_SNAP_FOOD)
+      .route(ERoute.MENU_SNAP_FOOD)
       .method(EMethodRequest.GET)
       .fetch<TGetOnlineShopSnapResponseDto>();
   }
@@ -23,7 +23,7 @@ export class ApiOnlineShop extends BaseApi {
   static async fetchCrawlerTapsi(): Promise<TGetOnlineShopTapsiResponseDto> {
     return await ApiOnlineShop.builder()
       .cache("no-store")
-      .route(ERoute.GET_CRAWLER_MENU_TAPSI_FOOD)
+      .route(ERoute.MENU_TAPSI_FOOD)
       .method(EMethodRequest.GET)
       .fetch<TGetOnlineShopSnapResponseDto>();
   }

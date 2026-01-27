@@ -3,6 +3,7 @@ type TGetAllProductPricingResponseDto = {
   cost: {
     sum_cost: number;
     average_cost: number;
+    item_cost: number;
     list: Array<{
       cost_pricing_id: string;
       name: string;
@@ -15,6 +16,8 @@ type TGetAllProductPricingResponseDto = {
     sum_balance: number;
     list: Array<{
       product_id_in_menu: string;
+      product_category_id_in_menu: string;
+      product_number_id_in_menu: string;
       name_in_menu: string;
       price_in_menu: number;
       product_id_in_pricing: string;
@@ -36,9 +39,11 @@ type TGetAllProductPricingResponseDto = {
       name: string;
       buy: number;
       product_unit: Array<{
+        product_menu_id: string;
         price_in_menu: string | null;
         product_unit_id: string;
         unit_name: string;
+        unit_id: string;
         ratio: number;
         profit: number;
         sum_detail: number;
@@ -54,6 +59,8 @@ type TGetAllProductPricingResponseDto = {
           ratio: number;
           price_by_unit: number;
           total_price_by_unit: number;
+          parent_product_unit_id: string;
+          child_product_unit_id: string;
         }>;
       }>;
     }>;

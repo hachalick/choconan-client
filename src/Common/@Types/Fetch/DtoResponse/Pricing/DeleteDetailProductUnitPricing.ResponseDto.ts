@@ -1,3 +1,3 @@
 type TDeleteDetailProductUnitPricingResponseDto = {
-  deleted: boolean;
+  delete: boolean;
 };

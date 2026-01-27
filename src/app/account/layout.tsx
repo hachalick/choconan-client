@@ -19,8 +19,8 @@ export default function DashboardLayout({
     profile: "",
     role: [],
   });
-  const [state, setState] = useState<EDashboard>(
-    EDashboard.CREATE_PRODUCT_PRICING
+  const [statePageDashboard, setStatePageDashboard] = useState<EDashboard>(
+    EDashboard.DEFAULT
   );
   const [getOrder, setGetOrder] = useState<boolean>(true);
   const [getConnectServerSocketIo, setGetConnectServerSocketIo] =
@@ -78,14 +78,41 @@ export default function DashboardLayout({
     };
 
     fetchRoles();
+
+    const dashboard_page = sessionStorage.getItem("dashboard_page");
+
+    if (!dashboard_page) {
+      sessionStorage.setItem(
+        "dashboard_page",
+        JSON.stringify(statePageDashboard)
+      );
+    } else {
+      const pars_dashboard_page = JSON.parse(dashboard_page);
+
+      if (typeof pars_dashboard_page === "number") {
+        setStatePageDashboard(pars_dashboard_page);
+      } else if (typeof pars_dashboard_page === "string") {
+        try {
+          const int_pars_dashboard_page = parseInt(pars_dashboard_page);
+          setStatePageDashboard(int_pars_dashboard_page);
+        } catch (error) {}
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("dashboard_page", JSON.stringify(statePageDashboard));
+  }, [statePageDashboard]);
 
   if (isLogin === true) {
     return (
       <AccountContext.Provider
         value={{
           profile,
-          dashboard: { state, setState },
+          dashboard: {
+            state: statePageDashboard,
+            setState: setStatePageDashboard,
+          },
           orders: { state: getOrder, setState: setGetOrder },
           factor: { state: idFactor, setState: setIdFactor },
           categoryMenu: { state: idCategoryMenu, setState: setIdCategoryMenu },

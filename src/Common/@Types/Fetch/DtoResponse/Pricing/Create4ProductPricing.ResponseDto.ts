@@ -1,3 +1,4 @@
 type TCreateDetailProductUnitPricingResponseDto = {
-  created: boolean;
+  product_unit_detail_id: string;
+  amount: number;
 };

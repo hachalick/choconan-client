@@ -17,7 +17,7 @@ export class ApiVideo extends BaseApi {
   }: TCategoryVideoDto): Promise<TGetVideoDto> {
     return await ApiVideo.builder()
       .cache("no-store")
-      .route(`${ERoute.GET_LAST_VIDEO}/${category}`)
+      .route(`${ERoute.LAST_VIDEO}/${category}`)
       .method(EMethodRequest.GET)
       .fetch<TGetVideoDto>();
   }

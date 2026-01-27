@@ -18,7 +18,7 @@ export class ApiBlog extends BaseApi {
     return await ApiBlog.builder()
       .cache("no-store")
       .method("POST")
-      .route(ERoute.CREATE_BLOG)
+      .route(ERoute.BLOG)
       .header("access_token", access_token)
       .fetch();
   }
@@ -27,7 +27,7 @@ export class ApiBlog extends BaseApi {
     return await ApiBlog.builder()
       .cache("no-store")
       .method("GET")
-      .route(ERoute.GET_LIST_BLOG)
+      .route(ERoute.BLOG)
       .fetch();
   }
 
@@ -39,7 +39,7 @@ export class ApiBlog extends BaseApi {
     return await ApiBlog.builder()
       .cache("no-store")
       .method("GET")
-      .route(`${ERoute.GET_BLOG}/${blog_id}`)
+      .route(`${ERoute.BLOG}/${blog_id}`)
       .fetch();
   }
 
@@ -56,7 +56,7 @@ export class ApiBlog extends BaseApi {
     return await ApiBlog.builder()
       .cache("no-store")
       .method("PUT")
-      .route(`${ERoute.UPDATE_BLOG}/${blog_id}`)
+      .route(`${ERoute.BLOG}/${blog_id}`)
       .header("access_token", access_token)
       .bodyParam("blog", blog)
       .bodyParam("meta_title", meta_title)

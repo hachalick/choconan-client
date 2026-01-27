@@ -160,88 +160,6 @@ export default function Dashboard() {
 
   const menuUl: TMenu[] = [
     {
-      isOpen: true,
-      title: "قیمت گذاری",
-      Icon: HiOutlineScale,
-      isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_COST_PRICING
-        ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_UNIT_PRICING
-        ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_UNIT_PRICING
-        ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_PRODUCT_PRICING
-        ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_PRODUCT_PRICING
-        ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_COST_PRICING
-        ),
-      li: [
-        {
-          title: "لیست واحد",
-          isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_UNIT_PRICING
-            ),
-          state: EDashboard.READ_UNIT_PRICING,
-          isOpen: false,
-          Icon: TfiRuler,
-        },
-        {
-          title: "ایجاد واحد",
-          isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_UNIT_PRICING
-            ),
-          state: EDashboard.CREATE_UNIT_PRICING,
-          isOpen: false,
-          Icon: TfiRulerPencil,
-        },
-        {
-          title: "لیست محصولات",
-          isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_PRODUCT_PRICING
-            ),
-          state: EDashboard.READ_PRODUCT_PRICING,
-          isOpen: false,
-          Icon: SiCoffeescript,
-        },
-        {
-          title: "ایجاد محصول",
-          isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_PRODUCT_PRICING
-            ),
-          state: EDashboard.CREATE_PRODUCT_PRICING,
-          isOpen: false,
-          Icon: PiCoffeeBeanBold,
-        },
-        {
-          title: "ایجاد هزینه",
-          isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_COST_PRICING
-            ),
-          state: EDashboard.CREATE_COST_PRICING,
-          isOpen: false,
-          Icon: PiHandCoins,
-        },
-      ],
-    },
-    {
       title: "پشتیبانی",
       isActive:
         setting?.profile.role.includes("پشتیبان") ||
@@ -734,6 +652,88 @@ export default function Dashboard() {
           Icon: BsBoxes,
           state: EDashboard.READ_ECONOMIC_PACKAGE,
           isOpen: false,
+        },
+      ],
+    },
+    {
+      isOpen: false,
+      title: "قیمت گذاری",
+      Icon: HiOutlineScale,
+      isActive:
+        setting?.profile.role.includes("پشتیبان") ||
+        setting?.profile.access.includes(
+          EDashboardCapability.CREATE_COST_PRICING
+        ) ||
+        setting?.profile.access.includes(
+          EDashboardCapability.READ_UNIT_PRICING
+        ) ||
+        setting?.profile.access.includes(
+          EDashboardCapability.CREATE_UNIT_PRICING
+        ) ||
+        setting?.profile.access.includes(
+          EDashboardCapability.READ_PRODUCT_PRICING
+        ) ||
+        setting?.profile.access.includes(
+          EDashboardCapability.CREATE_PRODUCT_PRICING
+        ) ||
+        setting?.profile.access.includes(
+          EDashboardCapability.CREATE_COST_PRICING
+        ),
+      li: [
+        {
+          title: "لیست محصولات",
+          isActive:
+            setting?.profile.role.includes("پشتیبان") ||
+            setting?.profile.access.includes(
+              EDashboardCapability.READ_PRODUCT_PRICING
+            ),
+          state: EDashboard.READ_PRODUCT_PRICING,
+          isOpen: false,
+          Icon: SiCoffeescript,
+        },
+        {
+          title: "ایجاد محصول",
+          isActive:
+            setting?.profile.role.includes("پشتیبان") ||
+            setting?.profile.access.includes(
+              EDashboardCapability.CREATE_PRODUCT_PRICING
+            ),
+          state: EDashboard.CREATE_PRODUCT_PRICING,
+          isOpen: false,
+          Icon: PiCoffeeBeanBold,
+        },
+        {
+          title: "لیست واحد",
+          isActive:
+            setting?.profile.role.includes("پشتیبان") ||
+            setting?.profile.access.includes(
+              EDashboardCapability.READ_UNIT_PRICING
+            ),
+          state: EDashboard.READ_UNIT_PRICING,
+          isOpen: false,
+          Icon: TfiRuler,
+        },
+        {
+          title: "ایجاد واحد",
+          isActive:
+            setting?.profile.role.includes("پشتیبان") ||
+            setting?.profile.access.includes(
+              EDashboardCapability.CREATE_UNIT_PRICING
+            ),
+          state: EDashboard.CREATE_UNIT_PRICING,
+          isOpen: false,
+          Icon: TfiRulerPencil,
+        },
+        {
+          title: "ایجاد هزینه",
+          isActive:
+            setting?.profile.role.includes("پشتیبان") ||
+            setting?.profile.access.includes(
+              EDashboardCapability.CREATE_COST_PRICING
+            ),
+          state: EDashboard.CREATE_COST_PRICING,
+          isOpen: false,
+          Icon: PiHandCoins,
         },
       ],
     },

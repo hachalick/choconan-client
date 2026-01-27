@@ -17,7 +17,7 @@ export class ApiPricing extends BaseApi {
   }: TGetUnitPricingDto): Promise<Array<TGetUnitPricingResponseDto>> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.GET_UNIT)
+      .route(ERoute.UNIT)
       .header("access_token", access_token)
       .method(EMethodRequest.GET)
       .fetch<Array<TGetUnitPricingResponseDto>>();
@@ -29,7 +29,7 @@ export class ApiPricing extends BaseApi {
   }: TCreateUnitPricingDto): Promise<TCreateUnitPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.CREATE_UNIT)
+      .route(ERoute.UNIT)
       .header("access_token", access_token)
       .method(EMethodRequest.POST)
       .bodyParam("unit_name", unit_name)
@@ -42,7 +42,7 @@ export class ApiPricing extends BaseApi {
   }: TDeleteUnitPricingDto): Promise<TDeleteUnitPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_UNIT}/${unit_id}`)
+      .route(`${ERoute.UNIT}/${unit_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.DELETE)
       .fetch<TDeleteUnitPricingResponseDto>();
@@ -53,7 +53,7 @@ export class ApiPricing extends BaseApi {
   }: TGetAllProductPricingDto): Promise<TGetAllProductPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.GET_PRODUCT_PRICING)
+      .route(ERoute.PRODUCT)
       .header("access_token", access_token)
       .method(EMethodRequest.GET)
       .fetch<TGetAllProductPricingResponseDto>();
@@ -66,7 +66,7 @@ export class ApiPricing extends BaseApi {
   }: TCreateProductPricingDto): Promise<TCreateProductPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.CREATE_PRODUCT_PRICING)
+      .route(ERoute.PRODUCT)
       .header("access_token", access_token)
       .method(EMethodRequest.POST)
       .bodyParam("buy", buy)
@@ -82,7 +82,7 @@ export class ApiPricing extends BaseApi {
   }: TUpdateProductPricingDto): Promise<TUpdateProductPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.UPDATE_PRODUCT_PRICING}/${product_pricing_id}`)
+      .route(`${ERoute.PRODUCT}/${product_pricing_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.PUT)
       .bodyParam("buy", buy)
@@ -96,9 +96,9 @@ export class ApiPricing extends BaseApi {
   }: TDeleteProductPricingDto): Promise<TDeleteProductPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_PRODUCT_PRICING}/${product_pricing_id}`)
+      .route(`${ERoute.PRODUCT}/${product_pricing_id}`)
       .header("access_token", access_token)
-      .method(EMethodRequest.POST)
+      .method(EMethodRequest.DELETE)
       .fetch<TDeleteProductPricingResponseDto>();
   }
 
@@ -108,31 +108,38 @@ export class ApiPricing extends BaseApi {
     product_pricing_id,
     ratio,
     unit_id,
+    profit,
   }: TCreateProductUnitPricingDto): Promise<TCreateProductUnitPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.CREATE_PRODUCT_PRICING)
+      .route(ERoute.UNIT_PRODUCT)
       .header("access_token", access_token)
       .method(EMethodRequest.POST)
       .bodyParam("product_menu_id", product_menu_id)
       .bodyParam("product_pricing_id", product_pricing_id)
       .bodyParam("ratio", ratio)
       .bodyParam("unit_id", unit_id)
+      .bodyParam("profit", profit)
       .fetch<TCreateProductUnitPricingResponseDto>();
   }
 
   static async fetchUpdateProductUnitPricing({
     access_token,
     product_unit_pricing_id,
+    product_menu_id,
     ratio,
+    profit,
+    unit_id,
   }: TUpdateProductUnitPricingDto) {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.UPDATE_PRODUCT_PRICING)
+      .route(`${ERoute.UNIT_PRODUCT}/${product_unit_pricing_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.PUT)
-      .bodyParam("product_unit_pricing_id", product_unit_pricing_id)
+      .bodyParam("product_menu_id", product_menu_id)
       .bodyParam("ratio", ratio)
+      .bodyParam("profit", profit)
+      .bodyParam("unit_id", unit_id)
       .fetch<TCreateProductUnitPricingResponseDto>();
   }
 
@@ -142,7 +149,7 @@ export class ApiPricing extends BaseApi {
   }: TDeleteProductUnitPricingDto) {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_PRODUCT_PRICING_UNIT}/${product_unit_pricing_id}`)
+      .route(`${ERoute.UNIT_PRODUCT}/${product_unit_pricing_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.DELETE)
       .fetch<TDeleteProductPricingResponseDto>();
@@ -156,7 +163,7 @@ export class ApiPricing extends BaseApi {
   }: TCreateDetailProductUnitPricingDto): Promise<TCreateDetailProductUnitPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.CREATE_DETAIL_PRODUCT_PRICING_UNIT)
+      .route(ERoute.DETAIL_PRODUCT_UNIT)
       .header("access_token", access_token)
       .bodyParam("amount", amount)
       .bodyParam("child_product_unit_id", child_product_unit_id)
@@ -169,15 +176,15 @@ export class ApiPricing extends BaseApi {
     access_token,
     amount,
     detail_product_unit_pricing_id,
+    product_unit_id,
   }: TUpdateDetailProductUnitPricingDto): Promise<TUpdateDetailProductUnitPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(
-        `${ERoute.UPDATE_DETAIL_PRODUCT_PRICING_UNIT}/${detail_product_unit_pricing_id}`
-      )
+      .route(`${ERoute.DETAIL_PRODUCT_UNIT}/${detail_product_unit_pricing_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.PUT)
       .bodyParam("amount", amount)
+      .bodyParam("product_unit_id", product_unit_id)
       .fetch<TUpdateDetailProductUnitPricingResponseDto>();
   }
 
@@ -187,9 +194,7 @@ export class ApiPricing extends BaseApi {
   }: TDeleteDetailProductUnitPricingDto) {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(
-        `${ERoute.DELETE_DETAIL_PRODUCT_PRICING_UNIT}/${detail_product_unit_pricing_id}`
-      )
+      .route(`${ERoute.DETAIL_PRODUCT_UNIT}/${detail_product_unit_pricing_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.DELETE)
       .fetch<TDeleteDetailProductUnitPricingResponseDto>();
@@ -202,7 +207,7 @@ export class ApiPricing extends BaseApi {
   }: TCreateCostPricingDto): Promise<TCreateCostPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.CREATE_COST_PRODUCT_PRICING_UNIT)
+      .route(ERoute.COST)
       .header("access_token", access_token)
       .method(EMethodRequest.POST)
       .bodyParam("name", name)
@@ -218,7 +223,7 @@ export class ApiPricing extends BaseApi {
   }: TUpdateCostPricingDto): Promise<TUpdateCostPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.UPDATE_COST_PRODUCT_PRICING_UNIT}/${cost_pricing_id}`)
+      .route(`${ERoute.COST}/${cost_pricing_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.PUT)
       .bodyParam("name", name)
@@ -232,7 +237,7 @@ export class ApiPricing extends BaseApi {
   }: TDeleteCostPricingDto): Promise<TDeleteCostPricingResponseDto> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_COST_PRODUCT_PRICING_UNIT}/${cost_pricing_id}`)
+      .route(`${ERoute.COST}/${cost_pricing_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.DELETE)
       .fetch<TDeleteCostPricingResponseDto>();

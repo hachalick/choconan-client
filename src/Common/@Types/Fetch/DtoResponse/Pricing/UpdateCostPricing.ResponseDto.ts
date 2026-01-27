@@ -1,3 +1,3 @@
 type TUpdateCostPricingResponseDto = {
-  updated: boolean;
+  update: boolean;
 };

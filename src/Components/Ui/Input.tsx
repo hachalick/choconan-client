@@ -1,4 +1,9 @@
-import React, { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
+"use client";
+import React, {
+  InputHTMLAttributes,
+  TextareaHTMLAttributes,
+  useState,
+} from "react";
 import { IconType } from "react-icons";
 
 export function InputContainer({
@@ -38,6 +43,7 @@ export function Input({
   EndIcon,
   StartIcon,
   disabled,
+  onFocus: onFocusInput,
   ...restProps
 }: Readonly<
   {
@@ -47,17 +53,19 @@ export function Input({
     startText?: React.ReactNode;
     EndIcon?: IconType;
     endText?: React.ReactNode;
-    dir?: "rtl" | "ltr";
+    // dir?: "rtl" | "ltr";
     disabled?: boolean;
   } & Omit<InputHTMLAttributes<HTMLInputElement>, "className"> &
     Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "className">
 >) {
+  const [focusState, setFocusState] = useState(false);
   let className =
-    "flex items-center gap-2 p-1 bg-white text-black border border-white/20 transition focus:border-b-white/60 focus:border-r-white/60  rounded-xl";
+    "flex items-center gap-2 p-1 bg-white text-black border border-white/20 transition focus:border-b-white/60 focus:border-r-white/60 rounded-xl";
 
   className += type === "text" ? " grow " : type === "number" ? " grow " : "";
   className += type === "file" ? " hidden" : "";
   className += disabled ? " cursor-not-allowed pointer-events-none" : "";
+  className += focusState ? " input " : "";
 
   return (
     <div className={className}>
@@ -68,6 +76,16 @@ export function Input({
           title={title}
           dir={dir}
           className="grow focus:outline-0 py-1 px-2"
+          onFocus={(e) => {
+            if (onFocusInput) {
+              onFocusInput(e);
+            }
+            if ((e.target.value as unknown) === true) {
+              setFocusState(true);
+            } else {
+              setFocusState(false);
+            }
+          }}
           {...restProps}
         />
       ) : (
@@ -76,6 +94,16 @@ export function Input({
           type={type}
           dir={dir}
           className="grow focus:outline-0 py-1 px-2"
+          onFocus={(e) => {
+            if (onFocusInput) {
+              onFocusInput(e);
+            }
+            if ((e.target.value as unknown) === true) {
+              setFocusState(true);
+            } else {
+              setFocusState(false);
+            }
+          }}
           {...restProps}
         />
       )}

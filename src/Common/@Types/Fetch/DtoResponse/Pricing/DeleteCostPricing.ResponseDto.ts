@@ -1,3 +1,3 @@
 type TDeleteCostPricingResponseDto = {
-  deleted: boolean;
+  delete: boolean;
 };

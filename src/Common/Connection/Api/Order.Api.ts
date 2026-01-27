@@ -15,7 +15,7 @@ export class ApiOrder extends BaseApi {
   static async fetchTables(): Promise<Array<TGetTableOrderResponseDto>> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(ERoute.GET_TABLES)
+      .route(ERoute.TABLE)
       .method(EMethodRequest.GET)
       .fetch<Array<TGetTableOrderResponseDto>>();
   }
@@ -25,7 +25,7 @@ export class ApiOrder extends BaseApi {
   > {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(ERoute.GET_ORDER_TABLES)
+      .route(ERoute.ORDER_TABLES)
       .method(EMethodRequest.GET)
       .fetch<Array<TGetFactorPresentOrderTableResponseDto>>();
   }
@@ -35,7 +35,7 @@ export class ApiOrder extends BaseApi {
   }: TGetFactorPresentOrderTableDto): Promise<TGetFactorPresentOrderTableResponseDto> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.GET_ORDER_TABLES}/${table_id}`)
+      .route(`${ERoute.ORDER_TABLES}/${table_id}`)
       .method(EMethodRequest.GET)
       .fetch<TGetFactorPresentOrderTableResponseDto>();
   }
@@ -46,7 +46,7 @@ export class ApiOrder extends BaseApi {
   }: TCreateOrderTableDto): Promise<TCreateOrderTableResponseDto> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.ORDER_TABLE}/${table_id}`)
+      .route(`${ERoute.TABLE}/${table_id}`)
       .method(EMethodRequest.POST)
       .bodyParam("list_order", list_order)
       .fetch<TCreateOrderTableResponseDto>();
@@ -58,7 +58,7 @@ export class ApiOrder extends BaseApi {
   }: TCreateTableDto): Promise<TCreateTableResponseDto> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.CREATE_TABLE}/${table_number}`)
+      .route(`${ERoute.TABLE}/${table_number}`)
       .method(EMethodRequest.POST)
       .header("access_token", access_token)
       .fetch<TCreateTableResponseDto>();
@@ -70,7 +70,7 @@ export class ApiOrder extends BaseApi {
   }: TDeleteTableDto): Promise<TDeleteTableDto> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_TABLE}/${table_id}`)
+      .route(`${ERoute.TABLE}/${table_id}`)
       .method(EMethodRequest.POST)
       .header("access_token", access_token)
       .fetch<TDeleteTableDto>();
@@ -82,7 +82,7 @@ export class ApiOrder extends BaseApi {
   }: TGetStatusTableDto): Promise<TGetStatusTableResponseDto> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.GET_STATUS_TABLE}/${table_id}`)
+      .route(`${ERoute.STATUS_TABLE}/${table_id}`)
       .method(EMethodRequest.GET)
       .header("access_token", access_token)
       .fetch<TGetStatusTableResponseDto>();
@@ -106,7 +106,7 @@ export class ApiOrder extends BaseApi {
   }: TCreateDeleteStatusTableOrderDto): Promise<TCreateDeleteStatusTableOrderResponseDto> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_STATUS_TABLE}/${table_id}`)
+      .route(`${ERoute.STATUS_TABLE}/${table_id}`)
       .method(EMethodRequest.DELETE)
       .header("access_token", access_token)
       .fetch<TCreateDeleteStatusTableOrderResponseDto>();
@@ -124,9 +124,9 @@ export class ApiOrder extends BaseApi {
       .method(EMethodRequest.GET)
       .header("access_token", access_token);
 
-    start_day && fetchRes.param("start_day", start_day);
-    end_day && fetchRes.param("end_day", end_day);
-    pay_status && fetchRes.param("pay_status", pay_status);
+    start_day !== undefined && fetchRes.param("start_day", start_day);
+    end_day !== undefined && fetchRes.param("end_day", end_day);
+    pay_status !== undefined && fetchRes.param("pay_status", pay_status);
 
     return fetchRes.fetch<Array<TGetFactorResponseDto>>();
   }
@@ -173,11 +173,11 @@ export class ApiOrder extends BaseApi {
     location,
     pay_status,
     tax,
-    order_id,
+    factor_id,
   }: TUpdateFactorDto): Promise<TUpdateFactorResponseDto> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.ORDER}/${order_id}`)
+      .route(`${ERoute.ORDER}/${factor_id}`)
       .method(EMethodRequest.PUT)
       .header("access_token", access_token)
       .bodyParam("pay_status", pay_status)
@@ -213,7 +213,7 @@ export class ApiOrder extends BaseApi {
   > {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(ERoute.REPORT_MONTHLY)
+      .route(ERoute.ORDER_MONTHLY)
       .method(EMethodRequest.GET)
       .header("access_token", access_token)
       .fetch<Array<TGetReportMonthlyOrderResponseDto>>();
@@ -221,11 +221,11 @@ export class ApiOrder extends BaseApi {
 
   static async fetchCreateOrderItem({
     access_token,
-    order_id,
+    factor_id,
   }: CreateFactorItemDto): Promise<TCreateFactorItemResponseDto> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.ORDER_ITEM}/${order_id}`)
+      .route(`${ERoute.ORDER_ITEM}/${factor_id}`)
       .method(EMethodRequest.POST)
       .header("access_token", access_token)
       .fetch<TCreateFactorItemResponseDto>();

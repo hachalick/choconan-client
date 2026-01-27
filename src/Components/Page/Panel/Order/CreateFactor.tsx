@@ -90,7 +90,7 @@ export default function CreateFactor() {
               location: detailFactor.location,
               pay_status: detailFactor.pay_status,
               tax: detailFactor.tax,
-              order_id: detailFactor.factor_id,
+              factor_id: detailFactor.factor_id,
             }
           );
 
@@ -176,7 +176,7 @@ export default function CreateFactor() {
 
       const { factor_item_id } = await FetchApi.Order.fetchCreateOrderItem({
         access_token,
-        order_id: detailFactor.factor_id,
+        factor_id: detailFactor.factor_id,
       });
       setDetailFactors((val) => ({
         ...val,
@@ -218,13 +218,13 @@ export default function CreateFactor() {
       location: detailFactor.location,
       pay_status: detailFactor.pay_status,
       tax: detailFactor.tax,
-      order_id: newFactor.order_id,
+      factor_id: newFactor.factor_id,
     });
 
     for (const item of detailFactor.factor_items) {
       const newItemFactor = await FetchApi.Order.fetchCreateOrderItem({
         access_token,
-        order_id: newFactor.order_id,
+        factor_id: newFactor.factor_id,
       });
 
       await FetchApi.Order.fetchUpdateOrderItem({
@@ -289,17 +289,6 @@ export default function CreateFactor() {
           </InputContainer>
         )}
         <InputContainer column>
-          <Label htmlFor="factor_number">شماره فاکتور</Label>
-          <Input
-            value={detailFactor.factor_number}
-            type="number"
-            name="factor_number"
-            title=""
-            id="factor_number"
-            onChange={(e) => onChangeMainForm(e)}
-          />
-        </InputContainer>
-        <InputContainer column>
           <Label htmlFor="customer_mobile">موبایل سفارش دهنده</Label>
           <Input
             value={detailFactor.customer_mobile}
@@ -308,6 +297,7 @@ export default function CreateFactor() {
             title=""
             id="customer_mobile"
             onChange={(e) => onChangeMainForm(e)}
+            onFocus={(e) => e.target.select()}
           />
         </InputContainer>
         <InputContainer column>
@@ -320,6 +310,7 @@ export default function CreateFactor() {
             list="ice-cream-flavors"
             id="location"
             onChange={(e) => onChangeMainForm(e)}
+            onFocus={(e) => e.target.select()}
           />
           <datalist id="ice-cream-flavors">
             <option value="میز 1">مشتری</option>
@@ -345,6 +336,7 @@ export default function CreateFactor() {
             title=""
             id="tax"
             onChange={(e) => onChangeMainForm(e)}
+            onFocus={(e) => e.target.select()}
           />
         </InputContainer>
         <InputContainer>
@@ -363,15 +355,16 @@ export default function CreateFactor() {
         {detailFactor.factor_items.map((val, i) => (
           <Form variant="secondary" key={i} col>
             <InputContainer column>
-              <Label htmlFor="product_name">نام محصول</Label>
+              <Label htmlFor={`product_name-${i}`}>محصول</Label>
               <Input
                 type="text"
                 title="product_name"
-                id="product_name"
+                id={`product_name-${i}`}
                 name="product_name"
                 value={val.product_name}
                 onChange={(e) => onChangeDetailForm(e, i)}
                 list="product"
+                onFocus={(e) => e.target.select()}
               />
               <datalist id="product">
                 <option value="میز 1">مشتری</option>
@@ -385,36 +378,39 @@ export default function CreateFactor() {
               </datalist>
             </InputContainer>
             <InputContainer column>
-              <Label htmlFor="product_price">قیمت</Label>
+              <Label htmlFor={`product_price-${i}`}>قیمت</Label>
               <Input
                 value={val.product_price}
                 type="number"
                 title="product_price"
                 name="product_price"
-                id="product_price"
+                id={`product_price-${i}`}
                 onChange={(e) => onChangeDetailForm(e, i)}
+                onFocus={(e) => e.target.select()}
               />
             </InputContainer>
             <InputContainer column>
-              <Label htmlFor="product_count">تعداد محصول</Label>
+              <Label htmlFor={`product_count-${i}`}>مقدار</Label>
               <Input
                 type="number"
                 title="product_count"
                 name="product_count"
-                id="product_count"
+                id={`product_count-${i}`}
                 value={val.product_count}
                 onChange={(e) => onChangeDetailForm(e, i)}
+                onFocus={(e) => e.target.select()}
               />
             </InputContainer>
             <InputContainer column>
-              <Label htmlFor="product_discount">تخفیف روی محصول</Label>
+              <Label htmlFor={`product_discount-${i}`}>تخفیف (تومان)</Label>
               <Input
                 type="number"
                 title="product_discount"
                 name="product_discount"
-                id="product_discount"
+                id={`product_discount-${i}`}
                 value={val.product_discount}
                 onChange={(e) => onChangeDetailForm(e, i)}
+                onFocus={(e) => e.target.select()}
               />
             </InputContainer>
             <div className="col-span-full flex justify-end">

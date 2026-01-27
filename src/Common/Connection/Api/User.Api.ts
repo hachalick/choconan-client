@@ -17,7 +17,7 @@ export class ApiUser extends BaseApi {
   }: TGetAccountDto): Promise<TGetProfileResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.GET_ACCOUNT)
+      .route(ERoute.ACCOUNT)
       .header("access_token", access_token)
       .method(EMethodRequest.GET)
       .fetch<TGetProfileResponseDto>();
@@ -30,7 +30,7 @@ export class ApiUser extends BaseApi {
   }: TUpdateProfileDto): Promise<TUpdateProfileResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.UPDATE_ACCOUNT)
+      .route(ERoute.ACCOUNT)
       .header("access_token", access_token)
       .method(EMethodRequest.PUT)
       .bodyParam("name", name)
@@ -43,7 +43,7 @@ export class ApiUser extends BaseApi {
   }: TGetUsersDto): Promise<Array<TGetUserAccessResponseDto>> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.GET_USER)
+      .route(ERoute.USER)
       .header("access_token", access_token)
       .method(EMethodRequest.GET)
       .fetch<Array<TGetUserAccessResponseDto>>();
@@ -55,7 +55,7 @@ export class ApiUser extends BaseApi {
   }: TGetUserDto): Promise<TGetUserAccessResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(`${ERoute.GET_USER}/${user_id}`)
+      .route(`${ERoute.USER}/${user_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.GET)
       .fetch<TGetUserAccessResponseDto>();
@@ -70,7 +70,7 @@ export class ApiUser extends BaseApi {
   }: TCreateUserAccessDto): Promise<TCreateUserResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.CREATE_USER)
+      .route(ERoute.USER)
       .header("access_token", access_token)
       .method(EMethodRequest.POST)
       .bodyParam("family", family)
@@ -90,7 +90,7 @@ export class ApiUser extends BaseApi {
   }: TUpdateUserDto): Promise<TUpdateUserResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(`${ERoute.UPDATE_USER}/${user_id}`)
+      .route(`${ERoute.USER}/${user_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.PUT)
       .bodyParam("family", family)
@@ -106,7 +106,7 @@ export class ApiUser extends BaseApi {
   }: TDeleteUserDto): Promise<TDeleteUserResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_USER}/${user_id}`)
+      .route(`${ERoute.USER}/${user_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.DELETE)
       .fetch<TDeleteUserResponseDto>();
@@ -117,7 +117,7 @@ export class ApiUser extends BaseApi {
   }: TGetDashboardCapabilityDto): Promise<Array<string>> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.GET_DASHBOARD_CAPABILITY_USER)
+      .route(ERoute.DASHBOARD_CAPABILITY_USER)
       .header("access_token", access_token)
       .method(EMethodRequest.GET)
       .fetch<Array<string>>();
@@ -130,7 +130,7 @@ export class ApiUser extends BaseApi {
   }: TCreateDashboardCapabilityToUserDto): Promise<TDeleteDashboardCapabilityToUserResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.CREATE_DASHBOARD_CAPABILITY_USER)
+      .route(ERoute.DASHBOARD_CAPABILITY_USER)
       .header("access_token", access_token)
       .method(EMethodRequest.POST)
       .bodyParam("user_id", user_id)
@@ -145,7 +145,7 @@ export class ApiUser extends BaseApi {
   }: TDeleteDashboardCapabilityToUserDto): Promise<TDeleteDashboardCapabilityToUserResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.DELETE_DASHBOARD_CAPABILITY_USER)
+      .route(ERoute.DASHBOARD_CAPABILITY_USER)
       .header("access_token", access_token)
       .method(EMethodRequest.DELETE)
       .bodyParam("user_id", user_id)
@@ -158,7 +158,7 @@ export class ApiUser extends BaseApi {
   }: TGetRoleAccessDto): Promise<Array<TGetRoleAccessResponseDto>> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.GET_ROLE)
+      .route(ERoute.ROLE)
       .header("access_token", access_token)
       .method(EMethodRequest.GET)
       .fetch<Array<TGetRoleAccessResponseDto>>();
@@ -170,7 +170,7 @@ export class ApiUser extends BaseApi {
   }: TGetRolesAccessDto): Promise<TGetRoleAccessResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(`${ERoute.GET_ROLE}/${role_id}`)
+      .route(`${ERoute.ROLE}/${role_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.GET)
       .fetch<TGetRoleAccessResponseDto>();
@@ -182,7 +182,7 @@ export class ApiUser extends BaseApi {
   }: TCreateRoleDto): Promise<TCreateRoleResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.CREATE_ROLE)
+      .route(ERoute.ROLE)
       .header("access_token", access_token)
       .method(EMethodRequest.POST)
       .bodyParam("role_name", role_name)
@@ -196,7 +196,7 @@ export class ApiUser extends BaseApi {
   }: TUpdateRoleDto): Promise<TUpdateRoleResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(`${ERoute.UPDATE_ROLE}/${role_id}`)
+      .route(`${ERoute.ROLE}/${role_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.PUT)
       .bodyParam("role_name", role_name)
@@ -209,7 +209,7 @@ export class ApiUser extends BaseApi {
   }: TDeleteRoleDto): Promise<TDeleteRoleResponseDto> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_ROLE}/${role_id}`)
+      .route(`${ERoute.ROLE}/${role_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.DELETE)
       .fetch<TDeleteRoleResponseDto>();
@@ -220,7 +220,7 @@ export class ApiUser extends BaseApi {
   }: TGetUsersAccessDto): Promise<Array<TGetUserAccessResponseDto>> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.GET_ACCESS)
+      .route(ERoute.ACCESS)
       .header("access_token", access_token)
       .method(EMethodRequest.GET)
       .fetch<Array<TGetUserAccessResponseDto>>();

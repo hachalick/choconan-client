@@ -1,3 +1,5 @@
 type TCreateProductPricingResponseDto = {
-  created: boolean;
+  product_id: string;
+  buy: number;
+  name: string;
 };

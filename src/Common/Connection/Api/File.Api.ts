@@ -19,7 +19,7 @@ export class ApiFile extends BaseApi {
   }): Promise<Array<TGetImageResponseDto>> {
     return await ApiFile.builder()
       .cache("no-store")
-      .route(ERoute.GET_IMAGES)
+      .route(ERoute.IMAGE)
       .header("access_token", access_token)
       .method(EMethodRequest.GET)
       .fetch<Array<TGetImageResponseDto>>();
@@ -34,30 +34,11 @@ export class ApiFile extends BaseApi {
   }): Promise<TDeleteImageResponseDto> {
     return await ApiFile.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_IMAGE}/${image_id}`)
+      .route(`${ERoute.IMAGE}/${image_id}`)
       .header("access_token", access_token)
       .method(EMethodRequest.DELETE)
       .fetch<TDeleteImageResponseDto>();
   }
-
-  // static async fetchImageProduct({
-  //   access_token,
-  //   onProgress,
-  //   onSuccess,
-  //   onError,
-  // }: {
-  //   access_token: string;
-  //   onProgress?: (percent: number, loaded: number, total: number) => void;
-  //   onSuccess?: () => void;
-  //   onError?: (error: string) => void;
-  // }) {
-  //   return await ApiFile.builder()
-  //     .cache("no-store")
-  //     .route(ERoute.UPLOAD_IMAGE_PRODUCT)
-  //     .header("access_token", access_token)
-  //     .method(EMethodRequest.POST)
-  //     .uploadWithProgress({ onError, onProgress, onSuccess });
-  // }
 
   static async uploadImage({
     access_token,
@@ -74,7 +55,7 @@ export class ApiFile extends BaseApi {
   }): Promise<void> {
     return await ApiFile.builder()
       .cache("no-store")
-      .route(ERoute.UPLOAD_IMAGE)
+      .route(ERoute.IMAGE)
       .header("access_token", access_token)
       .method(EMethodRequest.POST)
       .body(newForm)
@@ -109,7 +90,7 @@ export class ApiFile extends BaseApi {
   }): Promise<void> {
     return await ApiFile.builder()
       .cache("no-store")
-      .route(ERoute.UPLOAD_IMAGE_PRODUCT)
+      .route(ERoute.IMAGE_PRODUCT)
       .header("access_token", access_token)
       .method(EMethodRequest.POST)
       .body(newForm)

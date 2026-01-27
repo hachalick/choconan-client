@@ -53,6 +53,7 @@ export default function ReadFactor() {
         let pay_status: boolean | undefined;
         if (payStatus === "false") pay_status = false;
         else if (payStatus === "true") pay_status = true;
+        else pay_status = undefined;
         const res = await FetchApi.Order.fetchGetOrders({
           access_token,
           start_day,

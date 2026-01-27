@@ -19,7 +19,7 @@ export class ApiMenu extends BaseApi {
   > {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.SEARCH_ON_MENU}/${encodeURI(query)}`)
+      .route(`${ERoute.SEARCH}/${encodeURI(query)}`)
       .method(EMethodRequest.GET)
       .fetch<Array<TGetProductMenuSearchResponseDto>>();
   }
@@ -29,7 +29,7 @@ export class ApiMenu extends BaseApi {
   > {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(ERoute.GET_FULL_MENU)
+      .route(ERoute.MENU)
       .method(EMethodRequest.GET)
       .fetch<Array<TGetCategoryMenuResponseDto>>();
   }
@@ -39,7 +39,7 @@ export class ApiMenu extends BaseApi {
   }: GetCategoryMenuDto): Promise<TGetCategoryMenuResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.GET_FULL_MENU}/${encodeURI(category_name)}`)
+      .route(`${ERoute.MENU}/${encodeURI(category_name)}`)
       .method(EMethodRequest.GET)
       .fetch<TGetCategoryMenuResponseDto>();
   }
@@ -51,7 +51,7 @@ export class ApiMenu extends BaseApi {
     return await ApiMenu.builder()
       .cache("no-store")
       .route(
-        `${ERoute.GET_FULL_MENU}/${encodeURI(category_name)}/${product_id}`
+        `${ERoute.MENU}/${encodeURI(category_name)}/${product_id}`
       )
       .method(EMethodRequest.GET)
       .fetch<TGetProductMenuResponseDto>();
@@ -64,7 +64,7 @@ export class ApiMenu extends BaseApi {
   }: TCreateCategoryMenuDto): Promise<TCreateProductMenuResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(ERoute.ADD_CATEGORY_MENU)
+      .route(ERoute.MENU)
       .method(EMethodRequest.POST)
       .header("access_token", access_token)
       .bodyParam("category", category)
@@ -80,7 +80,7 @@ export class ApiMenu extends BaseApi {
   }: TUpdateCategoryMenuDto): Promise<TUpdateCategoryMenuResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.UPDATE_CATEGORY_MENU}/${category_id}`)
+      .route(`${ERoute.MENU}/${category_id}`)
       .method(EMethodRequest.PUT)
       .header("access_token", access_token)
       .bodyParam("category", category)
@@ -94,7 +94,7 @@ export class ApiMenu extends BaseApi {
   }: TDeleteCategoryMenuDto): Promise<TDeleteCategoryMenuResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_CATEGORY_MENU}/${category_id}`)
+      .route(`${ERoute.MENU}/${category_id}`)
       .method(EMethodRequest.DELETE)
       .header("access_token", access_token)
       .fetch<TDeleteCategoryMenuResponseDto>();
@@ -117,7 +117,7 @@ export class ApiMenu extends BaseApi {
   }: TCreateProductMenuDto): Promise<TCreateProductMenuResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.ADD_PRODUCT_MENU}/${category_id}`)
+      .route(`${ERoute.PRODUCT_MENU}/${category_id}`)
       .method(EMethodRequest.POST)
       .header("access_token", access_token)
       .bodyParam("id", id)
@@ -151,8 +151,8 @@ export class ApiMenu extends BaseApi {
   }: TUpdateProductMenuDto): Promise<TUpdateProductMenuResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.UPDATE_PRODUCT_MENU}/${product_id}`)
-      .method(EMethodRequest.POST)
+      .route(`${ERoute.PRODUCT_MENU}/${product_id}`)
+      .method(EMethodRequest.PUT)
       .header("access_token", access_token)
       .bodyParam("id", id)
       .bodyParam("available", available)
@@ -174,7 +174,7 @@ export class ApiMenu extends BaseApi {
   }: TDeleteProductMenuDto): Promise<TDeleteProductMenuResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_PRODUCT_MENU}/${product_id}`)
+      .route(`${ERoute.PRODUCT_MENU}/${product_id}`)
       .method(EMethodRequest.DELETE)
       .header("access_token", access_token)
       .fetch<TDeleteProductMenuResponseDto>();
@@ -184,7 +184,7 @@ export class ApiMenu extends BaseApi {
   }: TGetEconomicPackageDto): Promise<TGetEconomicPackageResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(ERoute.DELETE_STATUS_TABLE)
+      .route(ERoute.STATUS_TABLE)
       .method(EMethodRequest.GET)
       .header("access_token", access_token)
       .fetch<TGetEconomicPackageResponseDto>();
@@ -196,13 +196,13 @@ export class ApiMenu extends BaseApi {
     return all
       ? await ApiMenu.builder()
           .cache("no-store")
-          .route(ERoute.GET_ECONOMIC_PACKAGES)
+          .route(ERoute.ECONOMIC_PACKAGE)
           .method(EMethodRequest.GET)
           .param("all", all)
           .fetch<Array<TGetEconomicPackageResponseDto>>()
       : await ApiMenu.builder()
           .cache("no-store")
-          .route(ERoute.GET_ECONOMIC_PACKAGES)
+          .route(ERoute.ECONOMIC_PACKAGE)
           .method(EMethodRequest.GET)
           .fetch<Array<TGetEconomicPackageResponseDto>>();
   }
@@ -220,7 +220,7 @@ export class ApiMenu extends BaseApi {
   }: TCreateEconomicPackageDto): Promise<TGetEconomicPackageResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(ERoute.ADD_ECONOMIC_PACKAGE)
+      .route(ERoute.ECONOMIC_PACKAGE)
       .method(EMethodRequest.POST)
       .header("access_token", access_token)
       .bodyParam("end_day", end_day)
@@ -248,7 +248,7 @@ export class ApiMenu extends BaseApi {
   }: TUpdateEconomicPackageDto): Promise<TUpdateEconomicPackageResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.UPDATE_ECONOMIC_PACKAGE}/${economic_package_id}`)
+      .route(`${ERoute.ECONOMIC_PACKAGE}/${economic_package_id}`)
       .method(EMethodRequest.PUT)
       .header("access_token", access_token)
       .bodyParam("end_day", end_day)
@@ -268,7 +268,7 @@ export class ApiMenu extends BaseApi {
   }: TDeleteEconomicPackageDto): Promise<TDeleteEconomicPackageResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.DELETE_ECONOMIC_PACKAGE}/${economic_package_id}`)
+      .route(`${ERoute.ECONOMIC_PACKAGE}/${economic_package_id}`)
       .method(EMethodRequest.DELETE)
       .header("access_token", access_token)
       .fetch<TDeleteEconomicPackageResponseDto>();
@@ -282,7 +282,7 @@ export class ApiMenu extends BaseApi {
   }: TCreateContentEconomicPackageDto): Promise<TCreateContentEconomicPackageResponseDto> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(ERoute.ADD_CONTENT_ECONOMIC_PACKAGE)
+      .route(ERoute.CONTENT_ECONOMIC_PACKAGE)
       .method(EMethodRequest.POST)
       .header("access_token", access_token)
       .bodyParam("economic_package_id", economic_package_id)
@@ -298,7 +298,7 @@ export class ApiMenu extends BaseApi {
     return await ApiMenu.builder()
       .cache("no-store")
       .route(
-        `${ERoute.DELETE_CONTENT_ECONOMIC_PACKAGE}/${content_economic_package_id}`
+        `${ERoute.CONTENT_ECONOMIC_PACKAGE}/${content_economic_package_id}`
       )
       .method(EMethodRequest.DELETE)
       .header("access_token", access_token)
