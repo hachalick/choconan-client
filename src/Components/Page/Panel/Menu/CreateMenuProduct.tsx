@@ -286,7 +286,7 @@ export default function CreateMenuProduct() {
             value={defaultProduct.snap || ""}
           />
           <datalist id="list-product-snap">
-            {dataMatchSnap.allProduct.map((val) => (
+            {dataMatchSnap?.allProduct?.map((val) => (
               <option value={val.id} key={val.id}>
                 {val.title}
               </option>
@@ -305,7 +305,7 @@ export default function CreateMenuProduct() {
             value={defaultProduct.tapsi || ""}
           />
           <datalist id="list-product-tapsi">
-            {dataMatchTapsi.allProduct.map((val) => (
+            {dataMatchTapsi?.allProduct?.map((val) => (
               <option value={val.id} key={val.id}>
                 {val.title}
               </option>
