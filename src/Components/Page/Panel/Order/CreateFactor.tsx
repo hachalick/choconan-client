@@ -15,21 +15,26 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { GoIssueClosed } from "react-icons/go";
 import { IoIosAddCircleOutline, IoMdCloseCircleOutline } from "react-icons/io";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import moment from "moment-jalaali";
 
 export default function CreateFactor() {
   const baseDefaultFactor: TGetFactorResponseDto = useMemo(
     () => ({
       factor_id: "",
       customer_mobile: "",
-      factor_items: [],
       factor_number: 1,
       location: "",
       pay_status: false,
       tax: 0,
-      create_at: JSON.stringify(new Date()),
-      update_at: JSON.stringify(new Date()),
+      create_at: moment().format("jYYYY/jMM/jDD HH:mm:ss"),
+      update_at: moment().format("jYYYY/jMM/jDD HH:mm:ss"),
+      factor_items: [],
     }),
-    []
+    [],
   );
 
   const setting = useContext(AccountContext);
@@ -91,7 +96,8 @@ export default function CreateFactor() {
               pay_status: detailFactor.pay_status,
               tax: detailFactor.tax,
               factor_id: detailFactor.factor_id,
-            }
+              create_date: detailFactor.create_at,
+            },
           );
 
           updated = updated && updateOrder;
@@ -111,7 +117,7 @@ export default function CreateFactor() {
           setCloud(updated);
           setSaveChange(!updated);
         }
-      }, 1000)
+      }, 1000),
     );
   }, [saveChange]);
 
@@ -124,6 +130,8 @@ export default function CreateFactor() {
       ...val,
       [e.target.name]: giveValueInput(e),
     }));
+
+    console.log(detailFactor);
     if (detailFactor.factor_id !== "") {
       setSaveChange(true);
     }
@@ -219,6 +227,7 @@ export default function CreateFactor() {
       pay_status: detailFactor.pay_status,
       tax: detailFactor.tax,
       factor_id: newFactor.factor_id,
+      create_date: detailFactor.create_at,
     });
 
     for (const item of detailFactor.factor_items) {
@@ -244,7 +253,7 @@ export default function CreateFactor() {
     }));
     localStorage.setItem(
       "factor_number",
-      JSON.stringify(defaultFactor.factor_number + 1)
+      JSON.stringify(defaultFactor.factor_number + 1),
     );
     setting?.dashboard.setState(EDashboard.READ_FACTOR);
   };
@@ -275,19 +284,47 @@ export default function CreateFactor() {
         {detailFactor.factor_id === "" ? (
           <></>
         ) : (
-          <InputContainer column>
-            <Label htmlFor="factor_id">شناسه فاکتور</Label>
-            <Input
-              value={detailFactor.factor_id}
-              type="text"
-              name="factor_id"
-              title=""
-              id="factor_id"
-              onChange={(e) => onChangeMainForm(e)}
-              disabled
-            />
-          </InputContainer>
+          <>
+            <InputContainer column>
+              <Label htmlFor="factor_id">شناسه فاکتور</Label>
+              <Input
+                value={detailFactor.factor_id}
+                type="text"
+                name="factor_id"
+                title=""
+                id="factor_id"
+                onChange={(e) => onChangeMainForm(e)}
+                disabled
+              />
+            </InputContainer>
+          </>
         )}
+        <InputContainer column>
+          <Label htmlFor="end_day">تاریخ ثبت</Label>
+          <div className="text-black bg-white pr-4 py-2 rounded-lg ">
+            <DatePicker
+              hideOnScroll
+              arrow={false}
+              calendar={persian}
+              locale={persian_fa}
+              calendarPosition="bottom-right"
+              value={detailFactor.create_at}
+              onChange={(e) => {
+                onChangeMainForm({
+                  target: {
+                    name: "create_at",
+                    type: "text",
+                    value: `${e?.year}/${e?.month.number}/${e?.day} ${e?.hour}:${e?.minute}:${e?.second}`,
+                  },
+                });
+              }}
+              className="hours-datapicker green"
+              inputClass="hours-datapicker"
+              format="YYYY/MM/DD HH:mm"
+              plugins={[<TimePicker position="bottom" />]}
+            />
+          </div>
+        </InputContainer>
         <InputContainer column>
           <Label htmlFor="customer_mobile">موبایل سفارش دهنده</Label>
           <Input

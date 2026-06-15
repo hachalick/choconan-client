@@ -5,5 +5,6 @@ type TUpdateFactorDto = {
   location: string;
   tax: number;
   factor_id: string;
+  create_date: string;
   access_token: string;
 };

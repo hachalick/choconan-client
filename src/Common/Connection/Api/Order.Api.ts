@@ -118,7 +118,7 @@ export class ApiOrder extends BaseApi {
     end_day,
     pay_status,
   }: TGetOrdersDto): Promise<Array<TGetFactorResponseDto>> {
-    let fetchRes = ApiOrder.builder()
+    const fetchRes = ApiOrder.builder()
       .cache("no-store")
       .route(ERoute.ORDER)
       .method(EMethodRequest.GET)
@@ -174,6 +174,7 @@ export class ApiOrder extends BaseApi {
     pay_status,
     tax,
     factor_id,
+    create_date,
   }: TUpdateFactorDto): Promise<TUpdateFactorResponseDto> {
     return await ApiOrder.builder()
       .cache("no-store")
@@ -185,6 +186,7 @@ export class ApiOrder extends BaseApi {
       .bodyParam("location", location)
       .bodyParam("factor_number", factor_number)
       .bodyParam("tax", tax)
+      .bodyParam("create_date", create_date)
       .fetch<TUpdateFactorResponseDto>();
   }
 
