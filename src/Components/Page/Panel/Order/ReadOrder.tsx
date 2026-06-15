@@ -12,6 +12,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { BsCheckSquare, BsDashSquare } from "react-icons/bs";
 import { MdWifiTethering, MdWifiTetheringOff } from "react-icons/md";
 import Swal from "sweetalert2";
+import moment from "moment-jalaali";
 
 export default function ReadOrder() {
   const setting = useContext(AccountContext);
@@ -44,7 +45,7 @@ export default function ReadOrder() {
       )
       .flat();
     try {
-      const { factor_number, tax, customer_mobile, factor_id } =
+      const { factor_number, tax, customer_mobile, factor_id,  } =
         await FetchApi.Order.fetchCreateOrder({ access_token });
         
       await FetchApi.Order.fetchUpdateOrder({
@@ -57,6 +58,7 @@ export default function ReadOrder() {
         customer_mobile,
         pay_status: false,
         factor_id,
+        create_date: moment().format("jYYYY/jMM/jDD HH:mm:ss")
       });
       factor.forEach(async (val) => {
         const { factor_item_id } = await FetchApi.Order.fetchCreateOrderItem({
