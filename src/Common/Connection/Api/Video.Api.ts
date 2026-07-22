@@ -1,26 +1,24 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
 import { ERoute } from "@/Common/Enums/Routs";
+import { ApiBuilder } from "./SeedWork/Builder.Api";
+import { BaseApi } from "./SeedWork/Base.Api";
 
-export class ApiVideo {
+export class ApiVideo extends BaseApi {
+  constructor() {
+    super("");
+  }
+
+  static builder(): ApiBuilder {
+    return new ApiBuilder(new ApiVideo());
+  }
+
   static async fetchLastVideo({
     category,
-  }: {
-    category: TCategoryVideo;
-  }): Promise<TCardVideo> {
-    const res = await fetch(
-      ERoute.HOST + ERoute.GET_LAST_VIDEO + `/${category}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  }: TCategoryVideoDto): Promise<TGetVideoDto> {
+    return await ApiVideo.builder()
+      .cache("no-store")
+      .route(`${ERoute.LAST_VIDEO}/${category}`)
+      .method(EMethodRequest.GET)
+      .fetch<TGetVideoDto>();
   }
 }

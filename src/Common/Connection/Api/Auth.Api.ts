@@ -1,94 +1,75 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
-import { ERoute } from "@/Common/Enums/Routs";
+import { BaseApi } from "./Seed/Base.Api";
+import { ApiBuilder } from "./Seed/Builder.Api";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
+import {
+  CreateRefreshTokenViewModel,
+  LoginUserOtpViewModel,
+  LoginUserPasswordViewModel,
+  UpdatePasswordUserViewModel,
+} from "./ViewModels/Auth.Service.ViewModel";
+import {
+  CreateRefreshTokenModel,
+  LoginUserOtpModel,
+  LoginUserPasswordModel,
+  UpdatePasswordUserModel,
+} from "./Models/Auth.Service.Model";
 
-export class ApiAuth {
-  static async fetchLoginOtp({
-    national_code,
-    phone,
-    otp,
-  }: TLoginOtp): Promise<TLogin> {
-    const res = await fetch(ERoute.HOST + ERoute.LOGIN_OTP, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.POST,
-      body: JSON.stringify({ national_code, phone, otp }),
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+export class ApiAuth extends BaseApi {
+  constructor() {
+    super("/auth");
   }
 
-  static async fetchLoginPassword({
-    national_code,
-    password,
-    phone,
-  }: TLoginPassword): Promise<{ login: boolean }> {
-    const res = await fetch(ERoute.HOST + ERoute.LOGIN_PASSWORD, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.POST,
-      body: JSON.stringify({ national_code, password, phone }),
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static builder(): ApiBuilder {
+    return new ApiBuilder(new ApiAuth());
   }
 
-  static async fetchUpdatePassword({
-    access_token,
-    new_password,
-    old_password,
-  }: {
-    old_password: string;
-    new_password: string;
-    access_token: string;
-  }): Promise<{ update: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.UPDATE_PASSWORD + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-        body: JSON.stringify({ new_password, old_password }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async LoginUserPassword(
+    Param: LoginUserPasswordModel,
+  ): Promise<LoginUserPasswordViewModel> {
+    return await ApiAuth.builder()
+      .cache("no-store")
+      .method(EMethodRequest.POST)
+      .route(EServerRoute.AUTH_LOGIN_PASSWORD)
+      .bodyParam("NationalCode", Param.NationalCode)
+      .bodyParam("Phone", Param.Phone)
+      .bodyParam("Password", Param.Password)
+      .fetch<LoginUserPasswordViewModel>();
   }
 
-  static async fetchRefreshToken({
-    refresh_token,
-  }: {
-    refresh_token: string;
-  }): Promise<TRefresh> {
-    const res = await fetch(
-      ERoute.HOST + ERoute.REFRESH_TOKEN + `/${refresh_token}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async LoginUserOtp(
+    Param: LoginUserOtpModel,
+  ): Promise<LoginUserOtpViewModel> {
+    return await ApiAuth.builder()
+      .cache("no-store")
+      .method(EMethodRequest.POST)
+      .route(EServerRoute.AUTH_LOGIN_OTP)
+      .bodyParam("NationalCode", Param.NationalCode)
+      .bodyParam("Phone", Param.Phone)
+      .bodyParam("Otp", Param.Otp)
+      .fetch<LoginUserOtpViewModel>();
+  }
+
+  static async UpdatePasswordUser(
+    Param: UpdatePasswordUserModel,
+  ): Promise<UpdatePasswordUserViewModel> {
+    return await ApiAuth.builder()
+      .cache("no-store")
+      .method(EMethodRequest.PUT)
+      .route(EServerRoute.AUTH_UPDATE_PASSWORD)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Password", Param.Password)
+      .fetch<UpdatePasswordUserViewModel>();
+  }
+
+  static async CreateRefreshToken(
+    Param: CreateRefreshTokenModel,
+  ): Promise<CreateRefreshTokenViewModel> {
+    return await ApiAuth.builder()
+      .cache("no-store")
+      .method(EMethodRequest.PUT)
+      .route(`${EServerRoute.AUTH_REFRESH_TOKEN}`)
+      .bodyParam("RefreshToken", Param.RefreshToken)
+      .fetch<CreateRefreshTokenViewModel>();
   }
 }

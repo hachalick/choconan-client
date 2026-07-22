@@ -8,7 +8,7 @@ export default function SearchBar555() {
   const router = useRouter();
 
   const [isShow, setShow] = useState(false);
-  const [data, setData] = useState<TIdCategoriesMenu>([]);
+  const [data, setData] = useState<Array<TGetCategoryMenuResponseDto>>([]);
 
   useEffect(() => {
     const fetches = async () => {

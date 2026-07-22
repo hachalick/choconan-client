@@ -1,0 +1,1 @@
+type TCreateOrderTableResponseDto = { submit: boolean }

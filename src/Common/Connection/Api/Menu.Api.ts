@@ -1,290 +1,289 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
-import { ERoute } from "@/Common/Enums/Routs";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
+import { BaseApi } from "./Seed/Base.Api";
+import { ApiBuilder } from "./Seed/Builder.Api";
+import {
+  CreateContentEconomicPackageViewModel,
+  CreateEconomicPackageViewModel,
+  CreateMenuCategoryViewModel,
+  CreateMenuProductViewModel,
+  DeleteContentEconomicPackageViewModel,
+  DeleteEconomicPackageViewModel,
+  DeleteMenuCategoryViewModel,
+  DeleteMenuProductViewModel,
+  ReadEconomicPackageDetailViewModel,
+  ReadEconomicPackageListViewModel,
+  ReadMenuCategoryDetailViewModel,
+  ReadMenuDetailViewModel,
+  ReadMenuProductDetailViewModel,
+  ReadSearchMenuDetailViewModel,
+  UpdateEconomicPackageViewModel,
+  UpdateMenuCategoryViewModel,
+  UpdateMenuProductViewModel,
+} from "./ViewModels/Menu.Service.ViewModel";
+import {
+  CreateContentEconomicPackageModel,
+  CreateEconomicPackageModel,
+  CreateMenuCategoryModel,
+  CreateMenuProductModel,
+  DeleteContentEconomicPackageModel,
+  DeleteEconomicPackageModel,
+  DeleteMenuCategoryModel,
+  DeleteMenuProductModel,
+  ReadEconomicPackageDetailModel,
+  ReadEconomicPackageListModel,
+  ReadMenuCategoryDetailModel,
+  ReadMenuDetailModel,
+  ReadMenuProductDetailModel,
+  ReadSearchMenuDetailModel,
+  UpdateEconomicPackageModel,
+  UpdateMenuCategoryModel,
+  UpdateMenuProductModel,
+} from "./Models/Menu.Service.Model";
+import { BaseAuthModel } from "./Models/Seed/Base.Service.Model";
 
-export class ApiMenu {
-  static async fetchSearch({
-    query,
-  }: {
-    query: string;
-  }): Promise<TIdProductsSearchMenu> {
-    const res = await fetch(`${ERoute.HOST}${ERoute.SEARCH_ON_MENU}/${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+export class ApiMenu extends BaseApi {
+  constructor() {
+    super("/menu");
   }
 
-  static async fetchAllProductMenu(): Promise<TIdCategoriesMenu> {
-    const res = await fetch(ERoute.HOST + ERoute.GET_FULL_MENU, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static builder(): ApiBuilder {
+    return new ApiBuilder(new ApiMenu());
   }
 
-  static async fetchCategoryMenu({
-    category,
-  }: {
-    category: string;
-  }): Promise<TIdCategoryMenu> {
-    const res = await fetch(
-      ERoute.HOST + ERoute.GET_FULL_MENU + `/${category}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async ReadSearchMenuDetail(
+    Param: ReadSearchMenuDetailModel,
+  ): Promise<Array<ReadSearchMenuDetailViewModel>> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.MENU_SEARCH}?Text=${encodeURI(Param.Text)}`)
+      .method(EMethodRequest.GET)
+      .fetch<Array<ReadSearchMenuDetailViewModel>>();
   }
 
-  static async fetchProductMenu({
-    category,
-    id,
-  }: {
-    category: string;
-    id: string;
-  }): Promise<TIdProductMenu> {
-    const res = await fetch(
-      ERoute.HOST + ERoute.GET_FULL_MENU + `/${category}/${id}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async ReadMenuDetail(
+    Param: ReadMenuDetailModel,
+  ): Promise<Array<ReadMenuDetailViewModel>> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(EServerRoute.MENU)
+      .method(EMethodRequest.GET)
+      .fetch<Array<ReadMenuDetailViewModel>>();
   }
 
-  static async fetchCreateCategoryMenu({
-    category,
-    icon,
-    access_token,
-  }: {
-    category: string;
-    icon: string;
-    access_token: string;
-  }): Promise<{ add: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ADD_CATEGORY_MENU + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.POST,
-        body: JSON.stringify({ category, icon }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async ReadMenuCategoryDetail(
+    Param: ReadMenuCategoryDetailModel,
+  ): Promise<ReadMenuCategoryDetailViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.MENU_CATEGORY}/${Param.Id}`)
+      .method(EMethodRequest.GET)
+      .fetch<ReadMenuCategoryDetailViewModel>();
   }
 
-  static async fetchUpdateCategoryMenu({
-    category_id,
-    category,
-    icon,
-    access_token,
-  }: {
-    category_id: string;
-    category: string;
-    icon: string;
-    access_token: string;
-  }): Promise<{ update: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.UPDATE_CATEGORY_MENU + `/${category_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-        body: JSON.stringify({ category, icon }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async ReadMenuProductDetail(
+    Param: ReadMenuProductDetailModel,
+  ): Promise<ReadMenuProductDetailViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.MENU_PRODUCT}/${Param.Id}`)
+      .method(EMethodRequest.GET)
+      .fetch<ReadMenuProductDetailViewModel>();
   }
 
-  static async fetchDeleteCategoryMenu({
-    category_id,
-    access_token,
-  }: {
-    category_id: string;
-    access_token: string;
-  }): Promise<{ delete: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.DELETE_CATEGORY_MENU + `/${category_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async CreateMenuCategory(
+    Param: CreateMenuCategoryModel & BaseAuthModel,
+  ): Promise<CreateMenuCategoryViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(EServerRoute.MENU_CATEGORY)
+      .method(EMethodRequest.POST)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Description", Param.Description)
+      .bodyParam("Icon", Param.Icon)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("MetaDescription", Param.MetaDescription)
+      .bodyParam("MetaTitle", Param.MetaTitle)
+      .fetch<CreateMenuCategoryViewModel>();
   }
 
-  static async fetchCreateProductMenu({
-    category_id,
-    id,
-    available,
-    price,
-    waiting,
-    description,
-    meta_description,
-    meta_title,
-    name,
-    src,
-    access_token,
-    snap,
-    tapsi,
-  }: TProductMenu & {
-    category_id: string;
-    access_token: string;
-  }): Promise<{ add: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ADD_PRODUCT_MENU + `/${category_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.POST,
-        body: JSON.stringify({
-          id,
-          available,
-          price,
-          waiting,
-          description,
-          meta_description,
-          meta_title,
-          name,
-          src,
-          snap,
-          tapsi,
-        }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async UpdateMenuCategory(
+    Param: UpdateMenuCategoryModel & BaseAuthModel,
+  ): Promise<UpdateMenuCategoryViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.MENU_CATEGORY}/${Param.Id}`)
+      .method(EMethodRequest.PUT)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Icon", Param.Icon)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("Description", Param.Description)
+      .bodyParam("MetaTitle", Param.MetaTitle)
+      .bodyParam("MetaDescription", Param.MetaDescription)
+      .fetch<UpdateMenuCategoryViewModel>();
   }
 
-  static async fetchUpdateProductMenu({
-    product_id,
-    id,
-    available,
-    price,
-    waiting,
-    description,
-    meta_description,
-    meta_title,
-    name,
-    src,
-    access_token,
-    snap,
-    tapsi,
-  }: TProductMenu & {
-    product_id: string;
-    access_token: string;
-  }): Promise<{ update: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.UPDATE_PRODUCT_MENU + `/${product_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-        body: JSON.stringify({
-          id,
-          available,
-          price,
-          waiting,
-          description,
-          meta_description,
-          meta_title,
-          name,
-          src,
-          snap,
-          tapsi,
-        }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async DeleteMenuCategory(
+    Param: DeleteMenuCategoryModel & BaseAuthModel,
+  ): Promise<DeleteMenuCategoryViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .header("access_token", Param.AccessToken)
+      .route(`${EServerRoute.MENU_CATEGORY}/${Param.Id}`)
+      .method(EMethodRequest.DELETE)
+      .fetch<DeleteMenuCategoryViewModel>();
   }
 
-  static async fetchDeleteProductMenu({
-    product_id,
-    access_token,
-  }: {
-    product_id: string;
-    access_token: string;
-  }): Promise<{ delete: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.DELETE_PRODUCT_MENU + `/${product_id}?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async CreateMenuProduct(
+    Param: CreateMenuProductModel & BaseAuthModel,
+  ): Promise<CreateMenuProductViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.MENU_PRODUCT}/${Param.CategoryId}`)
+      .method(EMethodRequest.POST)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("Description", Param.Description)
+      .bodyParam("MetaTitle", Param.MetaTitle)
+      .bodyParam("MetaDescription", Param.MetaDescription)
+      .bodyParam("Price", Param.Price)
+      .bodyParam("SrcImage", Param.SrcImage)
+      .bodyParam("Waiting", Param.Waiting)
+      .bodyParam("SnapId", Param.SnapId)
+      .bodyParam("TapsiId", Param.TapsiId)
+      .fetch<CreateMenuProductViewModel>();
+  }
+
+  static async UpdateMenuProduct(
+    Param: UpdateMenuProductModel & BaseAuthModel,
+  ): Promise<UpdateMenuProductViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.MENU_PRODUCT}/${Param.Id}`)
+      .method(EMethodRequest.PUT)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("CategoryId", Param.CategoryId)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("Description", Param.Description)
+      .bodyParam("MetaTitle", Param.MetaTitle)
+      .bodyParam("MetaDescription", Param.MetaDescription)
+      .bodyParam("SrcImage", Param.SrcImage)
+      .bodyParam("Waiting", Param.Waiting)
+      .bodyParam("Price", Param.Price)
+      .bodyParam("SnapId", Param.SnapId)
+      .bodyParam("TapsiId", Param.TapsiId)
+      .fetch<UpdateMenuProductViewModel>();
+  }
+
+  static async DeleteMenuProduct(
+    Param: DeleteMenuProductModel & BaseAuthModel,
+  ): Promise<DeleteMenuProductViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.MENU_PRODUCT}/${Param.Id}`)
+      .method(EMethodRequest.DELETE)
+      .header("access_token", Param.AccessToken)
+      .fetch<DeleteMenuProductViewModel>();
+  }
+
+  static async ReadEconomicPackageList(
+    Param: ReadEconomicPackageListModel,
+  ): Promise<Array<ReadEconomicPackageListViewModel>> {
+    const fetchRes = ApiMenu.builder()
+      .cache("no-store")
+      .route(EServerRoute.MENU_ECONOMIC_PACKAGE)
+      .method(EMethodRequest.GET);
+
+    Param.IsActiveNow !== undefined &&
+      fetchRes.param("IsActiveNow", Param.IsActiveNow);
+
+    return await fetchRes.fetch<Array<ReadEconomicPackageListViewModel>>();
+  }
+
+  static async ReadEconomicPackageDetail(
+    Param: ReadEconomicPackageDetailModel,
+  ): Promise<ReadEconomicPackageDetailViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.MENU_ECONOMIC_PACKAGE}/${Param.Id}`)
+      .method(EMethodRequest.GET)
+      .fetch<ReadEconomicPackageDetailViewModel>();
+  }
+
+  static async CreateEconomicPackage(
+    Param: CreateEconomicPackageModel & BaseAuthModel,
+  ): Promise<CreateEconomicPackageViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(EServerRoute.MENU_ECONOMIC_PACKAGE)
+      .method(EMethodRequest.POST)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Title", Param.Title)
+      .bodyParam("SrcImage", Param.SrcImage)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("StartDate", Param.StartDate)
+      .bodyParam("EndDate", Param.EndDate)
+      .bodyParam("Price", Param.Price)
+      .fetch<CreateEconomicPackageViewModel>();
+  }
+
+  static async UpdateEconomicPackage(
+    Param: UpdateEconomicPackageModel & BaseAuthModel,
+  ): Promise<UpdateEconomicPackageViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.MENU_ECONOMIC_PACKAGE}/${Param.Id}`)
+      .method(EMethodRequest.PUT)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Title", Param.Title)
+      .bodyParam("SrcImage", Param.SrcImage)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("StartDate", Param.StartDate)
+      .bodyParam("EndDate", Param.EndDate)
+      .bodyParam("Price", Param.Price)
+      .fetch<UpdateEconomicPackageViewModel>();
+  }
+
+  static async DeleteEconomicPackage(
+    Param: DeleteEconomicPackageModel & BaseAuthModel,
+  ): Promise<DeleteEconomicPackageViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.MENU_ECONOMIC_PACKAGE}/${Param.Id}`)
+      .method(EMethodRequest.DELETE)
+      .header("access_token", Param.AccessToken)
+      .fetch<DeleteEconomicPackageViewModel>();
+  }
+
+  static async CreateContentEconomicPackage(
+    Param: CreateContentEconomicPackageModel & BaseAuthModel,
+  ): Promise<CreateContentEconomicPackageViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(EServerRoute.MENU_CONTENT_ECONOMIC_PACKAGE)
+      .method(EMethodRequest.POST)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("EconomicPackageId", Param.EconomicPackageId)
+      .bodyParam("ProductId", Param.ProductId)
+      .bodyParam("Count", Param.Count)
+      .fetch<CreateContentEconomicPackageViewModel>();
+  }
+
+  static async DeleteContentEconomicPackage(
+    Param: DeleteContentEconomicPackageModel & BaseAuthModel,
+  ): Promise<DeleteContentEconomicPackageViewModel> {
+    return await ApiMenu.builder()
+      .cache("no-store")
+      .route(EServerRoute.MENU_CONTENT_ECONOMIC_PACKAGE)
+      .method(EMethodRequest.DELETE)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("EconomicPackageId", Param.EconomicPackageId)
+      .bodyParam("ProductId", Param.ProductId)
+      .bodyParam("Count", Param.Count)
+      .fetch<DeleteContentEconomicPackageViewModel>();
   }
 }

@@ -1,405 +1,235 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
-import { ERoute } from "@/Common/Enums/Routs";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
+import { ApiBuilder } from "./Seed/Builder.Api";
+import { BaseApi } from "./Seed/Base.Api";
+import {
+  CreateDashboardCapabilityUserModel,
+  CreateRoleModel,
+  CreateRoleUserModel,
+  CreateUserModel,
+  DeleteDashboardCapabilityUserModel,
+  DeleteRoleModel,
+  DeleteUserModel,
+  ReadAccountDetailModel,
+  ReadDashboardCapabilityListModel,
+  ReadRoleDetailModel,
+  ReadRoleListModel,
+  ReadUserDetailModel,
+  ReadUserListModel,
+  UpdateRoleModel,
+  UpdateUserModel,
+  UpdateUserProfileModel,
+} from "./Models/User.Service.Model";
+import { BaseAuthModel } from "./Models/Seed/Base.Service.Model";
+import {
+  CreateDashboardCapabilityUserViewModel,
+  CreateUserViewModel,
+  DeleteDashboardCapabilityUserViewModel,
+  DeleteRoleViewModel,
+  DeleteUserViewModel,
+  ReadAccountDetailViewModel,
+  ReadDashboardCapabilityListViewModel,
+  ReadRoleDetailViewModel,
+  ReadRoleListViewModel,
+  ReadUserDetailViewModel,
+  ReadUserListViewModel,
+  UpdateRoleViewModel,
+  UpdateUserProfileViewModel,
+  UpdateUserViewModel,
+} from "./ViewModels/User.Service.ViewModel";
 
-export class ApiUser {
-  static async fetchGetAccount({
-    access_token,
-  }: {
-    access_token: string;
-  }): Promise<TProfile> {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.GET_ACCOUNT + `?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+export class ApiUser extends BaseApi {
+  constructor() {
+    super("/user");
   }
 
-  static async fetchUpdateProfile({
-    name,
-    family,
-    access_token,
-  }: {
-    name: string;
-    family: string;
-    access_token: string;
-  }): Promise<{ update: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.UPDATE_ACCOUNT + `?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.PUT,
-      body: JSON.stringify({ name, family }),
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static builder(): ApiBuilder {
+    return new ApiBuilder(new ApiUser());
   }
 
-  static async fetchGetUser({
-    access_token,
-  }: {
-    access_token: string;
-  }): Promise<TAllUserAccessId> {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.GET_USER + `?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async ReadUserList(
+    Param: ReadUserListModel & BaseAuthModel,
+  ): Promise<Array<ReadUserListViewModel>> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_USER)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<Array<ReadUserListViewModel>>();
   }
 
-  static async fetchGetUserById({
-    access_token,
-    user_id,
-  }: {
-    access_token: string;
-    user_id: string;
-  }): Promise<TUserAccessId> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.GET_USER + `/${user_id}` + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async ReadUserDetail(
+    Param: ReadUserDetailModel & BaseAuthModel,
+  ): Promise<ReadUserDetailViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.USER_USER}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<ReadUserDetailViewModel>();
   }
 
-  static async fetchCreateUser({
-    access_token,
-    national_code,
-    phone,
-    name,
-    family,
-  }: {
-    access_token: string;
-    phone: string;
-    national_code: string;
-    name: string;
-    family: string;
-  }): Promise<{ create: boolean, user_id: string }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.CREATE_USER + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.POST,
-        body: JSON.stringify({ national_code, phone, name, family }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async ReadAccountDetail(
+    Param: ReadAccountDetailModel,
+  ): Promise<ReadAccountDetailViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_ACCOUNT)
+      .header("access_token", Param.Token)
+      .method(EMethodRequest.GET)
+      .fetch<ReadAccountDetailViewModel>();
   }
 
-  static async fetchUpdateUser({
-    access_token,
-    user_id,
-    family,
-    name,
-    national_code,
-    phone,
-  }: {
-    access_token: string;
-    user_id: string;
-    phone: string;
-    national_code: string;
-    name: string;
-    family: string;
-  }): Promise<{ update: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.UPDATE_USER + `/${user_id}` + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-        body: JSON.stringify({ family, name, national_code, phone }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async UpdateUserProfile(
+    Param: UpdateUserProfileModel & BaseAuthModel,
+  ): Promise<UpdateUserProfileViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_ACCOUNT)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("Family", Param.Family)
+      .method(EMethodRequest.PUT)
+      .fetch<UpdateUserProfileViewModel>();
   }
 
-  static async fetchDeleteUser({
-    access_token,
-    user_id,
-  }: {
-    access_token: string;
-    user_id: string;
-  }): Promise<{ delete: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.DELETE_USER + `/${user_id}` + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async CreateUser(
+    Param: CreateUserModel & BaseAuthModel,
+  ): Promise<CreateUserViewModel> {
+    const fetchRes = ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_USER)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("NationalCode", Param.NationalCode)
+      .bodyParam("Phone", Param.Phone)
+      .method(EMethodRequest.POST);
+
+    Param.Name !== undefined && fetchRes.bodyParam("Name", Param.Name);
+    Param.Family !== undefined && fetchRes.bodyParam("Family", Param.Family);
+
+    return fetchRes.fetch<CreateUserViewModel>();
   }
 
-  static async fetchGetDashboardCapability({
-    access_token,
-  }: {
-    access_token: string;
-  }): Promise<Array<string>> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.GET_DASHBOARD_CAPABILITY_USER + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async UpdateUser(
+    Param: UpdateUserModel & BaseAuthModel,
+  ): Promise<UpdateUserViewModel> {
+    const fetchRes = ApiUser.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.USER_USER}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("NationalCode", Param.NationalCode)
+      .bodyParam("Phone", Param.Phone)
+      .bodyParam("Profile", Param.Profile)
+      .method(EMethodRequest.POST);
+
+    Param.Name !== undefined && fetchRes.bodyParam("Name", Param.Name);
+    Param.Family !== undefined && fetchRes.bodyParam("Family", Param.Family);
+
+    return fetchRes.fetch<UpdateUserViewModel>();
   }
 
-  static async fetchAddDashboardCapabilityToUser({
-    access_token,
-    dashboard_capability,
-    user_id,
-  }: {
-    access_token: string;
-    user_id: string;
-    dashboard_capability: string;
-  }): Promise<{ add: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.ADD_DASHBOARD_CAPABILITY_USER + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.POST,
-        body: JSON.stringify({ dashboard_capability, user_id }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async DeleteUser(
+    Param: DeleteUserModel & BaseAuthModel,
+  ): Promise<DeleteUserViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.USER_USER}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.DELETE)
+      .fetch<DeleteUserViewModel>();
   }
 
-  static async fetchRemoveDashboardCapabilityToUser({
-    access_token,
-    dashboard_capability,
-    user_id,
-  }: {
-    access_token: string;
-    user_id: string;
-    dashboard_capability: string;
-  }): Promise<{ add: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.REMOVE_DASHBOARD_CAPABILITY_USER + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-        body: JSON.stringify({ dashboard_capability, user_id }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async ReadDashboardCapabilityList(
+    Param: ReadDashboardCapabilityListModel & BaseAuthModel,
+  ): Promise<Array<ReadDashboardCapabilityListViewModel>> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_DASHBOARD_CAPABILITY)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<Array<ReadDashboardCapabilityListViewModel>>();
   }
 
-  static async fetchGetRole({
-    access_token,
-  }: {
-    access_token: string;
-  }): Promise<TAllRoleAccessId> {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.GET_ROLE + `?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async CreateDashboardCapabilityUser(
+    Param: CreateDashboardCapabilityUserModel & BaseAuthModel,
+  ): Promise<CreateDashboardCapabilityUserViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_DASHBOARD_CAPABILITY_USER)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("UserId", Param.UserId)
+      .bodyParam("DashboardCapabilityId", Param.DashboardCapabilityId)
+      .method(EMethodRequest.POST)
+      .fetch<CreateDashboardCapabilityUserViewModel>();
   }
 
-  static async fetchGetRoleById({
-    access_token,
-    role_id,
-  }: {
-    access_token: string;
-    role_id: string;
-  }): Promise<TRoleAccessId> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.GET_ROLE + `/${role_id}` + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.GET,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async DeleteDashboardCapabilityUser(
+    Param: DeleteDashboardCapabilityUserModel & BaseAuthModel,
+  ): Promise<DeleteDashboardCapabilityUserViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_DASHBOARD_CAPABILITY_USER)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("UserId", Param.UserId)
+      .bodyParam("DashboardCapabilityId", Param.DashboardCapabilityId)
+      .method(EMethodRequest.DELETE)
+      .fetch<DeleteDashboardCapabilityUserViewModel>();
   }
 
-  static async fetchCreateRole({
-    access_token,
-    role_name,
-  }: {
-    access_token: string;
-    role_name: string;
-  }): Promise<{ create: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.CREATE_ROLE + `?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.POST,
-      body: JSON.stringify({ role_name }),
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async ReadRoleList(
+    Param: ReadRoleListModel & BaseAuthModel,
+  ): Promise<Array<ReadRoleListViewModel>> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_ROLE)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<Array<ReadRoleListViewModel>>();
   }
 
-  static async fetchUpdateRole({
-    access_token,
-    role_id,
-    role_name,
-  }: {
-    access_token: string;
-    role_id: string;
-    role_name: string;
-  }): Promise<{ update: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.UPDATE_ROLE + `/${role_id}` + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.PUT,
-        body: JSON.stringify({ role_name }),
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async ReadRoleDetail(
+    Param: ReadRoleDetailModel & BaseAuthModel,
+  ): Promise<ReadRoleDetailViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.USER_ROLE}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<ReadRoleDetailViewModel>();
   }
 
-  static async fetchDeleteRole({
-    access_token,
-    role_id,
-  }: {
-    access_token: string;
-    role_id: string;
-  }): Promise<{ delete: boolean }> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.DELETE_ROLE + `/${role_id}` + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async CreateRole(
+    Param: CreateRoleModel & BaseAuthModel,
+  ): Promise<CreateRoleUserModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_ROLE)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Name", Param.Name)
+      .method(EMethodRequest.POST)
+      .fetch<CreateRoleUserModel>();
   }
 
-  static async fetchGetAccess({
-    access_token,
-  }: {
-    access_token: string;
-  }): Promise<TAllUserAccessId> {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.GET_ACCESS + `?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+  static async UpdateRole(
+    Param: UpdateRoleModel & BaseAuthModel,
+  ): Promise<UpdateRoleViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.USER_ROLE}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Name", Param.Name)
+      .method(EMethodRequest.PUT)
+      .fetch<UpdateRoleViewModel>();
+  }
+
+  static async DeleteRole(
+    Param: DeleteRoleModel & BaseAuthModel,
+  ): Promise<DeleteRoleViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.USER_ROLE}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.DELETE)
+      .fetch<DeleteRoleViewModel>();
   }
 }

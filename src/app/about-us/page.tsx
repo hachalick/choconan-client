@@ -1,21 +1,22 @@
-import ShowNestedRoute from "@/Components/Customs/ShowNestedRoute";
 import Layout from "@/Components/Layout/Layout";
-import Box from "@/Components/Ui/Box";
-import { H } from "@/Components/Ui/H";
-import P from "@/Components/Ui/P";
+import Box from "@/Components/Element/Box";
+import { H } from "@/Components/Element/H";
+import P from "@/Components/Element/P";
 import React from "react";
+import ShowNestedRoute from "@/Components/Ui/ShowNestedRoute";
+import { EInnerRoute } from "@/Common/Enums/InnerRout";
 
 function About() {
   return (
     <Layout variant="website">
       <ShowNestedRoute
         list_route={[
-          { path: "/", name: "خانه" },
-          { path: "/about-us", name: "درباره ما" },
+          { path: EInnerRoute.HOME, name: "خانه" },
+          { path: EInnerRoute.ABOUT_US, name: "درباره ما" },
         ]}
       />
       <Box variant="primary">
-        <H size={1}>درباره کافه شوکونان چی میدانید ؟!</H>
+        <H size={1}>درباره کافه شونان چی میدانید ؟!</H>
       </Box>
       <Box variant="guest">
         <P size={3}>
@@ -27,11 +28,11 @@ function About() {
       </Box>
       <br />
       <Box variant="primary">
-        <H size={2}>فعالیت کافه شوکونان:</H>
+        <H size={2}>فعالیت کافه شونان:</H>
       </Box>{" "}
       <Box variant="guest">
         <P size={3}>
-          در ابتدا به وسیله پیج اینستاگرامی choconan.ir فعالیت خود را شروع کرد و
+          در ابتدا به وسیله پیج اینستاگرامی shonan.ir فعالیت خود را شروع کرد و
           با عرضه کردن محصولات نان و شکلات های خانگی کار جدی خود را آغاز کرد. در
           نهایت در بهار سال 1403 با ایجاد یک مغازه واقع در سهرودی جنوبی تصمیم به
           ارائه خدمات خود به صورت حضوری انجام داد.
@@ -39,17 +40,17 @@ function About() {
       </Box>
       <br />
       <Box variant="primary">
-        <H size={2}>در کافی شاپ شوکونان همیشه مواد تازه میل کنید:</H>
+        <H size={2}>در کافی شاپ شونان همیشه مواد تازه میل کنید:</H>
       </Box>
       <Box variant="guest">
         <P size={3}>
           تمامی محصولات مثل کیک کوکی شکلات کروسان توسط خانم فرهادیان مدیر coffee
-          choconan تولید و عرضه میشود.
+          shonan تولید و عرضه میشود.
         </P>
       </Box>
       <br />
       <Box variant="primary">
-        <H size={2}>چرا کافی شاپ شوکونان:</H>
+        <H size={2}>چرا کافی شاپ شونان:</H>
       </Box>
       <Box variant="guest">
         <P size={3}>
@@ -61,7 +62,7 @@ function About() {
       </Box>
       <br />
       <Box variant="primary">
-        <H size={2}>نحوه ارائه خدمات کافه شوکونان:</H>
+        <H size={2}>نحوه ارائه خدمات کافه شونان:</H>
       </Box>
       <Box variant="guest">
         <P size={3}>

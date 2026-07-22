@@ -13,7 +13,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 export default function ReadMenuCategory() {
   const setting = useContext(AccountContext);
 
-  const [menu, setMenu] = useState<TIdCategoriesMenu>([]);
+  const [menu, setMenu] = useState<Array<TGetCategoryMenuResponseDto>>([]);
   const [getList, setGetList] = useState(true);
 
   useEffect(() => {

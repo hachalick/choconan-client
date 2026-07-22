@@ -1,0 +1,1 @@
+type TUpdateProfileResponseDto = { update: boolean }

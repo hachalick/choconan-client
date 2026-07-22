@@ -178,33 +178,33 @@ const iranyekan = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "choconan | خانه کافه شوکونان",
+  title: "shonan | خانه کافه شونان",
   description:
-    "شوکونان یک کافه واقع در سهرودی است که محصولات خود را بصورت بیرون بر یا سرو داخل کافه ارائه میدهد",
+    "شونان یک کافه واقع در سهرودی است که محصولات خود را بصورت بیرون بر یا سرو داخل کافه ارائه میدهد",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "کافه شوکونان",
+    title: "کافه شونان",
   },
   formatDetection: {
     telephone: false,
   },
   openGraph: {
     type: "website",
-    siteName: "کافه شوکونان",
-    title: "choconan | خانه کافه شوکونان",
+    siteName: "کافه شونان",
+    title: "shonan | خانه کافه شونان",
     description:
-      "شوکونان یک کافه واقع در سهرودی است که محصولات خود را بصورت بیرون بر یا سرو داخل کافه ارائه میدهد",
+      "شونان یک کافه واقع در سهرودی است که محصولات خود را بصورت بیرون بر یا سرو داخل کافه ارائه میدهد",
   },
   twitter: {
     card: "summary",
     title: {
-      default: "choconan | خانه کافه شوکونان",
-      template: "کافه شوکونان",
+      default: "shonan | خانه کافه شونان",
+      template: "کافه شونان",
     },
     description:
-      "شوکونان یک کافه واقع در سهرودی است که محصولات خود را بصورت بیرون بر یا سرو داخل کافه ارائه میدهد",
+      "شونان یک کافه واقع در سهرودی است که محصولات خود را بصورت بیرون بر یا سرو داخل کافه ارائه میدهد",
   },
 };
 

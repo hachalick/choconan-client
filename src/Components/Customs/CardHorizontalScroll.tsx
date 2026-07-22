@@ -14,7 +14,7 @@ export function CardHorizontalScrollV2({
   category,
   isLink,
 }: {
-  data: TIdProductMenu;
+  data: TGetProductMenuResponseDto;
   category: string;
   isLink: boolean;
 }) {
@@ -75,13 +75,13 @@ export function CardHorizontalScroll({
   category,
   isLink,
 }: {
-  data: TIdProductMenu;
+  data: TGetProductMenuResponseDto;
   category: string;
   isLink: boolean;
 }) {
   return (
     <div
-      className={`flex flex-col shrink-0 snap-center w-[70%] md:w-80 aspect-[3/4] rounded-xl bg-gradient-to-br from-cooooooooooooooooooloooooooooo to-[#4e3751] shadow-primary pb-1 mb-4 ${
+      className={`flex flex-col shrink-0 snap-center w-[70%] md:w-80 aspect-[3/4] rounded-xl shadow-primary pb-1 mb-4 ${
         data.available ? "grayscale-0" : "grayscale"
       }`}
     >

@@ -30,8 +30,7 @@ function LoginPanel() {
     setOtp(e.target.value);
   };
 
-  const onSubmitFromPassword = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onClickFromPassword = async () => {
     if (nationalCode.length > 3 || phone.length !== 10 || password.length < 4) {
     } else {
       try {
@@ -42,27 +41,14 @@ function LoginPanel() {
         });
         if (res.login === true) {
           setStepForm(2);
-          // res.refresh_token && localStorage.setItem("refresh_token", res.refresh_token);
-          // res.access_token && sessionStorage.setItem("access_token", res.access_token);
-          // Swal.fire({
-          //   title: "ورود با موفقیت انجام شد",
-          //   text: "در حال ورود به سایت",
-          //   icon: "success",
-          //   confirmButtonText: "باشه",
-          // });
-          // setTimeout(() => {
-          //   location.reload();
-          // }, 1500);
         } else {
           Swal.fire({
             title: "ورود نکردید!",
             text: "رمز عبور صحیح نیست",
             icon: "error",
             confirmButtonText: "تلاش مجدد",
+            timer: 2000,
           });
-          // setTimeout(() => {
-          //   location.reload();
-          // }, 1500);
         }
       } catch (error) {
         Swal.fire({
@@ -70,13 +56,13 @@ function LoginPanel() {
           text: "اطلاعات کاربر ثبت نام نشده است",
           icon: "error",
           confirmButtonText: "گرفتم",
+          timer: 2000,
         });
       }
     }
   };
 
-  const onSubmitFromOtp = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmitFromOtp = async () => {
     if (otp.length >= 4) {
       try {
         const res = await FetchApi.Auth.fetchLoginOtp({
@@ -134,7 +120,13 @@ function LoginPanel() {
                 />
               </Link>
             </div>
-            <Form variant="primary" onSubmit={(e) => onSubmitFromPassword(e)}>
+            <Form
+              variant="primary"
+              onSubmit={(e) => {
+                e.preventDefault();
+                onClickFromPassword();
+              }}
+            >
               <InputContainer column>
                 <Label htmlFor="phone">شماره همراه:</Label>
                 <Input
@@ -193,7 +185,13 @@ function LoginPanel() {
                 className="w-20"
               />
             </div>
-            <Form onSubmit={(e) => onSubmitFromOtp(e)} variant="primary">
+            <Form
+              variant="primary"
+              onSubmit={(e) => {
+                e.preventDefault();
+                onSubmitFromOtp();
+              }}
+            >
               <InputContainer column>
                 <Label htmlFor="phone">شماره همراه:</Label>
                 <Input

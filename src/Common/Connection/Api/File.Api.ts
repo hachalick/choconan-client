@@ -1,145 +1,76 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
-import { ERoute } from "@/Common/Enums/Routs";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
+import { BaseApi } from "./Seed/Base.Api";
+import { ApiBuilder } from "./Seed/Builder.Api";
+import {
+  DeleteFileImageViewModel,
+  ReadFileImageListViewModel,
+  UploadFileImageViewModel,
+} from "./ViewModels/File.Service.ViewModel";
+import {
+  DeleteFileImageModel,
+  ReadFileImageListModel,
+} from "./Models/File.Service.Model";
+import { BaseAuthModel } from "./Models/Seed/Base.Service.Model";
 
-export class ApiFile {
-  static async fetchGetImages({
-    access_token,
-  }: {
-    access_token: string;
-  }): Promise<TIdImages> {
-    const query = `token=${access_token}`;
-    const res = await fetch(ERoute.HOST + ERoute.GET_IMAGES + `?${query}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      method: EMethodRequest.GET,
-    });
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
+export class ApiFile extends BaseApi {
+  constructor() {
+    super("/file");
   }
 
-  static async fetchDeleteImage({
-    access_token,
-    image_id,
-  }: {
-    access_token: string;
-    image_id: string;
-  }): Promise<TIdImages> {
-    const query = `token=${access_token}`;
-    const res = await fetch(
-      ERoute.HOST + ERoute.DELETE_IMAGE + `/${image_id}` + `?${query}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+  static builder(): ApiBuilder {
+    return new ApiBuilder(new ApiFile());
+  }
+
+  static async ReadFileImageList(
+    Param: ReadFileImageListModel & BaseAuthModel,
+  ): Promise<Array<ReadFileImageListViewModel>> {
+    return await ApiFile.builder()
+      .cache("no-store")
+      .route(EServerRoute.FILE_IMAGE)
+      .method(EMethodRequest.GET)
+      .header("access_token", Param.AccessToken)
+      .fetch<Array<ReadFileImageListViewModel>>();
+  }
+
+  static async DeleteFileImage(
+    Param: DeleteFileImageModel & BaseAuthModel,
+  ): Promise<DeleteFileImageViewModel> {
+    return await ApiFile.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.FILE_IMAGE}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.DELETE)
+      .fetch<DeleteFileImageViewModel>();
+  }
+
+  static async UploadFileImage(
+    Param: {
+      newForm: FormData;
+      setSrcImage: React.Dispatch<React.SetStateAction<string>>;
+      setUploadImage: React.Dispatch<React.SetStateAction<boolean>>;
+      setUploadProgress: React.Dispatch<React.SetStateAction<number>>;
+    } & BaseAuthModel,
+  ): Promise<void> {
+    return await ApiFile.builder()
+      .cache("no-store")
+      .route(EServerRoute.FILE_IMAGE)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.POST)
+      .body(Param.newForm)
+      .uploadWithProgress({
+        onError: (error) => {
+          console.error("Upload error:", error);
         },
-        cache: "no-store",
-        method: EMethodRequest.DELETE,
-      }
-    );
-    if (!res.ok) {
-      throw new Error((await res.json())?.message || "Failed to fetch data");
-    }
-    return res.json();
-  }
-
-  static async fetchImageProduct({
-    access_token,
-    newForm,
-    setUploadProgress,
-    setSrcImage,
-    setUploadImage,
-  }: {
-    access_token: string;
-    newForm: FormData;
-    setUploadProgress: React.Dispatch<React.SetStateAction<number>>;
-    setSrcImage: React.Dispatch<React.SetStateAction<string>>;
-    setUploadImage: React.Dispatch<React.SetStateAction<boolean>>;
-  }) {
-    const xhr = new XMLHttpRequest();
-
-    xhr.open(
-      EMethodRequest.POST,
-      ERoute.HOST + ERoute.UPLOAD_IMAGE_PRODUCT + `?token=${access_token}`,
-      true
-    );
-
-    xhr.setRequestHeader("Authorization", `Bearer ${access_token}`);
-
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable) {
-        const percentComplete = Math.round((event.loaded / event.total) * 100);
-        setUploadProgress(percentComplete);
-      }
-    };
-
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        setSrcImage("/s-logo.jpg");
-        setUploadImage(true);
-        setUploadProgress(100);
-        setUploadProgress(0);
-      } else {
-        // setMessage("آپلود با خطا مواجه شد.");
-      }
-    };
-
-    xhr.onerror = () => {
-      // setMessage("خطا در آپلود فایل.");
-    };
-
-    xhr.send(newForm);
-  }
-
-  static async fetchImage({
-    access_token,
-    newForm,
-    setUploadProgress,
-    setSrcImage,
-    setUploadImage,
-  }: {
-    access_token: string;
-    newForm: FormData;
-    setUploadProgress: React.Dispatch<React.SetStateAction<number>>;
-    setSrcImage: React.Dispatch<React.SetStateAction<string>>;
-    setUploadImage: React.Dispatch<React.SetStateAction<boolean>>;
-  }) {
-    const xhr = new XMLHttpRequest();
-
-    xhr.open(
-      EMethodRequest.POST,
-      ERoute.HOST + ERoute.UPLOAD_IMAGE + `?token=${access_token}`,
-      true
-    );
-
-    xhr.setRequestHeader("Authorization", `Bearer ${access_token}`);
-
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable) {
-        const percentComplete = Math.round((event.loaded / event.total) * 100);
-        setUploadProgress(percentComplete);
-      }
-    };
-
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        setSrcImage("/s-logo.jpg");
-        setUploadImage(true);
-        setUploadProgress(100);
-        setUploadProgress(0);
-      } else {
-        // setMessage("آپلود با خطا مواجه شد.");
-      }
-    };
-
-    xhr.onerror = () => {
-      // setMessage("خطا در آپلود فایل.");
-    };
-
-    xhr.send(newForm);
+        onProgress: (percent, loaded, total) => {
+          Param.setUploadProgress(percent);
+        },
+        onSuccess: () => {
+          Param.setSrcImage("/s-logo.jpg");
+          Param.setUploadImage(true);
+          Param.setUploadProgress(100);
+          setTimeout(() => Param.setUploadProgress(0), 1000);
+        },
+      });
   }
 }

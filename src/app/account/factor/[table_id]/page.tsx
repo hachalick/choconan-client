@@ -8,8 +8,12 @@ import { Button } from "@/Components/Ui/Button";
 import Layout from "@/Components/Layout/Layout";
 import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
 
-function OrderTablePanel({ params }: { params: { table_id: string } }) {
-  const [table, setTable] = useState<TGetFactor>();
+function OrderTablePanel({
+  params,
+}: {
+  params: Promise<{ table_id: string }>;
+}) {
+  const [table, setTable] = useState<TGetFactorResponseDto>();
   const [show, setShow] = useState(false);
   const [total, setTotal] = useState(0);
 
@@ -19,7 +23,7 @@ function OrderTablePanel({ params }: { params: { table_id: string } }) {
     const setterData = async () => {
       const table = await FetchApi.Order.fetchGetOrder({
         access_token,
-        order_id: params.table_id,
+        order_id: (await params).table_id,
       });
       setTable(table);
       setShow(true);

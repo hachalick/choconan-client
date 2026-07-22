@@ -21,7 +21,7 @@ import { IoIosAddCircleOutline, IoMdCloseCircleOutline } from "react-icons/io";
 export default function CreateUser() {
   const setting = useContext(AccountContext);
 
-  const baseDefaultUser: TUserAccessId = useMemo(
+  const baseDefaultUser: TGetUserAccessResponseDto = useMemo(
     () => ({
       user_id: "",
       profile: "",
@@ -49,26 +49,18 @@ export default function CreateUser() {
     const fetchData = async () => {
       const access_token = sessionStorage.getItem("access_token") || "";
       if (setting?.userAccess.state) {
-        const {
-          profile,
-          name,
-          family,
-          national_code,
-          phone,
-          user_id,
-          access,
-          role,
-        } = await FetchApi.User.fetchGetUserById({
-          access_token,
-          user_id: setting.userAccess.state,
-        });
+        const { profile, name, family, national_code, phone, access, role } =
+          await FetchApi.User.fetchGetUserById({
+            access_token,
+            user_id: setting.userAccess.state,
+          });
         setDefaultUser({
           profile,
           name,
           family,
           national_code,
           phone,
-          user_id,
+          user_id: setting.userAccess.state,
           access,
           role,
         });
@@ -128,7 +120,7 @@ export default function CreateUser() {
     if (defaultUser.user_id !== "") {
       // setSaveChangeUser(true);
       isAddToUser
-        ? await FetchApi.User.fetchAddDashboardCapabilityToUser({
+        ? await FetchApi.User.fetchCreateDashboardCapabilityToUser({
             access_token,
             dashboard_capability: dashboardCapability,
             user_id: defaultUser.user_id,
@@ -148,7 +140,7 @@ export default function CreateUser() {
               };
             });
           })
-        : await FetchApi.User.fetchRemoveDashboardCapabilityToUser({
+        : await FetchApi.User.fetchDeleteDashboardCapabilityToUser({
             access_token,
             dashboard_capability: dashboardCapability,
             user_id: defaultUser.user_id,
@@ -188,7 +180,7 @@ export default function CreateUser() {
 
     if (create) {
       for (const indexDashboardCapability in defaultUser.access) {
-        await FetchApi.User.fetchAddDashboardCapabilityToUser({
+        await FetchApi.User.fetchCreateDashboardCapabilityToUser({
           access_token,
           dashboard_capability: defaultUser.access[indexDashboardCapability],
           user_id,
@@ -272,7 +264,8 @@ export default function CreateUser() {
                       checked={defaultUser.access.includes(val)}
                     />
                     <Label>
-                      {CTranslateWorld[val as keyof typeof CTranslateWorld]}
+                      {CTranslateWorld[val as keyof typeof CTranslateWorld]}{" "}
+                      {val}
                     </Label>
                   </InputContainer>
                 ))}

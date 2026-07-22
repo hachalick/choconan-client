@@ -1,43 +1,48 @@
-import Enamad from "@/Components/Customs/Enamad";
-import { allCategory } from "@/Common/Constants/Category.Constant";
 import { CContactUs } from "@/Common/Constants/Connection.Constant";
-import { ERoute } from "@/Common/Enums/Routs";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaInstagram, FaTelegramPlane, FaWhatsapp } from "react-icons/fa";
-import Box from "../Ui/Box";
+import Box from "../Element/Box";
+import Enamad from "../Ui/Enamad";
+import { EInnerRoute } from "@/Common/Enums/InnerRout";
+import { FetchApi } from "@/Common/Connection/Api/Seed/fetchApi.Api";
 
-function Footer() {
+export default async function Footer() {
+  const menu = await FetchApi.Menu.ReadMenuDetail({});
+
   return (
     <footer className="py-2 print:hidden">
       <div className="max-w-6xl mx-auto">
         <Box variant="primary">
           <div className="py-2 gap-0 md:gap-3 rounded-2xl md:grid grid-cols-4 grid-rows-5 grid-flow-col grid-row-col">
             <div className="col-start-1 row-start-1 col-span-4 row-span-2">
-              <Link href="/menu" className="font-bold">
+              <Link href={EInnerRoute.MENU_CATEGORY} className="font-bold">
                 دسته بندی منو
               </Link>
               <ul className="mt-3 border-b-2 flex justify-between flex-wrap gap-y-2 pb-2">
-                {allCategory.map((category, i) => (
-                  <li key={i} className="basis-36">
-                    <Link
-                      href={`/menu/${category.category}`}
-                      className="flex flex-wrap items-center"
-                    >
-                      <Image
-                        src={ERoute.HOST + category.icon}
-                        alt={category.category}
-                        width={40}
-                        height={40}
-                        priority
-                        className="w-9 h-9 ml-2"
-                        loading="eager"
-                      ></Image>
-                      {category.category}
-                    </Link>
-                  </li>
-                ))}
+                {menu
+                  .filter((category) => category.IsShowMenu)
+                  .map((category, i) => (
+                    <li key={i} className="basis-36">
+                      <Link
+                        href={`${EInnerRoute.MENU_CATEGORY}/${category.Id}`}
+                        className="flex flex-wrap items-center"
+                      >
+                        <Image
+                          src={EServerRoute.HOST + category.Icon}
+                          alt={category.Name}
+                          width={40}
+                          height={40}
+                          priority
+                          className="w-9 h-9 ml-2"
+                          loading="eager"
+                        ></Image>
+                        {category.Name}
+                      </Link>
+                    </li>
+                  ))}
               </ul>
             </div>
             <div className="mt-3 col-start-1 row-start-3 col-span-2 row-span-2">
@@ -66,7 +71,7 @@ function Footer() {
                 </li>
                 <li className="my-1">
                   <a
-                    href="https://t.me/choconanir"
+                    href="https://t.me/shonanir"
                     className="flex flex-wrap border rounded-md p-1 bg-blue-700"
                   >
                     <FaTelegramPlane className="-translate-x-[1px]" />
@@ -74,7 +79,7 @@ function Footer() {
                 </li>
                 <li className="my-1">
                   <a
-                    href="https://instagram.com/choconan.ir"
+                    href="https://instagram.com/shonan.ir"
                     className="flex flex-wrap border rounded-md p-1 bg-gradient-to-br from-fuchsia-700 to-pink-700"
                   >
                     <FaInstagram />
@@ -107,5 +112,3 @@ function Footer() {
     </footer>
   );
 }
-
-export default Footer;

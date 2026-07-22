@@ -1,10 +1,10 @@
 "use client";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { ERoute } from "@/Common/Enums/Routs";
-import { Button } from "@/Components/Ui/Button";
-import Box from "../Ui/Box";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
+import { Button } from "@/Components/Element/Button";
+import Box from "../Element/Box";
 import { AccountContext } from "@/Contexts/Account.Context";
-import { H } from "../Ui/H";
+import { H } from "../Element/H";
 import { IconType } from "react-icons";
 import {
   MdArrowDropDown,
@@ -14,6 +14,7 @@ import {
   MdOutlineKeyboardDoubleArrowUp,
   MdOutlinePassword,
   MdOutlineRestaurantMenu,
+  MdOutlineScale,
   MdWifiTethering,
   MdWifiTetheringOff,
 } from "react-icons/md";
@@ -42,50 +43,60 @@ import {
 import {
   HiOutlineDocumentDuplicate,
   HiOutlineDocumentText,
+  HiOutlineScale,
 } from "react-icons/hi";
 import { HiOutlineDocumentPlus } from "react-icons/hi2";
-import { PiCoins } from "react-icons/pi";
-import { IoSettingsOutline } from "react-icons/io5";
+import { PiCoffeeBeanBold, PiCoins, PiHandCoins } from "react-icons/pi";
+import { IoScaleOutline, IoSettingsOutline } from "react-icons/io5";
 import { EDashboardCapability } from "@/Common/Enums/DashboardCapability.enum";
 import { EDashboard } from "@/Common/Enums/Dashboard";
-import Profile from "../Page/Panel/Account/Profile";
-import Default from "../Page/Panel/Index/Default";
-import Password from "../Page/Panel/Account/Password";
-import CreateImage from "../Page/Panel/Picture/CreateImage";
-import ReadImage from "../Page/Panel/Picture/ReadImage";
-import CreateMenuCategory from "../Page/Panel/Menu/CreateMenuCategory";
-import ReadMenuCategory from "../Page/Panel/Menu/ReadMenuCategory";
-import ReadFactor from "../Page/Panel/Order/ReadFactor";
-import CreateMenuProduct from "../Page/Panel/Menu/CreateMenuProduct";
-import ReadMenuProduct from "../Page/Panel/Menu/ReadMenuProduct";
-import CreateFactor from "../Page/Panel/Order/CreateFactor";
-import CreateOrderLocation from "../Page/Panel/Location/CreateOrderLocation";
-import ReadOrderLocation from "../Page/Panel/Location/ReadOrderLocation";
-import CreateAccountingExit from "../Page/Panel/Accounting/CreateAccountingExit";
-import CreateAccountingEnter from "../Page/Panel/Accounting/CreateAccountingEnter";
-import ReadAccountingEnter from "../Page/Panel/Accounting/ReadAccountingEnter";
-import ReadAccountingExit from "../Page/Panel/Accounting/ReadAccountingExit";
-import CreateWarehouseEnter from "../Page/Panel/Warehouse/CreateWarehouseEnter";
-import CreateWarehouseExit from "../Page/Panel/Warehouse/CreateWarehouseExit";
-import ReadWarehouseEnter from "../Page/Panel/Warehouse/ReadWarehouseEnter";
-import ReadWarehouseExit from "../Page/Panel/Warehouse/ReadWarehouseExit";
-import CreateEconomicPackage from "../Page/Panel/EconomicPackage/CreateEconomicPackage";
-import ReadEconomicPage from "../Page/Panel/EconomicPackage/ReadEconomicPage";
-import CreateBlog from "../Page/Panel/Blog/CreateBlog";
-import ReadBlog from "../Page/Panel/Blog/ReadBlog";
-import CreateOrder from "../Page/Panel/Order/CreateOrder";
-import ReadOrder from "../Page/Panel/Order/ReadOrder";
-import OnlineSnap from "../Page/Panel/OnlineShop/OnlineSnap";
-import OnlineTapsi from "../Page/Panel/OnlineShop/OnlineTapsi";
+import Profile from "../../Page/Panel/Account/Profile";
+import Default from "../../Page/Panel/Index/Default";
+import Password from "../../Page/Panel/Account/Password";
+import CreateImage from "../../Page/Panel/Picture/CreateImage";
+import ReadImage from "../../Page/Panel/Picture/ReadImage";
+import CreateMenuCategory from "../../Page/Panel/Menu/CreateMenuCategory";
+import ReadMenuCategory from "../../Page/Panel/Menu/ReadMenuCategory";
+import ReadFactor from "../../Page/Panel/Order/ReadFactor";
+import CreateMenuProduct from "../../Page/Panel/Menu/CreateMenuProduct";
+import ReadMenuProduct from "../../Page/Panel/Menu/ReadMenuProduct";
+import CreateFactor from "../../Page/Panel/Order/CreateFactor";
+import CreateOrderLocation from "../../Page/Panel/Location/CreateOrderLocation";
+import ReadOrderLocation from "../../Page/Panel/Location/ReadOrderLocation";
+import CreateAccountingExit from "../../Page/Panel/Accounting/CreateAccountingExit";
+import CreateAccountingEnter from "../../Page/Panel/Accounting/CreateAccountingEnter";
+import ReadAccountingEnter from "../../Page/Panel/Accounting/ReadAccountingEnter";
+import ReadAccountingExit from "../../Page/Panel/Accounting/ReadAccountingExit";
+import CreateWarehouseEnter from "../../Page/Panel/Warehouse/CreateWarehouseEnter";
+import CreateWarehouseExit from "../../Page/Panel/Warehouse/CreateWarehouseExit";
+import ReadWarehouseEnter from "../../Page/Panel/Warehouse/ReadWarehouseEnter";
+import ReadWarehouseExit from "../../Page/Panel/Warehouse/ReadWarehouseExit";
+import CreateEconomicPackage from "../../Page/Panel/EconomicPackage/CreateEconomicPackage";
+import ReadEconomicPage from "../../Page/Panel/EconomicPackage/ReadEconomicPage";
+import CreateBlog from "../../Page/Panel/Blog/CreateBlog";
+import ReadBlog from "../../Page/Panel/Blog/ReadBlog";
+import CreateOrder from "../../Page/Panel/Order/CreateOrder";
+import ReadOrder from "../../Page/Panel/Order/ReadOrder";
+import OnlineSnap from "../../Page/Panel/OnlineShop/OnlineSnap";
+import OnlineTapsi from "../../Page/Panel/OnlineShop/OnlineTapsi";
 import { RiHome6Line, RiShutDownLine } from "react-icons/ri";
 import Link from "next/link";
 import { BiSupport } from "react-icons/bi";
-import ReadRole from "../Page/Panel/Support/ReadRole";
-import ReadUser from "../Page/Panel/Support/ReadUser";
-import CreateUser from "../Page/Panel/Support/CreateUser";
-import CreateRole from "../Page/Panel/Support/CreateRole";
+import ReadRole from "../../Page/Panel/Support/ReadRole";
+import ReadUser from "../../Page/Panel/Support/ReadUser";
+import CreateUser from "../../Page/Panel/Support/CreateUser";
+import CreateRole from "../../Page/Panel/Support/CreateRole";
 import { io } from "socket.io-client";
 import Swal from "sweetalert2";
+import CreateCostPricing from "../../Page/Panel/Pricing/CreateCostPricing";
+import ReadUnitPricing from "../../Page/Panel/Pricing/ReadUnitPricing";
+import CreateUnitPricing from "../../Page/Panel/Pricing/CreateUnitPricing";
+import ReadProductPricing from "../../Page/Panel/Pricing/ReadProductPricing";
+import CreateProductPricing from "../../Page/Panel/Pricing/CreateProductPricing";
+import { TfiRuler, TfiRulerPencil } from "react-icons/tfi";
+import { CiCoffeeCup } from "react-icons/ci";
+import { SiCoffeescript } from "react-icons/si";
+import { EInnerRoute } from "@/Common/Enums/InnerRout";
 
 type TMenu = {
   title: string;
@@ -99,24 +110,24 @@ type TMenu = {
 export default function Dashboard() {
   const setting = useContext(AccountContext);
   const [isOpenAccordion, setIsOpenAccordion] = useState<boolean>(false);
+  const socketRef = useRef<any>(null);
 
   useEffect(() => {
-    const socket = io(ERoute.HOST);
-    const audio = new Audio("/assets/sound/notification-sound.wav");
+    if (!socketRef.current) {
+      socketRef.current = io(EServerRoute.HOST);
 
-    const allowAudioPlay = () => {
-      audio.play().catch(() => {}); // اجرای بی‌صدا برای گرفتن مجوز
-      audio.pause();
-      audio.currentTime = 0;
-      document.removeEventListener("click", allowAudioPlay);
-    };
-    document.addEventListener("click", allowAudioPlay);
+      socketRef.current.on("connect", () => {
+        setting?.connectServerSocketIo.setState(true);
+      });
+
+      socketRef.current.on("disconnect", () => {
+        setting?.connectServerSocketIo.setState(false);
+      });
+    }
 
     const handleRefetch = () => {
-      if (setting?.profile.access.includes(EDashboardCapability.READ_ORDER)) {
+      if (setting?.profile.Access.includes(EDashboardCapability.READ_ORDER)) {
         setting?.orders.setState(true);
-
-        audio.play().catch((err) => console.warn("cannot play sound:", err));
 
         Swal.fire({
           title: "سفارش جدید ثبت شده!",
@@ -133,24 +144,18 @@ export default function Dashboard() {
       }
     };
 
-    socket.on("connect", () => {
-      setting?.connectServerSocketIo.setState(true);
-    });
-
-    socket.on("disconnect", () => {
-      setting?.connectServerSocketIo.setState(false);
-    });
-
-    socket.on("order-present", (data: { code: number; message: string }) => {
-      if (data.code === 1) handleRefetch();
-    });
+    socketRef.current.on(
+      "order-present",
+      (data: { code: number; message: string }) => {
+        if (data.code === 1) handleRefetch();
+      },
+    );
 
     window.addEventListener("online", handleRefetch);
 
     return () => {
-      socket.disconnect();
+      socketRef.current?.off("order-present");
       window.removeEventListener("online", handleRefetch);
-      document.removeEventListener("click", allowAudioPlay);
     };
   }, [setting]);
 
@@ -158,43 +163,43 @@ export default function Dashboard() {
     {
       title: "پشتیبانی",
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(EDashboardCapability.READ_USER) ||
-        setting?.profile.access.includes(EDashboardCapability.CREATE_USER) ||
-        setting?.profile.access.includes(EDashboardCapability.READ_ROLE) ||
-        setting?.profile.access.includes(EDashboardCapability.CREATE_ROLE),
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(EDashboardCapability.READ_USER) ||
+        setting?.profile.Access.includes(EDashboardCapability.CREATE_USER) ||
+        setting?.profile.Access.includes(EDashboardCapability.READ_ROLE) ||
+        setting?.profile.Access.includes(EDashboardCapability.CREATE_ROLE),
       Icon: BiSupport,
       isOpen: false,
       li: [
         {
           title: "لیست کاربران",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.READ_USER),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.READ_USER),
           state: EDashboard.READ_USER,
           isOpen: false,
         },
         {
           title: "ایجاد کاربر",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.CREATE_USER),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.CREATE_USER),
           state: EDashboard.CREATE_USER,
           isOpen: false,
         },
         {
           title: "لیست نقش ها",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.READ_ROLE),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.READ_ROLE),
           state: EDashboard.READ_ROLE,
           isOpen: false,
         },
         {
           title: "ایجاد نقش",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.CREATE_ROLE),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.CREATE_ROLE),
           state: EDashboard.CREATE_ROLE,
           isOpen: false,
         },
@@ -203,34 +208,34 @@ export default function Dashboard() {
     {
       title: "تنظیمات",
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.role.includes("پشتیبان"),
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Role.includes("پشتیبان"),
       Icon: IoSettingsOutline,
       isOpen: false,
     },
     {
       title: "اطلاعات حساب",
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(EDashboardCapability.EDIT_PROFILE) ||
-        setting?.profile.access.includes(EDashboardCapability.EDIT_PASSWORD),
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(EDashboardCapability.EDIT_PROFILE) ||
+        setting?.profile.Access.includes(EDashboardCapability.EDIT_PASSWORD),
       Icon: MdOutlineAccountCircle,
       isOpen: false,
       li: [
         {
           title: "ویرایش اطلاعات",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.EDIT_PROFILE),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.EDIT_PROFILE),
           state: EDashboard.PROFILE,
           isOpen: false,
         },
         {
           title: "تغییر رمز",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.EDIT_PASSWORD
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.EDIT_PASSWORD,
             ),
           Icon: MdOutlinePassword,
           state: EDashboard.PASSWORD,
@@ -241,9 +246,9 @@ export default function Dashboard() {
     {
       title: "عکس",
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(EDashboardCapability.CREATE_IMAGE) ||
-        setting?.profile.access.includes(EDashboardCapability.READ_IMAGE),
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(EDashboardCapability.CREATE_IMAGE) ||
+        setting?.profile.Access.includes(EDashboardCapability.READ_IMAGE),
       Icon: LuImage,
       isOpen: false,
 
@@ -251,8 +256,8 @@ export default function Dashboard() {
         {
           title: "آپلود عکس",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.CREATE_IMAGE),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.CREATE_IMAGE),
           Icon: LuImagePlus,
           state: EDashboard.CREATE_IMAGE,
           isOpen: false,
@@ -260,8 +265,8 @@ export default function Dashboard() {
         {
           title: "مشاهده عکس ها",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.READ_IMAGE),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.READ_IMAGE),
           Icon: LuImages,
           state: EDashboard.READ_IMAGE,
           isOpen: false,
@@ -272,18 +277,18 @@ export default function Dashboard() {
       title: "سفارشات",
       Icon: TbShoppingBag,
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(EDashboardCapability.READ_ORDER) ||
-        setting?.profile.access.includes(EDashboardCapability.CREATE_FACTOR) ||
-        setting?.profile.access.includes(EDashboardCapability.READ_FACTOR),
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(EDashboardCapability.READ_ORDER) ||
+        setting?.profile.Access.includes(EDashboardCapability.CREATE_FACTOR) ||
+        setting?.profile.Access.includes(EDashboardCapability.READ_FACTOR),
       isOpen: false,
 
       li: [
         {
           title: "سفارش مشتریان",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.READ_ORDER),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.READ_ORDER),
           Icon: TbShoppingBagEdit,
           state: EDashboard.READ_ORDER,
           isOpen: false,
@@ -291,9 +296,9 @@ export default function Dashboard() {
         {
           title: "ثبت سفارش",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_FACTOR
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_FACTOR,
             ),
           Icon: TbShoppingBagPlus,
           state: EDashboard.CREATE_FACTOR,
@@ -302,8 +307,8 @@ export default function Dashboard() {
         {
           title: "سفارشات اخیر",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.READ_FACTOR),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.READ_FACTOR),
           state: EDashboard.READ_FACTOR,
           Icon: TbShoppingBagSearch,
           isOpen: false,
@@ -314,18 +319,18 @@ export default function Dashboard() {
       title: "منو",
       Icon: MdOutlineRestaurantMenu,
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_MENU_CATEGORY
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_MENU_CATEGORY,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_MENU_CATEGORY
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_MENU_CATEGORY,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_MENU_PRODUCT
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_MENU_PRODUCT,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_MENU_PRODUCT
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_MENU_PRODUCT,
         ),
       isOpen: false,
 
@@ -333,9 +338,9 @@ export default function Dashboard() {
         {
           title: "مشاهده دسته ها",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_MENU_CATEGORY
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_MENU_CATEGORY,
             ),
           Icon: TbCategory,
           state: EDashboard.READ_MENU_CATEGORY,
@@ -344,9 +349,9 @@ export default function Dashboard() {
         {
           title: "ثبت دسته بندی",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_MENU_CATEGORY
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_MENU_CATEGORY,
             ),
           Icon: TbCategoryPlus,
           state: EDashboard.CREATE_MENU_CATEGORY,
@@ -355,9 +360,9 @@ export default function Dashboard() {
         {
           title: "مشاهده محصولات",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_MENU_PRODUCT
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_MENU_PRODUCT,
             ),
           Icon: TbHexagons,
           state: EDashboard.READ_MENU_PRODUCT,
@@ -366,9 +371,9 @@ export default function Dashboard() {
         {
           title: "ثبت محصول",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_MENU_PRODUCT
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_MENU_PRODUCT,
             ),
           Icon: TbHexagonPlus,
           state: EDashboard.CREATE_MENU_PRODUCT,
@@ -380,25 +385,25 @@ export default function Dashboard() {
       title: "بلاگ",
       Icon: HiOutlineDocumentText,
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(EDashboardCapability.READ_BLOG) ||
-        setting?.profile.access.includes(EDashboardCapability.CREATE_BLOG),
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(EDashboardCapability.READ_BLOG) ||
+        setting?.profile.Access.includes(EDashboardCapability.CREATE_BLOG),
       isOpen: false,
 
       li: [
         {
           title: "مشاهده بلاگ ها",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.READ_BLOG),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.READ_BLOG),
           Icon: HiOutlineDocumentPlus,
           isOpen: false,
         },
         {
           title: "ثبت بلاگ",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(EDashboardCapability.CREATE_BLOG),
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(EDashboardCapability.CREATE_BLOG),
           Icon: HiOutlineDocumentDuplicate,
           isOpen: false,
         },
@@ -408,12 +413,12 @@ export default function Dashboard() {
       title: "محل سفارش گیری",
       Icon: TbLocation,
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_ORDER_LOCATION
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_ORDER_LOCATION,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_ORDER_LOCATION
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_ORDER_LOCATION,
         ),
       isOpen: false,
 
@@ -422,9 +427,9 @@ export default function Dashboard() {
           title: "مشاهده محل ها",
           Icon: TbLocationSearch,
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_ORDER_LOCATION
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_ORDER_LOCATION,
             ),
           state: EDashboard.READ_ORDER_LOCATION,
           isOpen: false,
@@ -433,9 +438,9 @@ export default function Dashboard() {
           title: "ثبت محل",
           Icon: TbLocationPlus,
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_ORDER_LOCATION
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_ORDER_LOCATION,
             ),
           state: EDashboard.CREATE_ORDER_LOCATION,
           isOpen: false,
@@ -446,18 +451,18 @@ export default function Dashboard() {
       title: "حسابداری",
       Icon: PiCoins,
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_ACCOUNTING_ENTER
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_ACCOUNTING_ENTER,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_ACCOUNTING_ENTER
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_ACCOUNTING_ENTER,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_ACCOUNTING_EXIT
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_ACCOUNTING_EXIT,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_ACCOUNTING_EXIT
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_ACCOUNTING_EXIT,
         ),
       isOpen: false,
 
@@ -465,9 +470,9 @@ export default function Dashboard() {
         {
           title: "ثبت فرم ورود",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_ACCOUNTING_ENTER
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_ACCOUNTING_ENTER,
             ),
           Icon: BsBoxArrowInDown,
           state: EDashboard.CREATE_ACCOUNTING_ENTER,
@@ -476,9 +481,9 @@ export default function Dashboard() {
         {
           title: "فرم ورود اخیر",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_ACCOUNTING_ENTER
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_ACCOUNTING_ENTER,
             ),
           Icon: BsBoxArrowInDown,
           state: EDashboard.READ_ACCOUNTING_ENTER,
@@ -487,9 +492,9 @@ export default function Dashboard() {
         {
           title: "ثبت فرم خروج",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_ACCOUNTING_EXIT
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_ACCOUNTING_EXIT,
             ),
           Icon: BsBoxArrowInUp,
           state: EDashboard.CREATE_ACCOUNTING_EXIT,
@@ -498,10 +503,10 @@ export default function Dashboard() {
         {
           title: "فرم خروج اخیر",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_ACCOUNTING_EXIT
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_ACCOUNTING_EXIT,
             ),
           Icon: BsBoxArrowInUp,
           state: EDashboard.READ_ACCOUNTING_EXIT,
@@ -512,18 +517,18 @@ export default function Dashboard() {
     {
       title: "انبارداری",
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_WAREHOUSE_ENTER
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_WAREHOUSE_ENTER,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_WAREHOUSE_ENTER
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_WAREHOUSE_ENTER,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_WAREHOUSE_EXIT
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_WAREHOUSE_EXIT,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_WAREHOUSE_EXIT
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_WAREHOUSE_EXIT,
         ),
       isOpen: false,
 
@@ -532,9 +537,9 @@ export default function Dashboard() {
         {
           title: "ثبت فرم ورود",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_WAREHOUSE_ENTER
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_WAREHOUSE_ENTER,
             ),
           Icon: BsBoxArrowInDown,
           state: EDashboard.CREATE_WAREHOUSE_ENTER,
@@ -543,9 +548,9 @@ export default function Dashboard() {
         {
           title: "فرم ورود اخیر",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_WAREHOUSE_ENTER
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_WAREHOUSE_ENTER,
             ),
           Icon: BsBoxArrowInDown,
           state: EDashboard.READ_WAREHOUSE_ENTER,
@@ -554,9 +559,9 @@ export default function Dashboard() {
         {
           title: "ثبت فرم خروج",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_WAREHOUSE_EXIT
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_WAREHOUSE_EXIT,
             ),
           Icon: BsBoxArrowInUp,
           state: EDashboard.CREATE_WAREHOUSE_EXIT,
@@ -565,9 +570,9 @@ export default function Dashboard() {
         {
           title: "فرم خروج اخیر",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_WAREHOUSE_EXIT
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_WAREHOUSE_EXIT,
             ),
           Icon: BsBoxArrowInUp,
           state: EDashboard.READ_WAREHOUSE_EXIT,
@@ -578,15 +583,15 @@ export default function Dashboard() {
     {
       title: "آنلاین شاپ",
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_ALL_ONLINE_SHOP
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_ALL_ONLINE_SHOP,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_SNAP_ONLINE_SHOP
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_SNAP_ONLINE_SHOP,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_TAPSI_ONLINE_SHOP
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_TAPSI_ONLINE_SHOP,
         ),
       isOpen: false,
       Icon: BsShop,
@@ -594,9 +599,9 @@ export default function Dashboard() {
         {
           title: "اسنپ",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_SNAP_ONLINE_SHOP
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_SNAP_ONLINE_SHOP,
             ),
           state: EDashboard.READ_SNAP_ONLINE_SHOP,
           isOpen: false,
@@ -604,9 +609,9 @@ export default function Dashboard() {
         {
           title: "تپسی",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_TAPSI_ONLINE_SHOP
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_TAPSI_ONLINE_SHOP,
             ),
           state: EDashboard.READ_TAPSI_ONLINE_SHOP,
           isOpen: false,
@@ -617,12 +622,12 @@ export default function Dashboard() {
       title: "پک اقتصادی",
       Icon: BsBoxSeam,
       isActive:
-        setting?.profile.role.includes("پشتیبان") ||
-        setting?.profile.access.includes(
-          EDashboardCapability.CREATE_ECONOMIC_PACKAGE
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_ECONOMIC_PACKAGE,
         ) ||
-        setting?.profile.access.includes(
-          EDashboardCapability.READ_ECONOMIC_PACKAGE
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_ECONOMIC_PACKAGE,
         ),
       isOpen: false,
 
@@ -631,9 +636,9 @@ export default function Dashboard() {
           title: "ثبت پک",
           state: EDashboard.CREATE_ECONOMIC_PACKAGE,
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.CREATE_ECONOMIC_PACKAGE
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_ECONOMIC_PACKAGE,
             ),
           Icon: FiBox,
           isOpen: false,
@@ -641,13 +646,95 @@ export default function Dashboard() {
         {
           title: "مشاهده پک ها",
           isActive:
-            setting?.profile.role.includes("پشتیبان") ||
-            setting?.profile.access.includes(
-              EDashboardCapability.READ_ECONOMIC_PACKAGE
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_ECONOMIC_PACKAGE,
             ),
           Icon: BsBoxes,
           state: EDashboard.READ_ECONOMIC_PACKAGE,
           isOpen: false,
+        },
+      ],
+    },
+    {
+      isOpen: false,
+      title: "قیمت گذاری",
+      Icon: HiOutlineScale,
+      isActive:
+        setting?.profile.Role.includes("پشتیبان") ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_COST_PRICING,
+        ) ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_UNIT_PRICING,
+        ) ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_UNIT_PRICING,
+        ) ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.READ_PRODUCT_PRICING,
+        ) ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_PRODUCT_PRICING,
+        ) ||
+        setting?.profile.Access.includes(
+          EDashboardCapability.CREATE_COST_PRICING,
+        ),
+      li: [
+        {
+          title: "لیست محصولات",
+          isActive:
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_PRODUCT_PRICING,
+            ),
+          state: EDashboard.READ_PRODUCT_PRICING,
+          isOpen: false,
+          Icon: SiCoffeescript,
+        },
+        {
+          title: "ایجاد محصول",
+          isActive:
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_PRODUCT_PRICING,
+            ),
+          state: EDashboard.CREATE_PRODUCT_PRICING,
+          isOpen: false,
+          Icon: PiCoffeeBeanBold,
+        },
+        {
+          title: "لیست واحد",
+          isActive:
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.READ_UNIT_PRICING,
+            ),
+          state: EDashboard.READ_UNIT_PRICING,
+          isOpen: false,
+          Icon: TfiRuler,
+        },
+        {
+          title: "ایجاد واحد",
+          isActive:
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_UNIT_PRICING,
+            ),
+          state: EDashboard.CREATE_UNIT_PRICING,
+          isOpen: false,
+          Icon: TfiRulerPencil,
+        },
+        {
+          title: "ایجاد هزینه",
+          isActive:
+            setting?.profile.Role.includes("پشتیبان") ||
+            setting?.profile.Access.includes(
+              EDashboardCapability.CREATE_COST_PRICING,
+            ),
+          state: EDashboard.CREATE_COST_PRICING,
+          isOpen: false,
+          Icon: PiHandCoins,
         },
       ],
     },
@@ -657,14 +744,10 @@ export default function Dashboard() {
     <div className="flex flex-wrap md:flex-nowrap gap-2 gap-x-4 px-2 h-full">
       <audio src="/assets/sound/notification-sound.wav" />
       <aside
-        className={`basis-72 shrink-0 grow md:grow-0 overflow-y-auto z-10 md:h-[calc(100dvh-2rem)] ${
-          isOpenAccordion
-            ? ""
-            : ""
-        }`}
+        className={`basis-72 shrink-0 grow md:grow-0 z-10  md:h-[calc(100dvh-6rem)]`}
       >
-        <Box variant="guest">
-          <div className="flex flex-col gap-4">
+        <Box variant="guest" hFull>
+          <div className="flex flex-col gap-4 overflow-y-auto px-2 py-3">
             <div className="">
               <Box variant="primary">
                 <div className="flex flex-col gap-2 relative">
@@ -681,7 +764,9 @@ export default function Dashboard() {
                   </button>
                   <button
                     title="exit"
-                    className={`cursor-pointer absolute right-0 top-8 p-1 transition rounded-full text-sky-700 bg-sky-100 md:hidden block ${isOpenAccordion ? "rotate-0" : "rotate-180"}`}
+                    className={`cursor-pointer absolute right-0 top-8 p-1 transition rounded-full text-sky-700 bg-sky-100 md:hidden block ${
+                      isOpenAccordion ? "rotate-0" : "rotate-180"
+                    }`}
                     onClick={() => {
                       setIsOpenAccordion((val) => !val);
                     }}
@@ -703,7 +788,7 @@ export default function Dashboard() {
                     )}
                   </button>
                   <Link
-                    href="/"
+                    href={EInnerRoute.HOME}
                     title="home"
                     className="cursor-pointer absolute right-0 p-1 rounded-full text-secondary-68 bg-secondary-12"
                   >
@@ -718,8 +803,8 @@ export default function Dashboard() {
                     }
                   >
                     <img
-                      src={ERoute.HOST + setting?.profile.profile}
-                      alt={setting?.profile.name}
+                      src={EServerRoute.HOST + setting?.profile.Profile}
+                      alt={setting?.profile.Name}
                       width={50}
                       height={50}
                       className="mx-auto rounded-full w-16"
@@ -728,12 +813,12 @@ export default function Dashboard() {
                   <span className="text-center gap-4 flex flex-col justify-center items-center">
                     <H size={4}>
                       سلام{" "}
-                      {setting?.profile.name || setting?.profile.family ? (
+                      {setting?.profile.Name || setting?.profile.Family ? (
                         <>
-                          {setting?.profile.name} {setting?.profile.family}
+                          {setting?.profile.Name} {setting?.profile.Family}
                         </>
                       ) : (
-                        "شوکونانی"
+                        "شونانی"
                       )}{" "}
                       عزیز !
                     </H>
@@ -753,9 +838,9 @@ export default function Dashboard() {
           </div>
         </Box>
       </aside>
-      <article className="grow basis-3xl h-[calc(100dvh-2rem)] overflow-y-auto">
+      <article className="grow basis-3xl mb-[4.5rem] md:mb-[4rem] h-[calc(100dvh-8rem)] md:h-[calc(100dvh-6rem)]">
         <Box variant="guest" hFull>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 px-2 py-3 overflow-y-auto">
             <Container state={setting?.dashboard.state || EDashboard.DEFAULT} />
           </div>
         </Box>
@@ -836,6 +921,16 @@ function Container({ state }: { state: number }) {
       return <ReadRole />;
     case EDashboard.CREATE_ROLE:
       return <CreateRole />;
+    case EDashboard.CREATE_COST_PRICING:
+      return <CreateCostPricing />;
+    case EDashboard.READ_UNIT_PRICING:
+      return <ReadUnitPricing />;
+    case EDashboard.CREATE_UNIT_PRICING:
+      return <CreateUnitPricing />;
+    case EDashboard.READ_PRODUCT_PRICING:
+      return <ReadProductPricing />;
+    case EDashboard.CREATE_PRODUCT_PRICING:
+      return <CreateProductPricing />;
     default:
       break;
   }
@@ -850,7 +945,7 @@ function UlMenu({
   deep: number;
   setState: React.Dispatch<React.SetStateAction<EDashboard>>;
 }) {
-  const [open, setOpen] = React.useState(content.map(() => false));
+  const [open, setOpen] = React.useState(content.map((item) => item.isOpen));
 
   const onClickOpen = (index: number) => {
     setOpen((old) => old.map((val, i) => (i === index ? (val = !val) : val)));
@@ -885,7 +980,7 @@ function UlMenu({
               <></>
             )}
           </li>
-        ) : undefined
+        ) : undefined,
       )}
     </ul>
   );

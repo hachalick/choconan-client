@@ -20,7 +20,7 @@ import { IoIosAddCircleOutline, IoMdCloseCircleOutline } from "react-icons/io";
 export default function CreateMenuProduct() {
   const setting = useContext(AccountContext);
 
-  const baseDefaultProduct: TIdProductMenu & { category_id: string } = useMemo(
+  const baseDefaultProduct: TGetProductMenuResponseDto & { category_id: string } = useMemo(
     () => ({
       product_id: "",
       id: 1,
@@ -43,7 +43,7 @@ export default function CreateMenuProduct() {
   const [defaultProduct, setDefaultProduct] = useState(baseDefaultProduct);
   const [saveChangeProduct, setSaveChangeProduct] = useState(false);
   const [timerProduct, setTimerProduct] = useState<NodeJS.Timeout>();
-  const [menu, setMenu] = useState<TIdCategoriesMenu>([]);
+  const [menu, setMenu] = useState<Array<TGetCategoryMenuResponseDto>>([]);
   const [getList, setGetList] = useState(true);
   const [dataMatchSnap, setDataMatchSnap] = useState<{
     allProduct: Array<{
@@ -103,7 +103,6 @@ export default function CreateMenuProduct() {
         let foundProduct = null;
         let foundCategory = "";
 
-        // جستجو در بین دسته‌بندی‌ها و محصولات
         for (const categoryData of allProduct) {
           const product = categoryData.products.find(
             (val) => val.product_id === setting?.productMenu.state
@@ -287,7 +286,7 @@ export default function CreateMenuProduct() {
             value={defaultProduct.snap || ""}
           />
           <datalist id="list-product-snap">
-            {dataMatchSnap.allProduct.map((val) => (
+            {dataMatchSnap?.allProduct?.map((val) => (
               <option value={val.id} key={val.id}>
                 {val.title}
               </option>
@@ -306,7 +305,7 @@ export default function CreateMenuProduct() {
             value={defaultProduct.tapsi || ""}
           />
           <datalist id="list-product-tapsi">
-            {dataMatchTapsi.allProduct.map((val) => (
+            {dataMatchTapsi?.allProduct?.map((val) => (
               <option value={val.id} key={val.id}>
                 {val.title}
               </option>

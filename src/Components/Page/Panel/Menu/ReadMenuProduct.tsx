@@ -16,7 +16,7 @@ export default function ReadMenuProduct() {
   const setting = useContext(AccountContext);
 
   const [getList, setGetList] = useState(true);
-  const [menu, setMenu] = useState<TIdCategoriesMenu>([]);
+  const [menu, setMenu] = useState<Array<TGetCategoryMenuResponseDto>>([]);
   const [stateCategory, setStateCategory] = useState("همه");
 
   useEffect(() => {

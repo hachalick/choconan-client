@@ -7,7 +7,7 @@ function HorizontalScrollEconomicPackagePanel({
   listEconomicPackage,
   setGetListEconomicStatus,
 }: {
-  listEconomicPackage: TGetEconomicPackages;
+  listEconomicPackage: Array<TGetEconomicPackageResponseDto>;
   setGetListEconomicStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (

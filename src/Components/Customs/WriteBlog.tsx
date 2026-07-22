@@ -30,7 +30,7 @@ function WriteBlog({ blog_id }: { blog_id: string }) {
         short_description,
         src_banner,
         title,
-      } = await FetchApi.Blog.fetchBLog({ blog_id });
+      } = await FetchApi.Blog.fetchGetBLog({ blog_id });
       const short_descriptions = short_description || "";
       const src = src_banner || "";
       setData({

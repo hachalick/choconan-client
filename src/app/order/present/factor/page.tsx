@@ -1,71 +1,56 @@
 "use client";
-import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
-import { dbOrders } from "@/Common/Utils/DbClient";
-import SelectTable from "@/Components/Customs/SelectTable";
-import ShowNestedRoute from "@/Components/Customs/ShowNestedRoute";
-import TotalFactorMenu from "@/Components/Customs/TotalFactorMenu";
+import { FetchApi } from "@/Common/Connection/Api/Seed/fetchApi.Api";
 import Layout from "@/Components/Layout/Layout";
-import Box from "@/Components/Ui/Box";
-import { Button } from "@/Components/Ui/Button";
-import { H } from "@/Components/Ui/H";
+import Box from "@/Components/Element/Box";
+import { Button } from "@/Components/Element/Button";
+import { H } from "@/Components/Element/H";
 import React, { useEffect, useState } from "react";
 import { FiShoppingBag } from "react-icons/fi";
 import Swal from "sweetalert2";
+import { OrderRepository } from "@/Common/Utils/DbClient";
+import ShowNestedRoute from "@/Components/Ui/ShowNestedRoute";
+import TotalFactorMenu from "@/Components/Ui/TotalFactorMenu";
+import SelectTable from "@/Components/Ui/SelectTable";
+import { IOrderPresent } from "@/Common/Interfaces/OrderPresent.Interface";
+import { EInnerRoute } from "@/Common/Enums/InnerRout";
+
+
 
 export default function PresentFactor() {
-  const [val, setVal] = useState("");
-  const [listOrder, setListOrder] = useState<TOrdersPresent>([]);
+  const [location, setLocation] = useState("");
+  const [listOrder, setListOrder] = useState<Array<IOrderPresent>>([]);
 
   useEffect(() => {
-    const getAllData = async () => {
-      const dataDb = await dbOrders.getAll();
-      const listAllData: TOrdersPresent = [];
-      for (const i in dataDb) {
-        const {
-          available,
-          description,
-          id,
-          meta_description,
-          meta_title,
-          name,
-          price,
-          src,
-          waiting,
-          product_id,
-          snap,
-          tapsi,
-        } = await FetchApi.Menu.fetchProductMenu({
-          category: dataDb[i].category,
-          id: String(dataDb[i].id_product_menu),
+    const fetchData = async () => {
+      const orderItems = await OrderRepository.getAll();
+
+      for (const item of orderItems) {
+        const product = await FetchApi.Menu.ReadMenuProductDetail({
+          Id: item.product_id,
         });
-        listAllData.push({
-          available,
-          description,
-          meta_description,
-          meta_title,
-          name,
-          price,
-          src,
-          waiting,
-          id_product_menu: id,
-          category: dataDb[i].category,
-          count: dataDb[i].count,
-          product_id,
-          snap,
-          tapsi,
-        });
+
+        if (!product.IsShowMenu) continue;
+
+        setListOrder((value) => [
+          ...value,
+          {
+            Id: product.Id,
+            Count: item.count,
+            Description: product.Description,
+            Name: product.Name,
+            Price: product.Price,
+            SrcImage: product.SrcImage,
+            Waiting: product.Waiting,
+          },
+        ]);
       }
-      setListOrder(listAllData);
     };
-    getAllData();
+
+    fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   setShow(true);
-  // }, []);
-
-  const onClickHandler = async () => {
-    if (!val) {
+  const onClickCreateOrder = async () => {
+    if (!location) {
       Swal.fire({
         title: "مشکل داریم !",
         text: "میز خود را انتخاب نکردید",
@@ -79,46 +64,45 @@ export default function PresentFactor() {
         icon: "error",
         confirmButtonText: "تلاش مجدد",
       });
-    } else {
-      const access_token = sessionStorage.getItem("access_token") || "";
-      const statusTable = await FetchApi.Order.fetchStatusTable({
-        table_id: val,
-        access_token,
+    }
+
+    const statusTable = await FetchApi.Order.ReadStatusTable({
+      Id: location,
+    });
+
+    if (statusTable.IsBusy) {
+      Swal.fire({
+        title: "مشکل داریم !",
+        text: `میز انتخاب شده در حال استفاده است`,
+        icon: "error",
+        confirmButtonText: "تعویض میز",
       });
-      if (statusTable.can_order) {
-        Swal.fire({
-          title: "مشکل داریم !",
-          text: `میز انتخاب شده در حال استفاده است`,
-          icon: "error",
-          confirmButtonText: "تعویض میز",
-        });
-      } else {
-        const orders = listOrder.map((order) => ({
-          count: order.count,
-          product_id: order.product_id,
-        }));
-        const res = await FetchApi.Order.fetchOrderTable({
-          table_id: val,
-          list_order: orders,
-        });
-        if (res.submit) {
-          Swal.fire({
-            title: "ثبت سفارش",
-            text: "سفارش شما در لیست تایید قرار گرفت",
-            icon: "success",
-            confirmButtonText: "تایید",
-          });
-          dbOrders.clear();
-          location.replace("/");
-        } else {
-          Swal.fire({
-            title: "مشکل داریم !",
-            text: `میز سفارش شما در لیست تایید قرار گرفت حال استفاده است`,
-            icon: "error",
-            confirmButtonText: "تایید",
-          });
-        }
-      }
+    }
+
+    const res = await FetchApi.Order.CreateOrderTable({
+      Id: location,
+      Orders: listOrder.map((item) => ({
+        Count: item.Count,
+        ProductId: item.Id,
+      })),
+    });
+
+    if (res.Create) {
+      Swal.fire({
+        title: "ثبت سفارش",
+        text: "سفارش شما در لیست تایید قرار گرفت",
+        icon: "success",
+        confirmButtonText: "تایید",
+      });
+      OrderRepository.clear();
+      document.location.replace("/");
+    } else {
+      Swal.fire({
+        title: "مشکل داریم !",
+        text: `مشکل در ثبت سفارش پیش آمده.`,
+        icon: "error",
+        confirmButtonText: "تایید",
+      });
     }
   };
 
@@ -126,23 +110,29 @@ export default function PresentFactor() {
     <Layout variant="website">
       <ShowNestedRoute
         list_route={[
-          { path: "/", name: "خانه" },
-          { path: "/order", name: "سبد خرید" },
-          { path: "/order/present", name: "حضوری" },
-          { path: "/order/present/factor", name: "فاکتور" },
+          { path: EInnerRoute.HOME, name: "خانه" },
+          { path: EInnerRoute.ORDER, name: "سبد خرید" },
+          { path: EInnerRoute.ORDER_PRESENT, name: "حضوری" },
+          { path: EInnerRoute.ORDER_PRESENT_ORDER, name: "فاکتور" },
         ]}
       />
 
       <Box variant="primary">
         <H size={2}>میز سفارش</H>
       </Box>
-      <TotalFactorMenu listOrder={listOrder} />
-      <SelectTable setVal={setVal} />
+      <TotalFactorMenu
+        listOrder={listOrder.map((val) => ({
+          Count: val.Count,
+          Name: val.Name,
+          Price: val.Price,
+        }))}
+      />
+      <SelectTable setVal={setLocation} />
       <Box variant="guest">
         <div className="flex flex-wrap justify-end gap-3">
           <Button
             variant="warning"
-            href="/order/present"
+            href={EInnerRoute.ORDER_PRESENT}
             title="ثبت سفارش"
             StartIcon={FiShoppingBag}
           >
@@ -150,7 +140,7 @@ export default function PresentFactor() {
           </Button>
           <Button
             variant="success"
-            onClick={() => onClickHandler()}
+            onClick={() => onClickCreateOrder()}
             title="ثبت سفارش"
             StartIcon={FiShoppingBag}
           >

@@ -1,5 +1,4 @@
 "use client";
-import { dbOrders } from "@/Common/Utils/DbClient";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FiShoppingBag } from "react-icons/fi";
@@ -9,17 +8,20 @@ import {
   MdOutlineRestaurantMenu,
   MdOutlineSwipeDown,
 } from "react-icons/md";
-import { Button } from "../Ui/Button";
-import Box from "../Ui/Box";
+import { Button } from "../Element/Button";
+import Box from "../Element/Box";
+import { OrderRepository } from "@/Common/Utils/DbClient";
+import { EInnerRoute } from "@/Common/Enums/InnerRout";
 
-function MenuMobile() {
+export default function MenuMobile() {
   const [countBasket, setCountBasket] = useState(0);
 
   const pathname = usePathname();
 
   useEffect(() => {
     const getBasket = async () => {
-      const existOrderProduct = await dbOrders.getAll();
+      const existOrderProduct = await OrderRepository.getAll();
+
       existOrderProduct.forEach((val) => {
         setCountBasket((v) => (v += val.count));
       });
@@ -41,32 +43,32 @@ function MenuMobile() {
           />
           <Button
             title="home"
-            href="/"
+            href={EInnerRoute.HOME}
             variant={pathname === "/" ? "secondary" : "primary"}
             StartIcon={GoHome}
           />
           <Button
             title="menu"
-            href="/menu"
+            href={EInnerRoute.MENU}
             variant={pathname.startsWith("/menu") ? "secondary" : "primary"}
             StartIcon={MdOutlineRestaurantMenu}
           />
           <span className="relative flex justify-center items-center">
             <span
-              className="animate-ping duration-600 absolute bg-error-60 w-full h-full -z-1 rounded-full"
+              className="animate-ping duration-1000 absolute bg-pink-600 w-full h-full -z-1 rounded-full"
               id="pulsIsBasketFull"
-              hidden
+              hidden={countBasket === 0}
             />
             <Button
               title="order"
-              href="/order"
+              href={EInnerRoute.ORDER}
               variant={pathname.startsWith("/order") ? "secondary" : "primary"}
               StartIcon={FiShoppingBag}
             ></Button>
           </span>
           <Button
             title="account"
-            href="/account"
+            href={EInnerRoute.ACCOUNT}
             variant={pathname.startsWith("/account") ? "secondary" : "primary"}
             StartIcon={MdOutlineAccountCircle}
           />
@@ -75,5 +77,3 @@ function MenuMobile() {
     </div>
   );
 }
-
-export default MenuMobile;

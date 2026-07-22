@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "choconan | پکیج های ما کافه شوکونان",
+  title: "shonan | پکیج های ما کافه شونان",
   description:
-    "شوکونان یک کافه واقع در سهرودی است که محصولات خود را بصورت بیرون بر یا سرو داخل کافه ارائه میدهد",
+    "شونان یک کافه واقع در سهرودی است که محصولات خود را بصورت بیرون بر یا سرو داخل کافه ارائه میدهد",
 };
 
 export default function DashboardLayout({

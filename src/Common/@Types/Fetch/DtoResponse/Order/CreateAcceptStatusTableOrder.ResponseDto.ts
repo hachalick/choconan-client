@@ -1,0 +1,1 @@
+type TCreateAcceptStatusTableOrderResponseDto = { delete: boolean }

@@ -12,13 +12,13 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 export default function ReadRole() {
   const setting = useContext(AccountContext);
 
-  const [listRole, setListRole] = useState<TAllRoleAccessId>([]);
+  const [listRole, setListRole] = useState<Array<TGetRoleAccessResponseDto>>([]);
   const [fetchAgain, setFetchAgain] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       const access_token = sessionStorage.getItem("access_token") || "";
-      const res = await FetchApi.User.fetchGetRole({ access_token });
+      const res = await FetchApi.User.fetchGetRoleAccess({ access_token });
       setListRole(res);
       setFetchAgain(false);
     };
@@ -30,7 +30,7 @@ export default function ReadRole() {
     await FetchApi.User.fetchDeleteRole({ access_token, role_id });
     setFetchAgain(true);
   };
-  
+
   const onClickEditRole = (roleId: string) => {
     setting?.roleAccess.setState(roleId);
     setting?.dashboard.setState(EDashboard.CREATE_ROLE);

@@ -1,8 +1,9 @@
 "use client";
-import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
+import { FetchApi } from "@/Common/Connection/Api/Seed/fetchApi.Api";
+import { ReadAccountDetailViewModel } from "@/Common/Connection/Api/ViewModels/User.Service.ViewModel";
 import { EDashboard } from "@/Common/Enums/Dashboard";
 import Layout from "@/Components/Layout/Layout";
-import LoginPanel from "@/Components/Page/Panel/Login/Login";
+import LoginPanel from "@/Page/Panel/Login/Login";
 import { AccountContext } from "@/Contexts/Account.Context";
 import { useEffect, useState } from "react";
 
@@ -11,15 +12,13 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [profile, setProfile] = useState<TProfile>({
-    access: [],
-    family: "",
-    name: "",
-    profile: "",
-    role: [],
-  });
-  const [state, setState] = useState<EDashboard>(EDashboard.DEFAULT);
+  const [isLogin, setIsLogin] = useState<boolean | null>(false);
+  const [profile, setProfile] = useState<ReadAccountDetailViewModel>(
+    () => new ReadAccountDetailViewModel(),
+  );
+  const [statePageDashboard, setStatePageDashboard] = useState<EDashboard>(
+    EDashboard.DEFAULT,
+  );
   const [getOrder, setGetOrder] = useState<boolean>(true);
   const [getConnectServerSocketIo, setGetConnectServerSocketIo] =
     useState<boolean>(false);
@@ -29,6 +28,9 @@ export default function DashboardLayout({
   const [idUserAccess, setIdUserAccess] = useState<string>("");
   const [idRoleAccess, setIdRoleAccess] = useState<string>("");
   const [idLocation, setIdLocation] = useState<string>("");
+  const [idUnitPricing, setIdUnitPricing] = useState<string>("");
+  const [idProductUnitPricing, setIdProductUnitPricing] = useState<string>("");
+  const [idCostUnitPricing, setIdCostUnitPricing] = useState<string>("");
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -37,48 +39,89 @@ export default function DashboardLayout({
 
       if (refresh_token && access_token) {
         try {
-          const profile = await FetchApi.User.fetchGetAccount({ access_token });
+          const profile = await FetchApi.User.ReadAccountDetail({
+            Token: access_token,
+          });
           setProfile(profile);
-          setIsLogin(false);
+          setIsLogin(true);
         } catch (error) {
           try {
-            const res = await FetchApi.Auth.fetchRefreshToken({
-              refresh_token,
+            const res = await FetchApi.Auth.CreateRefreshToken({
+              RefreshToken: refresh_token,
             });
-            if (res.refresh) {
-              sessionStorage.setItem("access_token", res.access_token);
-              localStorage.setItem("refresh_token", res.refresh_token);
+            if (res.Create) {
+              sessionStorage.setItem("access_token", res.AccessToken);
+              localStorage.setItem("refresh_token", res.RefreshToken);
               location.reload();
             }
           } catch (error) {
+            // console.log(error)
             localStorage.clear();
             sessionStorage.clear();
           }
         }
       } else if (refresh_token) {
         try {
-          const res = await FetchApi.Auth.fetchRefreshToken({ refresh_token });
-          if (res.refresh) {
-            sessionStorage.setItem("access_token", res.access_token);
-            localStorage.setItem("refresh_token", res.refresh_token);
+          const res = await FetchApi.Auth.CreateRefreshToken({
+            RefreshToken: refresh_token,
+          });
+          if (res.Create) {
+            sessionStorage.setItem("access_token", res.AccessToken);
+            localStorage.setItem("refresh_token", res.RefreshToken);
             location.reload();
           }
         } catch (error) {
           localStorage.clear();
           sessionStorage.clear();
         }
+      } else {
+        setIsLogin(null);
       }
     };
 
     fetchRoles();
+
+    const dashboard_page = sessionStorage.getItem("dashboard_page");
+
+    if (!dashboard_page) {
+      sessionStorage.setItem(
+        "dashboard_page",
+        JSON.stringify(statePageDashboard),
+      );
+    } else {
+      const pars_dashboard_page = JSON.parse(dashboard_page);
+
+      if (typeof pars_dashboard_page === "number") {
+        setStatePageDashboard(pars_dashboard_page);
+      } else if (typeof pars_dashboard_page === "string") {
+        try {
+          const int_pars_dashboard_page = parseInt(pars_dashboard_page);
+          setStatePageDashboard(int_pars_dashboard_page);
+        } catch (error) {}
+      }
+    }
   }, []);
 
-  if (!isLogin) {
+  useEffect(() => {
+    sessionStorage.setItem(
+      "dashboard_page",
+      JSON.stringify(statePageDashboard),
+    );
+  }, [statePageDashboard]);
+
+  if (isLogin === true) {
     return (
       <AccountContext.Provider
         value={{
           profile,
-          dashboard: { state, setState },
+          costPricing: {
+            state: idCostUnitPricing,
+            setState: setIdCostUnitPricing,
+          },
+          dashboard: {
+            state: statePageDashboard,
+            setState: setStatePageDashboard,
+          },
           orders: { state: getOrder, setState: setGetOrder },
           factor: { state: idFactor, setState: setIdFactor },
           categoryMenu: { state: idCategoryMenu, setState: setIdCategoryMenu },
@@ -90,10 +133,24 @@ export default function DashboardLayout({
             state: getConnectServerSocketIo,
             setState: setGetConnectServerSocketIo,
           },
+          unitPricing: {
+            state: idUnitPricing,
+            setState: setIdUnitPricing,
+          },
+          productPricing: {
+            setState: setIdProductUnitPricing,
+            state: idProductUnitPricing,
+          },
         }}
       >
         {children}
       </AccountContext.Provider>
+    );
+  } else if (isLogin === false) {
+    return (
+      <Layout variant="dashboard">
+        <div></div>
+      </Layout>
     );
   } else {
     return (

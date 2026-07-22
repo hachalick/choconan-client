@@ -1,3 +1,4 @@
+import { EServerRoute } from "@/Common/Enums/ServerRout";
 import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
@@ -5,13 +6,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: [
-        "/account",
-        "/account/*",
-        "/order",
-        "/order/*",
-      ],
+      disallow: ["/account", "/account/*", "/order", "/order/*"],
     },
-    sitemap: "https://choconan.ir/sitemap.xml",
+    sitemap: `${EServerRoute.HOST}/sitemap.xml`,
   };
 }

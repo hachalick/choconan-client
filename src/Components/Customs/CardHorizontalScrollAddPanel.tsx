@@ -14,7 +14,7 @@ export default function CardHorizontalScrollAddPanel({
   id: number;
   category_id: string;
 }) {
-  const initalCard: TProductMenu = {
+  const initialCard: Omit<TCreateProductMenuDto, "access_token" | "category_id"> = {
     available: false,
     description: "",
     id,
@@ -28,7 +28,7 @@ export default function CardHorizontalScrollAddPanel({
     tapsi: "",
   };
   const [add, setAdd] = useState(false);
-  const [dataCard, setDataCard] = useState<TProductMenu>(initalCard);
+  const [dataCard, setDataCard] = useState(initialCard);
 
   const changeHandler = (e: any) => {
     setDataCard((val) => ({ ...val, [e.target.name]: e.target.value }));
@@ -77,7 +77,7 @@ export default function CardHorizontalScrollAddPanel({
 
   if (add) {
     return (
-      <div className="flex flex-col shrink-0 snap-center w-[70%] md:w-80 h-[450px] rounded-xl bg-gradient-to-br from-cooooooooooooooooooloooooooooo to-[#4e3751] shadow-primary pb-1 mb-4 overflow-y-auto">
+      <div className="flex flex-col shrink-0 snap-center w-[70%] md:w-80 h-[450px] rounded-xl shadow-primary pb-1 mb-4 overflow-y-auto">
         <div className="flex flex-col shrink-0 pb-1 relative">
           <button
             type="button"
@@ -106,7 +106,7 @@ export default function CardHorizontalScrollAddPanel({
               type="text"
               value={dataCard.src}
               placeholder="src"
-              className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2"
+              className="px-2 py-1 mx-2"
               dir="ltr"
               onChange={(e) => changeHandler(e)}
             />
@@ -117,7 +117,7 @@ export default function CardHorizontalScrollAddPanel({
               type="text"
               value={dataCard.meta_title}
               placeholder="meta_title"
-              className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2"
+              className="px-2 py-1 mx-2"
               onChange={(e) => changeHandler(e)}
             />
             <label htmlFor="meta_description">متا توضیحات :</label>
@@ -126,7 +126,7 @@ export default function CardHorizontalScrollAddPanel({
               name="meta_description"
               value={dataCard.meta_description}
               placeholder="meta_description"
-              className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2 resize-none"
+              className="px-2 py-1 mx-2 resize-none"
               rows={5}
               onChange={(e) => changeHandler(e)}
             />
@@ -137,7 +137,7 @@ export default function CardHorizontalScrollAddPanel({
               type="text"
               value={dataCard.name}
               placeholder="name"
-              className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2"
+              className="px-2 py-1 mx-2"
               onChange={(e) => changeHandler(e)}
             />
             <label htmlFor="description">توضیحات :</label>
@@ -146,7 +146,7 @@ export default function CardHorizontalScrollAddPanel({
               name="description"
               value={dataCard.description}
               placeholder="description"
-              className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2 resize-none"
+              className="px-2 py-1 mx-2 resize-none"
               rows={5}
               onChange={(e) => changeHandler(e)}
             />
@@ -157,7 +157,7 @@ export default function CardHorizontalScrollAddPanel({
               type="number"
               value={dataCard.waiting}
               placeholder="waiting"
-              className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2"
+              className="px-2 py-1 mx-2"
               onChange={(e) => changeHandler(e)}
             />
             <label htmlFor="price">قیمت :</label>
@@ -167,14 +167,14 @@ export default function CardHorizontalScrollAddPanel({
               type="number"
               value={dataCard.price}
               placeholder="price"
-              className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2"
+              className="px-2 py-1 mx-2"
               onChange={(e) => changeHandler(e)}
             />
             <label htmlFor="src">وضعیت موجودی :</label>
             {dataCard.available ? "موجود" : "ناموجود"}
             <button
               type="button"
-              className="mb-4 bgcooooooooooooooooooloooooooooo200/20 w-32 mx-auto py-1 rounded-lg"
+              className="mb-4 w-32 mx-auto py-1 rounded-lg"
               onClick={() => onClickHandlerAvailable()}
             >
               {dataCard.available ? "ناموجود کردن" : "موجود کردن"}
@@ -189,7 +189,7 @@ export default function CardHorizontalScrollAddPanel({
         type="button"
         title="اضافه کردن محصول"
         onClick={() => setAdd(true)}
-        className="flex flex-col justify-center items-center shrink-0 snap-center w-[70%] md:w-80 h-[450px] rounded-xl bg-gradient-to-br from-cooooooooooooooooooloooooooooo to-[#4e3751] shadow-primary pb-1 mb-4"
+        className="flex flex-col justify-center items-center shrink-0 snap-center w-[70%] md:w-80 h-[450px] rounded-xl shadow-primary pb-1 mb-4"
       >
         <IoIosAddCircleOutline size={250} className="opacity-20" />
         <span className="opacity-30 text-xl">اضافه کردن محصول</span>

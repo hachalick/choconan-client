@@ -11,23 +11,26 @@ import { digitsEnToFa } from "@persian-tools/persian-tools";
 import React, { useContext, useEffect, useState } from "react";
 import { BsCheckSquare, BsDashSquare } from "react-icons/bs";
 import { MdWifiTethering, MdWifiTetheringOff } from "react-icons/md";
-import { io } from "socket.io-client";
 import Swal from "sweetalert2";
+import moment from "moment-jalaali";
 
 export default function ReadOrder() {
   const setting = useContext(AccountContext);
 
-  const [orders, setData] = useState<TIdPresentOrdersTable>([]);
+  const [orders, setData] = useState<
+    Array<TGetFactorPresentOrderTableResponseDto>
+  >([]);
 
   useEffect(() => {
     if (setting?.orders.state) {
-      const fetchData = async () => {
-        const orders = await FetchApi.Order.fetchOrderPanel();
-        setData(orders);
-      };
-      fetchData();
       setting?.orders.setState(false);
+      return;
     }
+    const fetchData = async () => {
+      const orders = await FetchApi.Order.fetchOrderPanel();
+      setData(orders);
+    };
+    fetchData();
   }, [setting?.orders.state]);
 
   const onClickAccept = async ({ table_id }: { table_id: string }) => {
@@ -35,15 +38,16 @@ export default function ReadOrder() {
     const factor = orders
       .map((val) =>
         val.factorPresentOrderTable.map((v) => ({
-          name: v.products.name,
-          price: v.products.price,
+          name: v.product.name,
+          price: v.product.price,
           count: v.count,
         }))
       )
       .flat();
     try {
-      const { factor_number, tax, customer_mobile, factor_id } =
+      const { factor_number, tax, customer_mobile, factor_id,  } =
         await FetchApi.Order.fetchCreateOrder({ access_token });
+        
       await FetchApi.Order.fetchUpdateOrder({
         access_token,
         tax,
@@ -53,12 +57,13 @@ export default function ReadOrder() {
         factor_number,
         customer_mobile,
         pay_status: false,
-        order_id: factor_id,
+        factor_id,
+        create_date: moment().format("jYYYY/jMM/jDD HH:mm:ss")
       });
       factor.forEach(async (val) => {
         const { factor_item_id } = await FetchApi.Order.fetchCreateOrderItem({
           access_token,
-          order_id: factor_id,
+          factor_id,
         });
         await FetchApi.Order.fetchUpdateOrderItem({
           access_token,
@@ -93,9 +98,15 @@ export default function ReadOrder() {
         <div className="flex items-center gap-4 justify-between">
           <H size={2}>سفارشات</H>
           <Button
-            variant={setting?.connectServerSocketIo.setState ? "success" : "error"}
+            variant={
+              setting?.connectServerSocketIo.setState ? "success" : "error"
+            }
             title="online"
-            StartIcon={setting?.connectServerSocketIo.setState ? MdWifiTethering : MdWifiTetheringOff}
+            StartIcon={
+              setting?.connectServerSocketIo.setState
+                ? MdWifiTethering
+                : MdWifiTetheringOff
+            }
           >
             اتصال به سرور
           </Button>
@@ -141,7 +152,7 @@ export default function ReadOrder() {
                     key={i}
                     className="font-semibold text-md mb-2 list-decimal mr-5"
                   >
-                    {order.products.name} {digitsEnToFa(order.count)} عدد
+                    {order.product.name} {digitsEnToFa(order.count)} عدد
                   </li>
                 ))}
               </ul>

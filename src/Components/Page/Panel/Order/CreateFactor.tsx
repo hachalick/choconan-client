@@ -15,32 +15,40 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { GoIssueClosed } from "react-icons/go";
 import { IoIosAddCircleOutline, IoMdCloseCircleOutline } from "react-icons/io";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import moment from "moment-jalaali";
 
 export default function CreateFactor() {
-  const baseDefaultFactor: TGetFactor = useMemo(
+  const baseDefaultFactor: TGetFactorResponseDto = useMemo(
     () => ({
       factor_id: "",
       customer_mobile: "",
-      factor_items: [],
       factor_number: 1,
       location: "",
       pay_status: false,
       tax: 0,
-      create_at: JSON.stringify(new Date()),
-      update_at: JSON.stringify(new Date()),
+      create_at: moment().format("jYYYY/jMM/jDD HH:mm:ss"),
+      update_at: moment().format("jYYYY/jMM/jDD HH:mm:ss"),
+      factor_items: [],
     }),
-    []
+    [],
   );
 
   const setting = useContext(AccountContext);
 
   const [defaultFactor, setDefaultFactor] =
-    useState<TGetFactor>(baseDefaultFactor);
-  const [detailFactor, setDetailFactors] = useState<TGetFactor>(defaultFactor);
+    useState<TGetFactorResponseDto>(baseDefaultFactor);
+  const [detailFactor, setDetailFactors] =
+    useState<TGetFactorResponseDto>(defaultFactor);
   const [saveChange, setSaveChange] = useState(false);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
   const [cloud, setCloud] = useState(true);
-  const [productList, setProductList] = useState<TIdCategoriesMenu>([]);
+  const [productList, setProductList] = useState<
+    Array<TGetCategoryMenuResponseDto>
+  >([]);
 
   //#region use effect
 
@@ -87,8 +95,9 @@ export default function CreateFactor() {
               location: detailFactor.location,
               pay_status: detailFactor.pay_status,
               tax: detailFactor.tax,
-              order_id: detailFactor.factor_id,
-            }
+              factor_id: detailFactor.factor_id,
+              create_date: detailFactor.create_at,
+            },
           );
 
           updated = updated && updateOrder;
@@ -108,7 +117,7 @@ export default function CreateFactor() {
           setCloud(updated);
           setSaveChange(!updated);
         }
-      }, 1000)
+      }, 1000),
     );
   }, [saveChange]);
 
@@ -121,6 +130,8 @@ export default function CreateFactor() {
       ...val,
       [e.target.name]: giveValueInput(e),
     }));
+
+    console.log(detailFactor);
     if (detailFactor.factor_id !== "") {
       setSaveChange(true);
     }
@@ -173,7 +184,7 @@ export default function CreateFactor() {
 
       const { factor_item_id } = await FetchApi.Order.fetchCreateOrderItem({
         access_token,
-        order_id: detailFactor.factor_id,
+        factor_id: detailFactor.factor_id,
       });
       setDetailFactors((val) => ({
         ...val,
@@ -215,13 +226,14 @@ export default function CreateFactor() {
       location: detailFactor.location,
       pay_status: detailFactor.pay_status,
       tax: detailFactor.tax,
-      order_id: newFactor.factor_id,
+      factor_id: newFactor.factor_id,
+      create_date: detailFactor.create_at,
     });
 
     for (const item of detailFactor.factor_items) {
       const newItemFactor = await FetchApi.Order.fetchCreateOrderItem({
         access_token,
-        order_id: newFactor.factor_id,
+        factor_id: newFactor.factor_id,
       });
 
       await FetchApi.Order.fetchUpdateOrderItem({
@@ -241,7 +253,7 @@ export default function CreateFactor() {
     }));
     localStorage.setItem(
       "factor_number",
-      JSON.stringify(defaultFactor.factor_number + 1)
+      JSON.stringify(defaultFactor.factor_number + 1),
     );
     setting?.dashboard.setState(EDashboard.READ_FACTOR);
   };
@@ -272,29 +284,46 @@ export default function CreateFactor() {
         {detailFactor.factor_id === "" ? (
           <></>
         ) : (
-          <InputContainer column>
-            <Label htmlFor="factor_id">شناسه فاکتور</Label>
-            <Input
-              value={detailFactor.factor_id}
-              type="text"
-              name="factor_id"
-              title=""
-              id="factor_id"
-              onChange={(e) => onChangeMainForm(e)}
-              disabled
-            />
-          </InputContainer>
+          <>
+            <InputContainer column>
+              <Label htmlFor="factor_id">شناسه فاکتور</Label>
+              <Input
+                value={detailFactor.factor_id}
+                type="text"
+                name="factor_id"
+                title=""
+                id="factor_id"
+                onChange={(e) => onChangeMainForm(e)}
+                disabled
+              />
+            </InputContainer>
+          </>
         )}
         <InputContainer column>
-          <Label htmlFor="factor_number">شماره فاکتور</Label>
-          <Input
-            value={detailFactor.factor_number}
-            type="number"
-            name="factor_number"
-            title=""
-            id="factor_number"
-            onChange={(e) => onChangeMainForm(e)}
-          />
+          <Label htmlFor="end_day">تاریخ ثبت</Label>
+          <div className="text-black bg-white pr-4 py-2 rounded-lg ">
+            <DatePicker
+              hideOnScroll
+              arrow={false}
+              calendar={persian}
+              locale={persian_fa}
+              calendarPosition="bottom-right"
+              value={detailFactor.create_at}
+              onChange={(e) => {
+                onChangeMainForm({
+                  target: {
+                    name: "create_at",
+                    type: "text",
+                    value: `${e?.year}/${e?.month.number}/${e?.day} ${e?.hour}:${e?.minute}:${e?.second}`,
+                  },
+                });
+              }}
+              className="hours-datapicker green"
+              inputClass="hours-datapicker"
+              format="YYYY/MM/DD HH:mm"
+              plugins={[<TimePicker position="bottom" />]}
+            />
+          </div>
         </InputContainer>
         <InputContainer column>
           <Label htmlFor="customer_mobile">موبایل سفارش دهنده</Label>
@@ -305,6 +334,7 @@ export default function CreateFactor() {
             title=""
             id="customer_mobile"
             onChange={(e) => onChangeMainForm(e)}
+            onFocus={(e) => e.target.select()}
           />
         </InputContainer>
         <InputContainer column>
@@ -317,6 +347,7 @@ export default function CreateFactor() {
             list="ice-cream-flavors"
             id="location"
             onChange={(e) => onChangeMainForm(e)}
+            onFocus={(e) => e.target.select()}
           />
           <datalist id="ice-cream-flavors">
             <option value="میز 1">مشتری</option>
@@ -342,6 +373,7 @@ export default function CreateFactor() {
             title=""
             id="tax"
             onChange={(e) => onChangeMainForm(e)}
+            onFocus={(e) => e.target.select()}
           />
         </InputContainer>
         <InputContainer>
@@ -360,15 +392,16 @@ export default function CreateFactor() {
         {detailFactor.factor_items.map((val, i) => (
           <Form variant="secondary" key={i} col>
             <InputContainer column>
-              <Label htmlFor="product_name">نام محصول</Label>
+              <Label htmlFor={`product_name-${i}`}>محصول</Label>
               <Input
                 type="text"
                 title="product_name"
-                id="product_name"
+                id={`product_name-${i}`}
                 name="product_name"
                 value={val.product_name}
                 onChange={(e) => onChangeDetailForm(e, i)}
                 list="product"
+                onFocus={(e) => e.target.select()}
               />
               <datalist id="product">
                 <option value="میز 1">مشتری</option>
@@ -382,36 +415,39 @@ export default function CreateFactor() {
               </datalist>
             </InputContainer>
             <InputContainer column>
-              <Label htmlFor="product_price">قیمت</Label>
+              <Label htmlFor={`product_price-${i}`}>قیمت</Label>
               <Input
                 value={val.product_price}
                 type="number"
                 title="product_price"
                 name="product_price"
-                id="product_price"
+                id={`product_price-${i}`}
                 onChange={(e) => onChangeDetailForm(e, i)}
+                onFocus={(e) => e.target.select()}
               />
             </InputContainer>
             <InputContainer column>
-              <Label htmlFor="product_count">تعداد محصول</Label>
+              <Label htmlFor={`product_count-${i}`}>مقدار</Label>
               <Input
                 type="number"
                 title="product_count"
                 name="product_count"
-                id="product_count"
+                id={`product_count-${i}`}
                 value={val.product_count}
                 onChange={(e) => onChangeDetailForm(e, i)}
+                onFocus={(e) => e.target.select()}
               />
             </InputContainer>
             <InputContainer column>
-              <Label htmlFor="product_discount">تخفیف روی محصول</Label>
+              <Label htmlFor={`product_discount-${i}`}>تخفیف (تومان)</Label>
               <Input
                 type="number"
                 title="product_discount"
                 name="product_discount"
-                id="product_discount"
+                id={`product_discount-${i}`}
                 value={val.product_discount}
                 onChange={(e) => onChangeDetailForm(e, i)}
+                onFocus={(e) => e.target.select()}
               />
             </InputContainer>
             <div className="col-span-full flex justify-end">

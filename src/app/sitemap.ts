@@ -1,73 +1,52 @@
-import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+import { EServerRoute } from "@/Common/Enums/ServerRout";
 import { MetadataRoute } from "next";
 type ItemSitemap = MetadataRoute.Sitemap[0];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const clientHost = "https://choconan.ir"
-  const allProduct = await FetchApi.Menu.fetchAllProductMenu();
-  const listCategory = allProduct.map((product) => {
-    const list: ItemSitemap = {
-      url: `${clientHost}/menu/${product.category}`,
-      lastModified: new Date().toISOString(),
-    };
-    return list;
-  });
-  let listProducts: MetadataRoute.Sitemap = [];
-  allProduct.forEach((product) => {
-    const list = product.products.map((pro) => {
-      const list: ItemSitemap = {
-        url: `${clientHost}/menu/${product.category}/${
-          pro.id
-        }/${encodeURI(pro.name)}`,
-        lastModified: new Date().toISOString(),
-      };
-      return list;
-    });
-    listProducts = [...listProducts, ...list];
-  });
   const sitemap = [
     {
-      url: `${clientHost}`,
+      url: `${EServerRoute.HOST}`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${clientHost}/about-us`,
+      url: `${EServerRoute.HOST}/about-us`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${clientHost}/blogs`,
+      url: `${EServerRoute.HOST}/blogs`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${clientHost}/contact-us`,
+      url: `${EServerRoute.HOST}/contact-us`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${clientHost}/faqs`,
+      url: `${EServerRoute.HOST}/faqs`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${clientHost}/news`,
+      url: `${EServerRoute.HOST}/news`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${clientHost}/products`,
+      url: `${EServerRoute.HOST}/products`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${clientHost}/questions`,
+      url: `${EServerRoute.HOST}/questions`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${clientHost}/search`,
+      url: `${EServerRoute.HOST}/search`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${clientHost}/menu`,
+      url: `${EServerRoute.HOST}/menu`,
       lastModified: new Date().toISOString(),
     },
-    ...listCategory,
-    ...listProducts,
   ];
   return sitemap;
 }

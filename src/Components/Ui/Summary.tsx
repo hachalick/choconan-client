@@ -9,7 +9,7 @@ export default function Summary({
   children?: React.ReactNode;
 }>) {
   let className =
-    "rounded-2xl shadow-primary-sm p-3 bg-gradient-to-br transition text-white border-2 gap-2 relative flex cursor-pointer";
+    "rounded-2xl shadow-primary-sm p-3 bg-gradient-to-br transition text-white border-2 gap-2 relative flex cursor-pointer pl-4";
 
   className +=
     variant === "primary"

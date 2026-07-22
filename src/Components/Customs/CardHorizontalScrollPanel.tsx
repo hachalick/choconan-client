@@ -6,8 +6,12 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import Swal from "sweetalert2";
 import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
 
-function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
-  const [dataCard, setDataCard] = useState<TIdProductMenu>(data);
+function CardHorizontalScrollPanel({
+  data,
+}: {
+  data: TGetProductMenuResponseDto;
+}) {
+  const [dataCard, setDataCard] = useState<TGetProductMenuResponseDto>(data);
   const [statusChange, setStatusChange] = useState(false);
   const [statusCloud, setStatusCloud] = useState(true);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
@@ -72,7 +76,7 @@ function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
   };
 
   return (
-    <div className="flex flex-col shrink-0 snap-center w-[70%] md:w-80 h-[450px] rounded-xl bg-gradient-to-br from-cooooooooooooooooooloooooooooo to-[#4e3751] shadow-primary pb-1 mb-4 overflow-y-auto relative">
+    <div className="flex flex-col shrink-0 snap-center w-[70%] md:w-80 h-[450px] rounded-xl shadow-primary pb-1 mb-4 overflow-y-auto relative">
       <div className="flex flex-col shrink-0 pb-1">
         <div
           title="وضعیت ذخیره سازی"
@@ -109,7 +113,7 @@ function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
             type="text"
             value={dataCard.src}
             placeholder="src"
-            className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2"
+            className="px-2 py-1 mx-2"
             dir="ltr"
             onChange={(e) => changeHandler(e)}
           />
@@ -120,7 +124,7 @@ function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
             type="text"
             value={dataCard.meta_title}
             placeholder="meta_title"
-            className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2"
+            className="px-2 py-1 mx-2"
             onChange={(e) => changeHandler(e)}
           />
           <label htmlFor="meta_description">متا توضیحات :</label>
@@ -129,7 +133,7 @@ function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
             name="meta_description"
             value={dataCard.meta_description}
             placeholder="meta_description"
-            className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2 resize-none"
+            className="px-2 py-1 mx-2 resize-none"
             rows={5}
             onChange={(e) => changeHandler(e)}
           />
@@ -140,7 +144,7 @@ function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
             type="text"
             value={dataCard.name}
             placeholder="name"
-            className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2"
+            className="px-2 py-1 mx-2"
             onChange={(e) => changeHandler(e)}
           />
           <label htmlFor="description">توضیحات :</label>
@@ -149,7 +153,7 @@ function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
             name="description"
             value={dataCard.description}
             placeholder="description"
-            className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2 resize-none"
+            className="px-2 py-1 mx-2 resize-none"
             rows={5}
             onChange={(e) => changeHandler(e)}
           />
@@ -160,7 +164,7 @@ function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
             type="number"
             value={dataCard.waiting}
             placeholder="waiting"
-            className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2"
+            className="px-2 py-1 mx-2"
             onChange={(e) => changeHandler(e)}
           />
           <label htmlFor="price">قیمت :</label>
@@ -170,14 +174,14 @@ function CardHorizontalScrollPanel({ data }: { data: TIdProductMenu }) {
             type="number"
             value={dataCard.price}
             placeholder="price"
-            className="bgcooooooooooooooooooloooooooooo50/20 px-2 py-1 mx-2"
+            className="px-2 py-1 mx-2"
             onChange={(e) => changeHandler(e)}
           />
           <label htmlFor="src">وضعیت موجودی :</label>
           {dataCard.available ? "موجود" : "ناموجود"}
           <button
             type="button"
-            className="mb-4 bgcooooooooooooooooooloooooooooo200/20 w-32 mx-auto py-1 rounded-lg"
+            className="mb-4 w-32 mx-auto py-1 rounded-lg"
             onClick={() => onClickHandlerAvailable()}
           >
             {dataCard.available ? "ناموجود کردن" : "موجود کردن"}

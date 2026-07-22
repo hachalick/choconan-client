@@ -67,6 +67,11 @@ export function BtnOrderIncrement({
           },
         });
       }
+
+      if ((await dbOrders.getAll()).length > 0) {
+        const elem = document.getElementById("pulsIsBasketFull");
+        if (elem && elem.hidden === true) elem.hidden = false;
+      }
     }
   };
 
@@ -128,6 +133,11 @@ export function BtnOrderDecrement({
           await dbOrders.deleteById({ id: existOrderProduct.id });
           await dbOrders.sortIds();
         }
+      }
+
+      if ((await dbOrders.getAll()).length === 0) {
+        const elem = document.getElementById("pulsIsBasketFull");
+        if (elem && elem.hidden === false) elem.hidden = true;
       }
     }
   };

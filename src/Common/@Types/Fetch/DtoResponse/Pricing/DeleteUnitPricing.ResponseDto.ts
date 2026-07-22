@@ -1,0 +1,3 @@
+type TDeleteUnitPricingResponseDto = {
+  delete: boolean;
+};

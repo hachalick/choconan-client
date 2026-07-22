@@ -18,7 +18,7 @@ import { IoIosAddCircleOutline, IoMdCloseCircleOutline } from "react-icons/io";
 export default function CreateRole() {
   const setting = useContext(AccountContext);
 
-  const baseDefaultRole: TRoleAccessId = useMemo(
+  const baseDefaultRole: TGetRoleAccessResponseDto = useMemo(
     () => ({ role_id: "", role_name: "" }),
     []
   );
@@ -34,7 +34,7 @@ export default function CreateRole() {
     const fetchData = async () => {
       const access_token = sessionStorage.getItem("access_token") || "";
       if (setting?.roleAccess.state) {
-        const { role_id, role_name } = await FetchApi.User.fetchGetRoleById({
+        const { role_id, role_name } = await FetchApi.User.fetchGetRoleAccessById({
           role_id: setting.roleAccess.state,
           access_token,
         });

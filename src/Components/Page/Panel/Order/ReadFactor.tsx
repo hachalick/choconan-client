@@ -9,12 +9,16 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { InputContainer, Label } from "@/Components/Ui/Input";
 import { Option, Select } from "@/Components/Ui/Select";
-import persian_fa from "react-date-object/locales/persian_fa";
 import { FaRegEdit } from "react-icons/fa";
-import { MdOutlineLocalPrintshop } from "react-icons/md";
+import {
+  MdOutlineAttachMoney,
+  MdOutlineLocalPrintshop,
+  MdOutlineMoneyOff,
+} from "react-icons/md";
 import Swal from "sweetalert2";
 import { AccountContext } from "@/Contexts/Account.Context";
 import { EDashboard } from "@/Common/Enums/Dashboard";
@@ -25,7 +29,7 @@ export default function ReadFactor() {
 
   //#region state
 
-  const [factors, setFactors] = useState<TGetFactors>([]);
+  const [factors, setFactors] = useState<Array<TGetFactorResponseDto>>([]);
   const [getList, setGetList] = useState(true);
   const [payStatus, setPayStatus] = useState<"false" | "true" | "all">("false");
 
@@ -49,6 +53,7 @@ export default function ReadFactor() {
         let pay_status: boolean | undefined;
         if (payStatus === "false") pay_status = false;
         else if (payStatus === "true") pay_status = true;
+        else pay_status = undefined;
         const res = await FetchApi.Order.fetchGetOrders({
           access_token,
           start_day,
@@ -81,7 +86,10 @@ export default function ReadFactor() {
         confirmButtonText: "پاک بشه",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          await FetchApi.Order.fetchDeleteOrder({ access_token, order_id: factor_id });
+          await FetchApi.Order.fetchDeleteOrder({
+            access_token,
+            order_id: factor_id,
+          });
           Swal.fire({
             title: "با موفقیت حذف شد!",
             text: "فاکتور مورد نظر با موفقیت حذف شد",
@@ -110,11 +118,42 @@ export default function ReadFactor() {
     setting?.dashboard.setState(EDashboard.CREATE_FACTOR);
   };
 
+  const onClickChangePayStatus = async ({
+    factor_id,
+    pay_status,
+  }: {
+    factor_id: string;
+    pay_status: boolean;
+  }) => {
+    const access_token = sessionStorage.getItem("access_token") || "";
+
+    try {
+      await FetchApi.Order.fetchUpdatePayStatusOrder({
+        access_token,
+        order_id: factor_id,
+        pay_status,
+      });
+      setGetList(true);
+    } catch {}
+  };
+
   //#endregion
 
   //#region utility
 
-  const sumFactor = (items: TGetFactorItem[]) => {
+  const sumAllFactor = (items: Array<TGetFactorResponseDto>) => {
+    let sum = 0;
+    items.forEach((item) => {
+      item.factor_items.forEach((product) => {
+        sum +=
+          product.product_count *
+          (product.product_price - product.product_discount);
+      });
+    });
+    return sum;
+  };
+
+  const sumFactor = (items: Array<TGetFactorItemResponseDto>) => {
     let sum = 0;
     items.forEach((item) => {
       sum += item.product_count * (item.product_price - item.product_discount);
@@ -132,41 +171,48 @@ export default function ReadFactor() {
         </H>
       </Box>
       <Box variant="primary">
-        <div className="flex flex-col gap-4">
-          <InputContainer>
-            <Label htmlFor="end_day">بازه روز</Label>
-            <div className="text-black bg-white pr-4 py-2 rounded-lg ">
-              <DatePicker
-                hideOnScroll
-                arrow={false}
-                calendar={persian}
-                locale={persian_fa}
-                calendarPosition="bottom-right"
-                value={rangeDay}
-                onChange={(e) => {
-                  setRangeDay(e);
-                  setGetList(true);
-                }}
-                className="hours-datapicker green"
-                inputClass="hours-datapicker"
-                range
-              />
-            </div>
-          </InputContainer>
-          <InputContainer>
-            <Label htmlFor="pay_status">وضعیت پرداخت</Label>
-            <Select
-              name={payStatus}
-              title="pay_status"
-              id="pay_status"
-              onChange={(e) => onChangePayStatus(e)}
-              defaultValue={payStatus}
-            >
-              <Option value="all">همه</Option>
-              <Option value="true">شده</Option>
-              <Option value="false">نشده</Option>
-            </Select>
-          </InputContainer>
+        <div className="flex gap-4 justify-between flex-wrap">
+          <div className="flex flex-col gap-4">
+            <InputContainer>
+              <Label htmlFor="end_day">بازه روز</Label>
+              <div className="text-black bg-white pr-4 py-2 rounded-lg ">
+                <DatePicker
+                  hideOnScroll
+                  arrow={false}
+                  calendar={persian}
+                  locale={persian_fa}
+                  calendarPosition="bottom-right"
+                  value={rangeDay}
+                  onChange={(e) => {
+                    setRangeDay(e);
+                    setGetList(true);
+                  }}
+                  className="hours-datapicker green"
+                  inputClass="hours-datapicker"
+                  range
+                />
+              </div>
+            </InputContainer>
+            <InputContainer>
+              <Label htmlFor="pay_status">وضعیت پرداخت</Label>
+              <Select
+                name={payStatus}
+                title="pay_status"
+                id="pay_status"
+                onChange={(e) => onChangePayStatus(e)}
+                defaultValue={payStatus}
+              >
+                <Option value="all">همه</Option>
+                <Option value="true">شده</Option>
+                <Option value="false">نشده</Option>
+              </Select>
+            </InputContainer>
+          </div>
+          <div className="flex flex-col gap-4">
+            <span>
+              {digitsEnToFa(addCommas(sumAllFactor(factors)))} هزار تومان
+            </span>
+          </div>
         </div>
       </Box>
       <div className="flex flex-col gap-4">
@@ -199,23 +245,22 @@ export default function ReadFactor() {
                   href={`/account/factor/${value.factor_id}`}
                   StartIcon={MdOutlineLocalPrintshop}
                 />
+                <Button
+                  variant={value.pay_status ? "success" : "error"}
+                  title="وضعیت پرداخت"
+                  type="button"
+                  StartIcon={
+                    value.pay_status ? MdOutlineAttachMoney : MdOutlineMoneyOff
+                  }
+                  onClick={() =>
+                    onClickChangePayStatus({
+                      factor_id: value.factor_id,
+                      pay_status: !value.pay_status,
+                    })
+                  }
+                />
               </div>
               <div className="w-full flex flex-col gap-4">
-                <div className="flex justify-between items-center">
-                  <span>شناسه فاکتور</span>
-                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                  <span>{value.factor_id}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>تاریخ ایجاد</span>
-                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                  <span>{digitsEnToFa(value.create_at)}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>تاریخ بروزرسانی</span>
-                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                  <span>{digitsEnToFa(value.update_at)}</span>
-                </div>
                 <div className="flex justify-between items-center">
                   <span>شماره فاکتور</span>
                   <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
@@ -230,19 +275,6 @@ export default function ReadFactor() {
                   <span>تحویل سفارش</span>
                   <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
                   <span>{value.location}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>وضعیت پرداخت</span>
-                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                  <span>{value.pay_status ? "شده" : "نشده"}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>مجموع قابل پرداخت</span>
-                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                  <span>
-                    {digitsEnToFa(addCommas(sumFactor(value.factor_items)))}{" "}
-                    هزار تومان
-                  </span>
                 </div>
                 <hr />
                 <div className="flex flex-col gap-4">
@@ -269,6 +301,15 @@ export default function ReadFactor() {
                       </li>
                     ))}
                   </ul>
+                  <hr />
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>مجموع قابل پرداخت</span>
+                  <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
+                  <span>
+                    {digitsEnToFa(addCommas(sumFactor(value.factor_items)))}{" "}
+                    هزار تومان
+                  </span>
                 </div>
               </div>
             </div>

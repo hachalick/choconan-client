@@ -1,8 +1,18 @@
-import { IndexDB } from "./indexDB";
-import { EIndexDb } from "@/Common/Enums/IndexDb.enum";
+import { IndexDbRepository } from "./IndexDbRepository";
 
-export const dbOrders = new IndexDB<TOrder>({
-  nameCols: "id, id_product_menu, category, count",
-  nameDb: EIndexDb.NAME_DB,
-  nameTable: EIndexDb.NAME_TB_ORDERS,
+enum EIndexDb {
+  DB_NAME = "orders",
+  TABLE_NAME = "orders-client",
+}
+
+export interface IOrderRepository {
+  id: number;
+  product_id: string;
+  count: number;
+}
+
+export const OrderRepository = new IndexDbRepository<IOrderRepository>({
+  DbName: EIndexDb.DB_NAME,
+  TblName: EIndexDb.TABLE_NAME,
+  SampleModel: { id: 0, count: 0, product_id: "" },
 });
