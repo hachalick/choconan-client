@@ -1,1 +1,0 @@
-type TDeleteTableResponseDto = { delete: boolean };

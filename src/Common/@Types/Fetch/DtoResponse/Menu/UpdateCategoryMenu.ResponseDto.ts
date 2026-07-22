@@ -1,1 +1,0 @@
-type TUpdateCategoryMenuResponseDto = { update: boolean };

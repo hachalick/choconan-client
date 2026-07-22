@@ -1,3 +1,0 @@
-type TUpdateFactorResponseDto = {
-  update: boolean;
-};

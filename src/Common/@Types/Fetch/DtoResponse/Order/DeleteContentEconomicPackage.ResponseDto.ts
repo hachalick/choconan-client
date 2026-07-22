@@ -1,1 +1,0 @@
-type TDeleteContentEconomicPackageResponseDto = { change: boolean }

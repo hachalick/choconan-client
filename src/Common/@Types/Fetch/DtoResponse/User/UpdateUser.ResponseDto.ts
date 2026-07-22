@@ -1,1 +1,0 @@
-type TUpdateUserResponseDto = { update: boolean };

@@ -1,1 +1,0 @@
-type TGetImageResponseDto = { image_id: string; dir: string };

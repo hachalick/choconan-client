@@ -1,1 +1,0 @@
-type TUpdatePasswordResponseDto = { update: boolean };

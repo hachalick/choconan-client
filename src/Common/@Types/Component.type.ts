@@ -1,1 +1,0 @@
-type TVariant = "success" | "error" | "warning" | "primary" | "secondary" | "guest"

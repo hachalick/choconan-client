@@ -1,3 +1,0 @@
-type TCreateProductMenuResponseDto = {
-  add: boolean;
-};
