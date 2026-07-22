@@ -1,0 +1,3 @@
+type TGetEconomicPackagesDto = {
+    all?: string;
+  }

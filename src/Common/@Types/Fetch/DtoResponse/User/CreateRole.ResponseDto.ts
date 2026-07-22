@@ -1,0 +1,1 @@
+type TCreateRoleResponseDto = { create: boolean }

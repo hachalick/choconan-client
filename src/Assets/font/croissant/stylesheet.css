@@ -1,0 +1,90 @@
+@font-face {
+    font-family: 'Croissant';
+    src: url('Croissant-Hairline.woff2') format('woff2'),
+        url('Croissant-Hairline.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Croissant';
+    src: url('Croissant-Bold.woff2') format('woff2'),
+        url('Croissant-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Croissant';
+    src: url('Croissant-Black.woff2') format('woff2'),
+        url('Croissant-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Croissant';
+    src: url('Croissant-Bold.woff2') format('woff2'),
+        url('Croissant-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Croissant';
+    src: url('Croissant-Black.woff2') format('woff2'),
+        url('Croissant-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Croissant';
+    src: url('Croissant-Light.woff2') format('woff2'),
+        url('Croissant-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Croissant';
+    src: url('Croissant-Medium.woff2') format('woff2'),
+        url('Croissant-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Croissant';
+    src: url('Croissant-Hairline.woff2') format('woff2'),
+        url('Croissant-Hairline.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Croissant';
+    src: url('Croissant-Medium.woff2') format('woff2'),
+        url('Croissant-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Croissant';
+    src: url('Croissant-Light.woff2') format('woff2'),
+        url('Croissant-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+

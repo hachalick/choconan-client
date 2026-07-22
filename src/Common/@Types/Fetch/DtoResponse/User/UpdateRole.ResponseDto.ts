@@ -1,0 +1,1 @@
+type TUpdateRoleResponseDto = { update: boolean };

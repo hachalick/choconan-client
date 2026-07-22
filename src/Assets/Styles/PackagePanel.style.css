@@ -1,0 +1,147 @@
+/* ---- hours-datapicker ---- */
+
+.bg-hours-datapicker.rmdp-wrapper,
+.bg-hours-datapicker .rmdp-month-picker,
+.bg-hours-datapicker .rmdp-year-picker,
+.bg-hours-datapicker .rmdp-time-picker div input,
+.rmdp-container .bg-hours-datapicker.ep-arrow::after {
+  background-color: var(--cooooooooooooooooooloooooooooo);
+  color: var(--cooooooooooooooooooloooooooooo);
+}
+
+.bg-hours-datapicker .rmdp-day:not(.rmdp-deactive),
+.bg-hours-datapicker .rmdp-time-picker div .rmdp-am,
+.bg-hours-datapicker .rmdp-header-values,
+.bg-hours-datapicker .rmdp-panel-header {
+  color: var(--cooooooooooooooooooloooooooooo);
+}
+
+.bg-hours-datapicker .rmdp-day.rmdp-range {
+  color: rgb(41, 3, 3);
+}
+
+.bg-hours-datapicker .rmdp-panel-body li {
+  color: var(--color2);
+}
+
+.bg-hours-datapicker .rmdp-day.rmdp-deactive,
+.bg-hours-datapicker .rmdp-day.rmdp-disabled {
+  color: var(--cooooooooooooooooooloooooooooo);
+}
+
+.rmdp-container .bg-hours-datapicker.ep-arrow[direction="top"] {
+  border-bottom: 1px solid var(--cooooooooooooooooooloooooooooo);
+}
+
+.rmdp-container .bg-hours-datapicker.ep-arrow[direction="left"] {
+  border-right: 1px solid var(--cooooooooooooooooooloooooooooo);
+}
+
+.rmdp-container .bg-hours-datapicker.ep-arrow[direction="right"] {
+  border-left: 1px solid var(--cooooooooooooooooooloooooooooo);
+}
+
+.rmdp-container .bg-hours-datapicker.ep-arrow[direction="bottom"] {
+  border-top: 1px solid var(--cooooooooooooooooooloooooooooo);
+}
+
+/**/
+
+:root {
+  --rmdp-secondary-hours-datapicker: #87ad92;
+  --rmdp-shadow-hours-datapicker: #87ad92;
+  --rmdp-deselect-hours-datapicker: #707939;
+}
+
+.hours-datapicker {
+  color: var(--cooooooooooooooooooloooooooooo);
+}
+
+.hours-datapicker .rmdp-wrapper {
+  border: 1px solid var(--rmdp-secondary-hours-datapicker);
+  box-shadow: 0 0 5px var(--rmdp-secondary-hours-datapicker);
+}
+
+.hours-datapicker .rmdp-panel-body li {
+  background-color: var(--cooooooooooooooooooloooooooooo);
+  box-shadow: 0 0 2px var(--rmdp-secondary-hours-datapicker);
+}
+
+.hours-datapicker .rmdp-week-day {
+  color: var(--cooooooooooooooooooloooooooooo);
+}
+
+.hours-datapicker .rmdp-day.rmdp-deactive {
+  color: var(--rmdp-secondary-hours-datapicker);
+}
+
+.hours-datapicker .rmdp-range {
+  background-color: var(--cooooooooooooooooooloooooooooo);
+  box-shadow: 0 0 3px var(--rmdp-shadow-hours-datapicker);
+}
+
+.hours-datapicker .rmdp-arrow {
+  border: solid var(--cooooooooooooooooooloooooooooo);
+  border-width: 0 2px 2px 0;
+}
+
+.hours-datapicker .rmdp-arrow-container:hover {
+  background-color: var(--cooooooooooooooooooloooooooooo);
+  box-shadow: 0 0 3px var(--rmdp-secondary-hours-datapicker);
+}
+
+.hours-datapicker .rmdp-panel-body::-webkit-scrollbar-thumb {
+  background: var(--cooooooooooooooooooloooooooooo);
+}
+
+.hours-datapicker .rmdp-day.rmdp-today span {
+  background-color: var(--color2);
+}
+
+.hours-datapicker .rmdp-rtl .rmdp-panel {
+  border-left: unset;
+  border-right: 1px solid var(--rmdp-secondary-hours-datapicker);
+}
+
+.hours-datapicker .rmdp-day.rmdp-selected span:not(.highlight) {
+  background-color: var(--cooooooooooooooooooloooooooooo);
+  box-shadow: 0 0 3px var(--rmdp-shadow-hours-datapicker);
+}
+
+.hours-datapicker .rmdp-day:not(.rmdp-day-hidden) span:hover {
+  background-color: var(--cooooooooooooooooooloooooooooo) !important;
+}
+
+.hours-datapicker .b-deselect {
+  color: var(--rmdp-deselect-hours-datapicker);
+  background-color: white;
+}
+
+.hours-datapicker .rmdp-action-button {
+  color: var(--cooooooooooooooooooloooooooooo);
+}
+
+.hours-datapicker .rmdp-button:not(.rmdp-action-button) {
+  background-color: var(--cooooooooooooooooooloooooooooo);
+}
+
+.hours-datapicker .rmdp-button:not(.rmdp-action-button):hover {
+  background-color: var(--rmdp-deselect-hours-datapicker);
+}
+
+/**/
+
+.hours-datapicker {
+  border-radius: 80px;
+  padding: 4px 12px;
+  background-color: #fff;
+  /* width: fit-content; */
+  text-align: center;
+  box-shadow: 3px 3px 9px #524554, -3px -3px 9px #d6d6d6;
+  font-size: large;
+}
+
+.hours-datapicker:focus {
+  outline: none;
+  box-shadow: 3px 3px 9px #524554, -3px -3px 9px #d6d6d6;
+}

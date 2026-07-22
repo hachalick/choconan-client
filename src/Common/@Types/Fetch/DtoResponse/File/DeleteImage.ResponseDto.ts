@@ -1,0 +1,3 @@
+type TDeleteImageResponseDto = {
+  deleted: boolean;
+};

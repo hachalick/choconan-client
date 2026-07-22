@@ -1,0 +1,1 @@
+type TDeleteRoleResponseDto = { delete: boolean }
