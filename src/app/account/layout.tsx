@@ -1,8 +1,9 @@
 "use client";
-import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
+import { FetchApi } from "@/Common/Connection/Api/Seed/fetchApi.Api";
+import { ReadAccountDetailViewModel } from "@/Common/Connection/Api/ViewModels/User.Service.ViewModel";
 import { EDashboard } from "@/Common/Enums/Dashboard";
 import Layout from "@/Components/Layout/Layout";
-import LoginPanel from "@/Components/Page/Panel/Login/Login";
+import LoginPanel from "@/Page/Panel/Login/Login";
 import { AccountContext } from "@/Contexts/Account.Context";
 import { useEffect, useState } from "react";
 
@@ -12,15 +13,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isLogin, setIsLogin] = useState<boolean | null>(false);
-  const [profile, setProfile] = useState<TGetProfileResponseDto>({
-    access: [],
-    family: "",
-    name: "",
-    profile: "",
-    role: [],
-  });
+  const [profile, setProfile] = useState<ReadAccountDetailViewModel>(
+    () => new ReadAccountDetailViewModel(),
+  );
   const [statePageDashboard, setStatePageDashboard] = useState<EDashboard>(
-    EDashboard.DEFAULT
+    EDashboard.DEFAULT,
   );
   const [getOrder, setGetOrder] = useState<boolean>(true);
   const [getConnectServerSocketIo, setGetConnectServerSocketIo] =
@@ -33,6 +30,7 @@ export default function DashboardLayout({
   const [idLocation, setIdLocation] = useState<string>("");
   const [idUnitPricing, setIdUnitPricing] = useState<string>("");
   const [idProductUnitPricing, setIdProductUnitPricing] = useState<string>("");
+  const [idCostUnitPricing, setIdCostUnitPricing] = useState<string>("");
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -41,17 +39,19 @@ export default function DashboardLayout({
 
       if (refresh_token && access_token) {
         try {
-          const profile = await FetchApi.User.fetchGetAccount({ access_token });
+          const profile = await FetchApi.User.ReadAccountDetail({
+            Token: access_token,
+          });
           setProfile(profile);
           setIsLogin(true);
         } catch (error) {
           try {
-            const res = await FetchApi.Auth.fetchRefreshToken({
-              refresh_token,
+            const res = await FetchApi.Auth.CreateRefreshToken({
+              RefreshToken: refresh_token,
             });
-            if (res.refresh) {
-              sessionStorage.setItem("access_token", res.access_token);
-              localStorage.setItem("refresh_token", res.refresh_token);
+            if (res.Create) {
+              sessionStorage.setItem("access_token", res.AccessToken);
+              localStorage.setItem("refresh_token", res.RefreshToken);
               location.reload();
             }
           } catch (error) {
@@ -62,10 +62,12 @@ export default function DashboardLayout({
         }
       } else if (refresh_token) {
         try {
-          const res = await FetchApi.Auth.fetchRefreshToken({ refresh_token });
-          if (res.refresh) {
-            sessionStorage.setItem("access_token", res.access_token);
-            localStorage.setItem("refresh_token", res.refresh_token);
+          const res = await FetchApi.Auth.CreateRefreshToken({
+            RefreshToken: refresh_token,
+          });
+          if (res.Create) {
+            sessionStorage.setItem("access_token", res.AccessToken);
+            localStorage.setItem("refresh_token", res.RefreshToken);
             location.reload();
           }
         } catch (error) {
@@ -84,7 +86,7 @@ export default function DashboardLayout({
     if (!dashboard_page) {
       sessionStorage.setItem(
         "dashboard_page",
-        JSON.stringify(statePageDashboard)
+        JSON.stringify(statePageDashboard),
       );
     } else {
       const pars_dashboard_page = JSON.parse(dashboard_page);
@@ -101,7 +103,10 @@ export default function DashboardLayout({
   }, []);
 
   useEffect(() => {
-    sessionStorage.setItem("dashboard_page", JSON.stringify(statePageDashboard));
+    sessionStorage.setItem(
+      "dashboard_page",
+      JSON.stringify(statePageDashboard),
+    );
   }, [statePageDashboard]);
 
   if (isLogin === true) {
@@ -109,6 +114,10 @@ export default function DashboardLayout({
       <AccountContext.Provider
         value={{
           profile,
+          costPricing: {
+            state: idCostUnitPricing,
+            setState: setIdCostUnitPricing,
+          },
           dashboard: {
             state: statePageDashboard,
             setState: setStatePageDashboard,

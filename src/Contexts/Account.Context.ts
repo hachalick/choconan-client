@@ -1,9 +1,10 @@
+import { ReadAccountDetailViewModel } from "@/Common/Connection/Api/ViewModels/User.Service.ViewModel";
 import { EDashboard } from "@/Common/Enums/Dashboard";
 import { createContext } from "react";
 
 export const AccountContext = createContext<
   | {
-      profile: TGetProfileResponseDto;
+      profile: ReadAccountDetailViewModel;
       dashboard: {
         state: EDashboard;
         setState: React.Dispatch<React.SetStateAction<EDashboard>>;
@@ -45,6 +46,10 @@ export const AccountContext = createContext<
         setState: React.Dispatch<React.SetStateAction<string>>;
       };
       productPricing: {
+        state: string;
+        setState: React.Dispatch<React.SetStateAction<string>>;
+      };
+      costPricing: {
         state: string;
         setState: React.Dispatch<React.SetStateAction<string>>;
       };

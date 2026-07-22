@@ -1,7 +1,19 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
-import { BaseApi } from "./SeedWork/Base.Api";
-import { ApiBuilder } from "./SeedWork/Builder.Api";
-import { ERoute } from "@/Common/Enums/Routs";
+import { BaseApi } from "./Seed/Base.Api";
+import { ApiBuilder } from "./Seed/Builder.Api";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
+import {
+  CreateRefreshTokenViewModel,
+  LoginUserOtpViewModel,
+  LoginUserPasswordViewModel,
+  UpdatePasswordUserViewModel,
+} from "./ViewModels/Auth.Service.ViewModel";
+import {
+  CreateRefreshTokenModel,
+  LoginUserOtpModel,
+  LoginUserPasswordModel,
+  UpdatePasswordUserModel,
+} from "./Models/Auth.Service.Model";
 
 export class ApiAuth extends BaseApi {
   constructor() {
@@ -12,60 +24,52 @@ export class ApiAuth extends BaseApi {
     return new ApiBuilder(new ApiAuth());
   }
 
-  static async fetchLoginOtp({
-    national_code,
-    phone,
-    otp,
-  }: TCreateLoginOtpDto): Promise<TGetLoginOtpResponseDto> {
-    console.log(otp, phone, national_code);
-
+  static async LoginUserPassword(
+    Param: LoginUserPasswordModel,
+  ): Promise<LoginUserPasswordViewModel> {
     return await ApiAuth.builder()
       .cache("no-store")
       .method(EMethodRequest.POST)
-      .route(ERoute.LOGIN_OTP)
-      .bodyParam("national_code", national_code)
-      .bodyParam("phone", phone)
-      .bodyParam("otp", otp)
-      .fetch<TGetLoginOtpResponseDto>();
+      .route(EServerRoute.AUTH_LOGIN_PASSWORD)
+      .bodyParam("NationalCode", Param.NationalCode)
+      .bodyParam("Phone", Param.Phone)
+      .bodyParam("Password", Param.Password)
+      .fetch<LoginUserPasswordViewModel>();
   }
 
-  static async fetchLoginPassword({
-    national_code,
-    password,
-    phone,
-  }: TCreateLoginPasswordDto): Promise<TGetLoginPasswordResponseDto> {
+  static async LoginUserOtp(
+    Param: LoginUserOtpModel,
+  ): Promise<LoginUserOtpViewModel> {
     return await ApiAuth.builder()
       .cache("no-store")
       .method(EMethodRequest.POST)
-      .route(ERoute.LOGIN_PASSWORD)
-      .bodyParam("national_code", national_code)
-      .bodyParam("phone", phone)
-      .bodyParam("password", password)
-      .fetch<TGetLoginPasswordResponseDto>();
+      .route(EServerRoute.AUTH_LOGIN_OTP)
+      .bodyParam("NationalCode", Param.NationalCode)
+      .bodyParam("Phone", Param.Phone)
+      .bodyParam("Otp", Param.Otp)
+      .fetch<LoginUserOtpViewModel>();
   }
 
-  static async fetchUpdatePassword({
-    access_token,
-    new_password,
-    old_password,
-  }: TUpdatePasswordDto): Promise<TUpdatePasswordResponseDto> {
+  static async UpdatePasswordUser(
+    Param: UpdatePasswordUserModel,
+  ): Promise<UpdatePasswordUserViewModel> {
     return await ApiAuth.builder()
       .cache("no-store")
       .method(EMethodRequest.PUT)
-      .route(ERoute.UPDATE_PASSWORD)
-      .header("access_token", access_token)
-      .bodyParam("new_password", new_password)
-      .bodyParam("old_password", old_password)
-      .fetch<TUpdatePasswordResponseDto>();
+      .route(EServerRoute.AUTH_UPDATE_PASSWORD)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Password", Param.Password)
+      .fetch<UpdatePasswordUserViewModel>();
   }
 
-  static async fetchRefreshToken({
-    refresh_token,
-  }: TCreateRefreshTokenDto): Promise<TGetRefreshTokenResponseDto> {
+  static async CreateRefreshToken(
+    Param: CreateRefreshTokenModel,
+  ): Promise<CreateRefreshTokenViewModel> {
     return await ApiAuth.builder()
       .cache("no-store")
-      .method(EMethodRequest.GET)
-      .route(`${ERoute.REFRESH_TOKEN}/${refresh_token}`)
-      .fetch<TGetRefreshTokenResponseDto>();
+      .method(EMethodRequest.PUT)
+      .route(`${EServerRoute.AUTH_REFRESH_TOKEN}`)
+      .bodyParam("RefreshToken", Param.RefreshToken)
+      .fetch<CreateRefreshTokenViewModel>();
   }
 }

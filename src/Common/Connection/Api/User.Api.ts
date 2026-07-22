@@ -1,7 +1,42 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
-import { ERoute } from "@/Common/Enums/Routs";
-import { ApiBuilder } from "./SeedWork/Builder.Api";
-import { BaseApi } from "./SeedWork/Base.Api";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
+import { ApiBuilder } from "./Seed/Builder.Api";
+import { BaseApi } from "./Seed/Base.Api";
+import {
+  CreateDashboardCapabilityUserModel,
+  CreateRoleModel,
+  CreateRoleUserModel,
+  CreateUserModel,
+  DeleteDashboardCapabilityUserModel,
+  DeleteRoleModel,
+  DeleteUserModel,
+  ReadAccountDetailModel,
+  ReadDashboardCapabilityListModel,
+  ReadRoleDetailModel,
+  ReadRoleListModel,
+  ReadUserDetailModel,
+  ReadUserListModel,
+  UpdateRoleModel,
+  UpdateUserModel,
+  UpdateUserProfileModel,
+} from "./Models/User.Service.Model";
+import { BaseAuthModel } from "./Models/Seed/Base.Service.Model";
+import {
+  CreateDashboardCapabilityUserViewModel,
+  CreateUserViewModel,
+  DeleteDashboardCapabilityUserViewModel,
+  DeleteRoleViewModel,
+  DeleteUserViewModel,
+  ReadAccountDetailViewModel,
+  ReadDashboardCapabilityListViewModel,
+  ReadRoleDetailViewModel,
+  ReadRoleListViewModel,
+  ReadUserDetailViewModel,
+  ReadUserListViewModel,
+  UpdateRoleViewModel,
+  UpdateUserProfileViewModel,
+  UpdateUserViewModel,
+} from "./ViewModels/User.Service.ViewModel";
 
 export class ApiUser extends BaseApi {
   constructor() {
@@ -12,217 +47,189 @@ export class ApiUser extends BaseApi {
     return new ApiBuilder(new ApiUser());
   }
 
-  static async fetchGetAccount({
-    access_token,
-  }: TGetAccountDto): Promise<TGetProfileResponseDto> {
+  static async ReadUserList(
+    Param: ReadUserListModel & BaseAuthModel,
+  ): Promise<Array<ReadUserListViewModel>> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.ACCOUNT)
-      .header("access_token", access_token)
+      .route(EServerRoute.USER_USER)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.GET)
-      .fetch<TGetProfileResponseDto>();
+      .fetch<Array<ReadUserListViewModel>>();
   }
 
-  static async fetchUpdateProfile({
-    name,
-    family,
-    access_token,
-  }: TUpdateProfileDto): Promise<TUpdateProfileResponseDto> {
+  static async ReadUserDetail(
+    Param: ReadUserDetailModel & BaseAuthModel,
+  ): Promise<ReadUserDetailViewModel> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.ACCOUNT)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.USER_USER}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<ReadUserDetailViewModel>();
+  }
+
+  static async ReadAccountDetail(
+    Param: ReadAccountDetailModel,
+  ): Promise<ReadAccountDetailViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_ACCOUNT)
+      .header("access_token", Param.Token)
+      .method(EMethodRequest.GET)
+      .fetch<ReadAccountDetailViewModel>();
+  }
+
+  static async UpdateUserProfile(
+    Param: UpdateUserProfileModel & BaseAuthModel,
+  ): Promise<UpdateUserProfileViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_ACCOUNT)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("Family", Param.Family)
       .method(EMethodRequest.PUT)
-      .bodyParam("name", name)
-      .bodyParam("family", family)
-      .fetch<TUpdateProfileResponseDto>();
+      .fetch<UpdateUserProfileViewModel>();
   }
 
-  static async fetchGetUser({
-    access_token,
-  }: TGetUsersDto): Promise<Array<TGetUserAccessResponseDto>> {
+  static async CreateUser(
+    Param: CreateUserModel & BaseAuthModel,
+  ): Promise<CreateUserViewModel> {
+    const fetchRes = ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_USER)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("NationalCode", Param.NationalCode)
+      .bodyParam("Phone", Param.Phone)
+      .method(EMethodRequest.POST);
+
+    Param.Name !== undefined && fetchRes.bodyParam("Name", Param.Name);
+    Param.Family !== undefined && fetchRes.bodyParam("Family", Param.Family);
+
+    return fetchRes.fetch<CreateUserViewModel>();
+  }
+
+  static async UpdateUser(
+    Param: UpdateUserModel & BaseAuthModel,
+  ): Promise<UpdateUserViewModel> {
+    const fetchRes = ApiUser.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.USER_USER}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("NationalCode", Param.NationalCode)
+      .bodyParam("Phone", Param.Phone)
+      .bodyParam("Profile", Param.Profile)
+      .method(EMethodRequest.POST);
+
+    Param.Name !== undefined && fetchRes.bodyParam("Name", Param.Name);
+    Param.Family !== undefined && fetchRes.bodyParam("Family", Param.Family);
+
+    return fetchRes.fetch<UpdateUserViewModel>();
+  }
+
+  static async DeleteUser(
+    Param: DeleteUserModel & BaseAuthModel,
+  ): Promise<DeleteUserViewModel> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(ERoute.USER)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.USER_USER}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.DELETE)
+      .fetch<DeleteUserViewModel>();
+  }
+
+  static async ReadDashboardCapabilityList(
+    Param: ReadDashboardCapabilityListModel & BaseAuthModel,
+  ): Promise<Array<ReadDashboardCapabilityListViewModel>> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_DASHBOARD_CAPABILITY)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.GET)
-      .fetch<Array<TGetUserAccessResponseDto>>();
+      .fetch<Array<ReadDashboardCapabilityListViewModel>>();
   }
 
-  static async fetchGetUserById({
-    access_token,
-    user_id,
-  }: TGetUserDto): Promise<TGetUserAccessResponseDto> {
+  static async CreateDashboardCapabilityUser(
+    Param: CreateDashboardCapabilityUserModel & BaseAuthModel,
+  ): Promise<CreateDashboardCapabilityUserViewModel> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(`${ERoute.USER}/${user_id}`)
-      .header("access_token", access_token)
-      .method(EMethodRequest.GET)
-      .fetch<TGetUserAccessResponseDto>();
-  }
-
-  static async fetchCreateUser({
-    access_token,
-    national_code,
-    phone,
-    name,
-    family,
-  }: TCreateUserAccessDto): Promise<TCreateUserResponseDto> {
-    return await ApiUser.builder()
-      .cache("no-store")
-      .route(ERoute.USER)
-      .header("access_token", access_token)
+      .route(EServerRoute.USER_DASHBOARD_CAPABILITY_USER)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("UserId", Param.UserId)
+      .bodyParam("DashboardCapabilityId", Param.DashboardCapabilityId)
       .method(EMethodRequest.POST)
-      .bodyParam("family", family)
-      .bodyParam("name", name)
-      .bodyParam("national_code", national_code)
-      .bodyParam("phone", phone)
-      .fetch<TCreateUserResponseDto>();
+      .fetch<CreateDashboardCapabilityUserViewModel>();
   }
 
-  static async fetchUpdateUser({
-    access_token,
-    user_id,
-    family,
-    name,
-    national_code,
-    phone,
-  }: TUpdateUserDto): Promise<TUpdateUserResponseDto> {
+  static async DeleteDashboardCapabilityUser(
+    Param: DeleteDashboardCapabilityUserModel & BaseAuthModel,
+  ): Promise<DeleteDashboardCapabilityUserViewModel> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(`${ERoute.USER}/${user_id}`)
-      .header("access_token", access_token)
+      .route(EServerRoute.USER_DASHBOARD_CAPABILITY_USER)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("UserId", Param.UserId)
+      .bodyParam("DashboardCapabilityId", Param.DashboardCapabilityId)
+      .method(EMethodRequest.DELETE)
+      .fetch<DeleteDashboardCapabilityUserViewModel>();
+  }
+
+  static async ReadRoleList(
+    Param: ReadRoleListModel & BaseAuthModel,
+  ): Promise<Array<ReadRoleListViewModel>> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_ROLE)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<Array<ReadRoleListViewModel>>();
+  }
+
+  static async ReadRoleDetail(
+    Param: ReadRoleDetailModel & BaseAuthModel,
+  ): Promise<ReadRoleDetailViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.USER_ROLE}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<ReadRoleDetailViewModel>();
+  }
+
+  static async CreateRole(
+    Param: CreateRoleModel & BaseAuthModel,
+  ): Promise<CreateRoleUserModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(EServerRoute.USER_ROLE)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Name", Param.Name)
+      .method(EMethodRequest.POST)
+      .fetch<CreateRoleUserModel>();
+  }
+
+  static async UpdateRole(
+    Param: UpdateRoleModel & BaseAuthModel,
+  ): Promise<UpdateRoleViewModel> {
+    return await ApiUser.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.USER_ROLE}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Name", Param.Name)
       .method(EMethodRequest.PUT)
-      .bodyParam("family", family)
-      .bodyParam("name", name)
-      .bodyParam("national_code", national_code)
-      .bodyParam("phone", phone)
-      .fetch<TUpdateUserResponseDto>();
+      .fetch<UpdateRoleViewModel>();
   }
 
-  static async fetchDeleteUser({
-    access_token,
-    user_id,
-  }: TDeleteUserDto): Promise<TDeleteUserResponseDto> {
+  static async DeleteRole(
+    Param: DeleteRoleModel & BaseAuthModel,
+  ): Promise<DeleteRoleViewModel> {
     return await ApiUser.builder()
       .cache("no-store")
-      .route(`${ERoute.USER}/${user_id}`)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.USER_ROLE}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.DELETE)
-      .fetch<TDeleteUserResponseDto>();
-  }
-
-  static async fetchGetDashboardCapability({
-    access_token,
-  }: TGetDashboardCapabilityDto): Promise<Array<string>> {
-    return await ApiUser.builder()
-      .cache("no-store")
-      .route(ERoute.DASHBOARD_CAPABILITY_USER)
-      .header("access_token", access_token)
-      .method(EMethodRequest.GET)
-      .fetch<Array<string>>();
-  }
-
-  static async fetchCreateDashboardCapabilityToUser({
-    access_token,
-    dashboard_capability,
-    user_id,
-  }: TCreateDashboardCapabilityToUserDto): Promise<TDeleteDashboardCapabilityToUserResponseDto> {
-    return await ApiUser.builder()
-      .cache("no-store")
-      .route(ERoute.DASHBOARD_CAPABILITY_USER)
-      .header("access_token", access_token)
-      .method(EMethodRequest.POST)
-      .bodyParam("user_id", user_id)
-      .bodyParam("dashboard_capability", dashboard_capability)
-      .fetch<TDeleteDashboardCapabilityToUserResponseDto>();
-  }
-
-  static async fetchDeleteDashboardCapabilityToUser({
-    access_token,
-    dashboard_capability,
-    user_id,
-  }: TDeleteDashboardCapabilityToUserDto): Promise<TDeleteDashboardCapabilityToUserResponseDto> {
-    return await ApiUser.builder()
-      .cache("no-store")
-      .route(ERoute.DASHBOARD_CAPABILITY_USER)
-      .header("access_token", access_token)
-      .method(EMethodRequest.DELETE)
-      .bodyParam("user_id", user_id)
-      .bodyParam("dashboard_capability", dashboard_capability)
-      .fetch<TDeleteDashboardCapabilityToUserResponseDto>();
-  }
-
-  static async fetchGetRoleAccess({
-    access_token,
-  }: TGetRoleAccessDto): Promise<Array<TGetRoleAccessResponseDto>> {
-    return await ApiUser.builder()
-      .cache("no-store")
-      .route(ERoute.ROLE)
-      .header("access_token", access_token)
-      .method(EMethodRequest.GET)
-      .fetch<Array<TGetRoleAccessResponseDto>>();
-  }
-
-  static async fetchGetRoleAccessById({
-    access_token,
-    role_id,
-  }: TGetRolesAccessDto): Promise<TGetRoleAccessResponseDto> {
-    return await ApiUser.builder()
-      .cache("no-store")
-      .route(`${ERoute.ROLE}/${role_id}`)
-      .header("access_token", access_token)
-      .method(EMethodRequest.GET)
-      .fetch<TGetRoleAccessResponseDto>();
-  }
-
-  static async fetchCreateRole({
-    access_token,
-    role_name,
-  }: TCreateRoleDto): Promise<TCreateRoleResponseDto> {
-    return await ApiUser.builder()
-      .cache("no-store")
-      .route(ERoute.ROLE)
-      .header("access_token", access_token)
-      .method(EMethodRequest.POST)
-      .bodyParam("role_name", role_name)
-      .fetch<TCreateRoleResponseDto>();
-  }
-
-  static async fetchUpdateRole({
-    access_token,
-    role_id,
-    role_name,
-  }: TUpdateRoleDto): Promise<TUpdateRoleResponseDto> {
-    return await ApiUser.builder()
-      .cache("no-store")
-      .route(`${ERoute.ROLE}/${role_id}`)
-      .header("access_token", access_token)
-      .method(EMethodRequest.PUT)
-      .bodyParam("role_name", role_name)
-      .fetch<TUpdateRoleResponseDto>();
-  }
-
-  static async fetchDeleteRole({
-    access_token,
-    role_id,
-  }: TDeleteRoleDto): Promise<TDeleteRoleResponseDto> {
-    return await ApiUser.builder()
-      .cache("no-store")
-      .route(`${ERoute.ROLE}/${role_id}`)
-      .header("access_token", access_token)
-      .method(EMethodRequest.DELETE)
-      .fetch<TDeleteRoleResponseDto>();
-  }
-
-  static async fetchGetUsersAccess({
-    access_token,
-  }: TGetUsersAccessDto): Promise<Array<TGetUserAccessResponseDto>> {
-    return await ApiUser.builder()
-      .cache("no-store")
-      .route(ERoute.ACCESS)
-      .header("access_token", access_token)
-      .method(EMethodRequest.GET)
-      .fetch<Array<TGetUserAccessResponseDto>>();
+      .fetch<DeleteRoleViewModel>();
   }
 }

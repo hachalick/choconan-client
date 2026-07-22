@@ -1,39 +1,41 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-import HorizontalScroll from "@/Components/Customs/HorizontalScroll";
-import ShowNestedRoute from "@/Components/Customs/ShowNestedRoute";
 import { Metadata } from "next";
 import React from "react";
 import { metadata } from "../layout";
-import SearchBoxMenu from "@/Components/Customs/SearchBoxMenu";
 import Layout from "@/Components/Layout/Layout";
-import { H } from "@/Components/Ui/H";
-import Box from "@/Components/Ui/Box";
-import { FetchApi } from "@/Common/Connection/Api/SeedWork/fetchApi.Api";
+import { H } from "@/Components/Element/H";
+import Box from "@/Components/Element/Box";
+import { FetchApi } from "@/Common/Connection/Api/Seed/fetchApi.Api";
+import ShowNestedRoute from "@/Components/Ui/ShowNestedRoute";
+import SearchBoxMenu from "@/Components/Ui/SearchBoxMenu";
+import HorizontalScroll from "@/Components/Ui/HorizontalScroll";
+import { EInnerRoute } from "@/Common/Enums/InnerRout";
 
 export default async function Menu() {
-  const allProduct = await FetchApi.Menu.fetchAllProductMenu();
+  const menu = await FetchApi.Menu.ReadMenuDetail({});
 
   return (
     <Layout variant="website">
       <ShowNestedRoute
         list_route={[
-          { path: "/", name: "خانه" },
-          { path: "/menu", name: "منو" },
+          { path: EInnerRoute.HOME, name: "خانه" },
+          { path: EInnerRoute.MENU, name: "منو" },
         ]}
       />
       <Box variant="primary">
         <H size={2}>دنبال بهترین محصول دلخواه خودت باش !</H>
       </Box>
       <SearchBoxMenu />
-      {allProduct.map((product, i) => (
+      {menu.map((category, i) => (
         <HorizontalScroll
           key={i}
-          title={product.category}
-          products={product.products}
-          icon={product.icon}
-          category={product.category}
+          Id={category.Id}
+          Name={category.Name}
+          Products={category.Products}
+          Icon={category.Icon}
+          IsShowMenu={category.IsShowMenu}
         />
       ))}
     </Layout>
@@ -48,14 +50,16 @@ export async function generateMetadata({
   searchParams: { id?: string };
 }): Promise<Metadata> {
   const newMetaData = { ...metadata };
-  const allProduct = await FetchApi.Menu.fetchAllProductMenu();
+  const menu = await FetchApi.Menu.ReadMenuDetail({});
   let text = "";
-  allProduct.forEach((pro) => {
-    pro.products.forEach((product) => {
-      text += product.name + "-";
+
+  menu.forEach((pro) => {
+    pro.Products.forEach((product) => {
+      text += product.Name + "-";
     });
   });
-  newMetaData.title = "choconan | منو کافه شوکونان";
-  newMetaData.description = `محصولات کافه شوکونان ${text}`;
+
+  newMetaData.title = "shonan | منو کافه شونان";
+  newMetaData.description = `محصولات کافه شونان ${text}`;
   return newMetaData;
 }

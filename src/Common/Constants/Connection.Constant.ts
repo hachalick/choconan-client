@@ -24,12 +24,12 @@ export const CPlatform: TPlatform[] = [
   },
   {
     name: "تلگرام",
-    href: "https://t.me/choconanir",
+    href: "https://t.me/shonanir",
     src: "/logo/telegram.png",
   },
   {
     name: "اینستاگرام",
-    href: "https://instagram.com/choconan.ir",
+    href: "https://instagram.com/shonan.ir",
     src: "/logo/instagram.png",
   },
 ];

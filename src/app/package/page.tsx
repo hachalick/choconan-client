@@ -1,26 +1,24 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-import HorizontalScrollEconomicPackage from "@/Components/Customs/HorizontalScrollEconomicPackage";
-import ShowNestedRoute from "@/Components/Customs/ShowNestedRoute";
+import { EInnerRoute } from "@/Common/Enums/InnerRout";
 import Layout from "@/Components/Layout/Layout";
+import ShowNestedRoute from "@/Components/Ui/ShowNestedRoute";
 import React from "react";
 
-function About() {
+export default function About() {
   return (
     <Layout variant="website">
       <ShowNestedRoute
         list_route={[
-          { path: "/", name: "خانه" },
-          { path: "/package", name: "پکیج" },
+          { path: EInnerRoute.HOME, name: "خانه" },
+          { path: EInnerRoute.PACKAGE, name: "پکیج" },
         ]}
       />
       <div>
         <h2 className="font-bold mb-2">پک های اقتصادی</h2>
-        <HorizontalScrollEconomicPackage />
+        {/* <HorizontalScrollEconomicPackage /> */}
       </div>
     </Layout>
   );
 }
-
-export default About;

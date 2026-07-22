@@ -1,7 +1,52 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
-import { BaseApi } from "./SeedWork/Base.Api";
-import { ApiBuilder } from "./SeedWork/Builder.Api";
-import { ERoute } from "@/Common/Enums/Routs";
+import { BaseApi } from "./Seed/Base.Api";
+import { ApiBuilder } from "./Seed/Builder.Api";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
+import {
+  CreateCostProductPricingModel,
+  CreateDetailProductPricingModel,
+  CreateProductPricingModel,
+  CreateProductUnitPricingModel,
+  CreateUnitPricingModel,
+  DeleteCostProductPricingModel,
+  DeleteDetailProductPricingModel,
+  DeleteProductPricingModel,
+  DeleteProductUnitPricingModel,
+  DeleteUnitPricingModel,
+  ReadCostProductPricingDetailModel,
+  ReadCostProductPricingListModel,
+  ReadProductPricingListModel,
+  ReadUnitPricingDetailModel,
+  ReadUnitPricingListModel,
+  UpdateCostProductPricingModel,
+  UpdateDetailProductPricingModel,
+  UpdateProductPricingModel,
+  UpdateProductUnitPricingModel,
+  UpdateUnitPricingModel,
+} from "./Models/Pricing.Service.Model";
+import { BaseAuthModel } from "./Models/Seed/Base.Service.Model";
+import {
+  CreateCostProductPricingViewModel,
+  CreateDetailProductPricingViewModel,
+  CreateProductPricingViewModel,
+  CreateProductUnitPricingViewModel,
+  CreateUnitPricingViewModel,
+  DeleteCostProductPricingViewModel,
+  DeleteDetailProductPricingViewModel,
+  DeleteProductPricingViewModel,
+  DeleteProductUnitPricingViewModel,
+  DeleteUnitPricingViewModel,
+  ReadCostProductPricingDetailViewModel,
+  ReadCostProductPricingListViewModel,
+  ReadProductPricingListViewModel,
+  ReadUnitPricingDetailViewModel,
+  ReadUnitPricingListViewModel,
+  UpdateCostProductPricingViewModel,
+  UpdateDetailProductPricingViewModel,
+  UpdateProductPricingViewModel,
+  UpdateProductUnitPricingViewModel,
+  UpdateUnitPricingViewModel,
+} from "./ViewModels/Pricing.Service.ViewModel";
 
 export class ApiPricing extends BaseApi {
   constructor() {
@@ -12,234 +57,247 @@ export class ApiPricing extends BaseApi {
     return new ApiBuilder(new ApiPricing());
   }
 
-  static async fetchGetAllUnitPricing({
-    access_token,
-  }: TGetUnitPricingDto): Promise<Array<TGetUnitPricingResponseDto>> {
+  static async ReadUnitPricingList(
+    Param: ReadUnitPricingListModel & BaseAuthModel,
+  ): Promise<Array<ReadUnitPricingListViewModel>> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.UNIT)
-      .header("access_token", access_token)
+      .route(EServerRoute.PRICING_UNIT)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.GET)
-      .fetch<Array<TGetUnitPricingResponseDto>>();
+      .fetch<Array<ReadUnitPricingListViewModel>>();
   }
 
-  static async fetchCreateUnitPricing({
-    access_token,
-    unit_name,
-  }: TCreateUnitPricingDto): Promise<TCreateUnitPricingResponseDto> {
+  static async ReadUnitPricingDetail(
+    Param: ReadUnitPricingDetailModel & BaseAuthModel,
+  ): Promise<ReadUnitPricingDetailViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.UNIT)
-      .header("access_token", access_token)
-      .method(EMethodRequest.POST)
-      .bodyParam("unit_name", unit_name)
-      .fetch<TCreateUnitPricingResponseDto>();
-  }
-
-  static async fetchDeleteUnitPricing({
-    access_token,
-    unit_id,
-  }: TDeleteUnitPricingDto): Promise<TDeleteUnitPricingResponseDto> {
-    return await ApiPricing.builder()
-      .cache("no-store")
-      .route(`${ERoute.UNIT}/${unit_id}`)
-      .header("access_token", access_token)
-      .method(EMethodRequest.DELETE)
-      .fetch<TDeleteUnitPricingResponseDto>();
-  }
-
-  static async fetchGetAllProductPricing({
-    access_token,
-  }: TGetAllProductPricingDto): Promise<TGetAllProductPricingResponseDto> {
-    return await ApiPricing.builder()
-      .cache("no-store")
-      .route(ERoute.PRODUCT)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.PRICING_UNIT}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.GET)
-      .fetch<TGetAllProductPricingResponseDto>();
+      .fetch<ReadUnitPricingDetailViewModel>();
   }
 
-  static async fetchCreateProductPricing({
-    access_token,
-    buy,
-    name,
-  }: TCreateProductPricingDto): Promise<TCreateProductPricingResponseDto> {
+  static async CreateUnitPricing(
+    Param: CreateUnitPricingModel & BaseAuthModel,
+  ): Promise<CreateUnitPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.PRODUCT)
-      .header("access_token", access_token)
+      .route(EServerRoute.PRICING_UNIT)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.POST)
-      .bodyParam("buy", buy)
-      .bodyParam("name", name)
-      .fetch<TCreateProductPricingResponseDto>();
+      .bodyParam("Name", Param.Name)
+      .fetch<CreateUnitPricingViewModel>();
   }
 
-  static async fetchUpdateProductPricing({
-    access_token,
-    product_pricing_id,
-    buy,
-    name,
-  }: TUpdateProductPricingDto): Promise<TUpdateProductPricingResponseDto> {
+  static async UpdateUnitPricing(
+    Param: UpdateUnitPricingModel & BaseAuthModel,
+  ): Promise<UpdateUnitPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.PRODUCT}/${product_pricing_id}`)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.PRICING_UNIT}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.PUT)
-      .bodyParam("buy", buy)
-      .bodyParam("name", name)
-      .fetch<TUpdateProductPricingResponseDto>();
+      .bodyParam("Name", Param.Name)
+      .fetch<UpdateUnitPricingViewModel>();
   }
 
-  static async fetchDeleteProductPricing({
-    access_token,
-    product_pricing_id,
-  }: TDeleteProductPricingDto): Promise<TDeleteProductPricingResponseDto> {
+  static async DeleteUnitPricing(
+    Param: DeleteUnitPricingModel & BaseAuthModel,
+  ): Promise<DeleteUnitPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.PRODUCT}/${product_pricing_id}`)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.PRICING_UNIT}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.DELETE)
-      .fetch<TDeleteProductPricingResponseDto>();
+      .fetch<DeleteUnitPricingViewModel>();
   }
 
-  static async fetchCreateProductUnitPricing({
-    access_token,
-    product_menu_id,
-    product_pricing_id,
-    ratio,
-    unit_id,
-    profit,
-  }: TCreateProductUnitPricingDto): Promise<TCreateProductUnitPricingResponseDto> {
+  static async ReadProductPricingList(
+    Param: ReadProductPricingListModel & BaseAuthModel,
+  ): Promise<ReadProductPricingListViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.UNIT_PRODUCT)
-      .header("access_token", access_token)
+      .route(EServerRoute.PRICING_PRODUCT)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<ReadProductPricingListViewModel>();
+  }
+
+  static async CreateProductPricing(
+    Param: CreateProductPricingModel & BaseAuthModel,
+  ): Promise<CreateProductPricingViewModel> {
+    return await ApiPricing.builder()
+      .cache("no-store")
+      .route(EServerRoute.PRICING_PRODUCT)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Buy", Param.Buy)
+      .bodyParam("Name", Param.Name)
       .method(EMethodRequest.POST)
-      .bodyParam("product_menu_id", product_menu_id)
-      .bodyParam("product_pricing_id", product_pricing_id)
-      .bodyParam("ratio", ratio)
-      .bodyParam("unit_id", unit_id)
-      .bodyParam("profit", profit)
-      .fetch<TCreateProductUnitPricingResponseDto>();
+      .fetch<CreateProductPricingViewModel>();
   }
 
-  static async fetchUpdateProductUnitPricing({
-    access_token,
-    product_unit_pricing_id,
-    product_menu_id,
-    ratio,
-    profit,
-    unit_id,
-  }: TUpdateProductUnitPricingDto) {
+  static async UpdateProductPricing(
+    Param: UpdateProductPricingModel & BaseAuthModel,
+  ): Promise<UpdateProductPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.UNIT_PRODUCT}/${product_unit_pricing_id}`)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.PRICING_PRODUCT}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Buy", Param.Buy)
+      .bodyParam("Name", Param.Name)
       .method(EMethodRequest.PUT)
-      .bodyParam("product_menu_id", product_menu_id)
-      .bodyParam("ratio", ratio)
-      .bodyParam("profit", profit)
-      .bodyParam("unit_id", unit_id)
-      .fetch<TCreateProductUnitPricingResponseDto>();
+      .fetch<UpdateProductPricingViewModel>();
   }
 
-  static async fetchDeleteProductUnitPricing({
-    access_token,
-    product_unit_pricing_id,
-  }: TDeleteProductUnitPricingDto) {
+  static async DeleteProductPricing(
+    Param: DeleteProductPricingModel & BaseAuthModel,
+  ): Promise<DeleteProductPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.UNIT_PRODUCT}/${product_unit_pricing_id}`)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.PRICING_PRODUCT}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.DELETE)
-      .fetch<TDeleteProductPricingResponseDto>();
+      .fetch<DeleteProductPricingViewModel>();
   }
 
-  static async fetchCreateDetailProductUnitPricing({
-    access_token,
-    amount,
-    child_product_unit_id,
-    parent_product_unit_id,
-  }: TCreateDetailProductUnitPricingDto): Promise<TCreateDetailProductUnitPricingResponseDto> {
+  static async CreateProductUnitPricing(
+    Param: CreateProductUnitPricingModel & BaseAuthModel,
+  ): Promise<CreateProductUnitPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.DETAIL_PRODUCT_UNIT)
-      .header("access_token", access_token)
-      .bodyParam("amount", amount)
-      .bodyParam("child_product_unit_id", child_product_unit_id)
-      .bodyParam("parent_product_unit_id", parent_product_unit_id)
+      .route(EServerRoute.PRICING_UNIT_PRODUCT)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("ProductPricingId", Param.ProductPricingId)
+      .bodyParam("UnitPricingId", Param.UnitPricingId)
+      .bodyParam("Ratio", Param.Ratio)
+      .bodyParam("ProductMenuId", Param.ProductMenuId)
+      .bodyParam("Profit", Param.Profit)
       .method(EMethodRequest.POST)
-      .fetch<TCreateDetailProductUnitPricingResponseDto>();
+      .fetch<CreateProductUnitPricingViewModel>();
   }
 
-  static async fetchUpdateDetailProductUnitPricing({
-    access_token,
-    amount,
-    detail_product_unit_pricing_id,
-    product_unit_id,
-  }: TUpdateDetailProductUnitPricingDto): Promise<TUpdateDetailProductUnitPricingResponseDto> {
+  static async UpdateProductUnitPricing(
+    Param: UpdateProductUnitPricingModel & BaseAuthModel,
+  ): Promise<UpdateProductUnitPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.DETAIL_PRODUCT_UNIT}/${detail_product_unit_pricing_id}`)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.PRICING_UNIT_PRODUCT}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("UnitPricingId", Param.UnitPricingId)
+      .bodyParam("Ratio", Param.Ratio)
+      .bodyParam("ProductMenuId", Param.ProductMenuId)
+      .bodyParam("Profit", Param.Profit)
       .method(EMethodRequest.PUT)
-      .bodyParam("amount", amount)
-      .bodyParam("product_unit_id", product_unit_id)
-      .fetch<TUpdateDetailProductUnitPricingResponseDto>();
+      .fetch<UpdateProductUnitPricingViewModel>();
   }
 
-  static async fetchDeleteDetailProductUnitPricing({
-    access_token,
-    detail_product_unit_pricing_id,
-  }: TDeleteDetailProductUnitPricingDto) {
+  static async DeleteProductUnitPricing(
+    Param: DeleteProductUnitPricingModel & BaseAuthModel,
+  ): Promise<DeleteProductUnitPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.DETAIL_PRODUCT_UNIT}/${detail_product_unit_pricing_id}`)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.PRICING_UNIT_PRODUCT}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.DELETE)
-      .fetch<TDeleteDetailProductUnitPricingResponseDto>();
+      .fetch<DeleteProductUnitPricingViewModel>();
   }
 
-  static async fetchCreateCostPricing({
-    access_token,
-    name,
-    price,
-  }: TCreateCostPricingDto): Promise<TCreateCostPricingResponseDto> {
+  static async CreateDetailProductPricing(
+    Param: CreateDetailProductPricingModel & BaseAuthModel,
+  ): Promise<CreateDetailProductPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(ERoute.COST)
-      .header("access_token", access_token)
+      .route(EServerRoute.PRICING_DETAIL_PRODUCT_UNIT)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Amount", Param.Amount)
+      .bodyParam("ChildProductUnitId", Param.ChildProductUnitDetailId)
+      .bodyParam("ParentProductUnitId", Param.ParentProductUnitDetailId)
       .method(EMethodRequest.POST)
-      .bodyParam("name", name)
-      .bodyParam("price", price)
-      .fetch<TCreateCostPricingResponseDto>();
+      .fetch<CreateDetailProductPricingViewModel>();
   }
 
-  static async fetchUpdateCostPricing({
-    access_token,
-    cost_pricing_id,
-    name,
-    price,
-  }: TUpdateCostPricingDto): Promise<TUpdateCostPricingResponseDto> {
+  static async UpdateDetailProductPricing(
+    Param: UpdateDetailProductPricingModel & BaseAuthModel,
+  ): Promise<UpdateDetailProductPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.COST}/${cost_pricing_id}`)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.PRICING_DETAIL_PRODUCT_UNIT}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Amount", Param.Amount)
+      .bodyParam("ChildProductUnitDetailId", Param.ChildProductUnitDetailId)
       .method(EMethodRequest.PUT)
-      .bodyParam("name", name)
-      .bodyParam("price", price)
-      .fetch<TUpdateCostPricingResponseDto>();
+      .fetch<UpdateDetailProductPricingViewModel>();
   }
 
-  static async fetchDeleteCostPricing({
-    access_token,
-    cost_pricing_id,
-  }: TDeleteCostPricingDto): Promise<TDeleteCostPricingResponseDto> {
+  static async DeleteDetailProductPricing(
+    Param: DeleteDetailProductPricingModel & BaseAuthModel,
+  ): Promise<DeleteDetailProductPricingViewModel> {
     return await ApiPricing.builder()
       .cache("no-store")
-      .route(`${ERoute.COST}/${cost_pricing_id}`)
-      .header("access_token", access_token)
+      .route(`${EServerRoute.PRICING_DETAIL_PRODUCT_UNIT}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.DELETE)
-      .fetch<TDeleteCostPricingResponseDto>();
+      .fetch<DeleteDetailProductPricingViewModel>();
+  }
+
+  static async ReadCostProductPricingList(
+    Param: ReadCostProductPricingListModel & BaseAuthModel,
+  ): Promise<ReadCostProductPricingListViewModel> {
+    return await ApiPricing.builder()
+      .cache("no-store")
+      .route(EServerRoute.PRICING_COST)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<ReadCostProductPricingListViewModel>();
+  }
+
+  static async ReadCostProductPricingDetail(
+    Param: ReadCostProductPricingDetailModel & BaseAuthModel,
+  ): Promise<ReadCostProductPricingDetailViewModel> {
+    return await ApiPricing.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.PRICING_COST}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<ReadCostProductPricingDetailViewModel>();
+  }
+
+  static async CreateCostProductPricing(
+    Param: CreateCostProductPricingModel & BaseAuthModel,
+  ): Promise<CreateCostProductPricingViewModel> {
+    return await ApiPricing.builder()
+      .cache("no-store")
+      .route(EServerRoute.PRICING_COST)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("Price", Param.Price)
+      .method(EMethodRequest.POST)
+      .fetch<CreateCostProductPricingViewModel>();
+  }
+
+  static async UpdateCostProductPricing(
+    Param: UpdateCostProductPricingModel & BaseAuthModel,
+  ): Promise<UpdateCostProductPricingViewModel> {
+    return await ApiPricing.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.PRICING_COST}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("Price", Param.Price)
+      .method(EMethodRequest.PUT)
+      .fetch<UpdateCostProductPricingViewModel>();
+  }
+
+  static async DeleteCostProductPricing(
+    Param: DeleteCostProductPricingModel & BaseAuthModel,
+  ): Promise<DeleteCostProductPricingViewModel> {
+    return await ApiPricing.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.PRICING_COST}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.DELETE)
+      .fetch<DeleteCostProductPricingViewModel>();
   }
 }

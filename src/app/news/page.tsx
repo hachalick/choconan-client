@@ -1,5 +1,6 @@
-import ShowNestedRoute from "@/Components/Customs/ShowNestedRoute";
+import { EInnerRoute } from "@/Common/Enums/InnerRout";
 import Layout from "@/Components/Layout/Layout";
+import ShowNestedRoute from "@/Components/Ui/ShowNestedRoute";
 import React from "react";
 
 export default function News() {
@@ -7,8 +8,8 @@ export default function News() {
     <Layout variant="website">
       <ShowNestedRoute
         list_route={[
-          { path: "/", name: "خانه" },
-          { path: "/news", name: "اخبار" },
+          { path: EInnerRoute.HOME, name: "خانه" },
+          { path: EInnerRoute.NEWS, name: "اخبار" },
         ]}
       />
     </Layout>

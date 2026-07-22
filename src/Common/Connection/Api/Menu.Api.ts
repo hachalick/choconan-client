@@ -1,7 +1,46 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
-import { ERoute } from "@/Common/Enums/Routs";
-import { BaseApi } from "./SeedWork/Base.Api";
-import { ApiBuilder } from "./SeedWork/Builder.Api";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
+import { BaseApi } from "./Seed/Base.Api";
+import { ApiBuilder } from "./Seed/Builder.Api";
+import {
+  CreateContentEconomicPackageViewModel,
+  CreateEconomicPackageViewModel,
+  CreateMenuCategoryViewModel,
+  CreateMenuProductViewModel,
+  DeleteContentEconomicPackageViewModel,
+  DeleteEconomicPackageViewModel,
+  DeleteMenuCategoryViewModel,
+  DeleteMenuProductViewModel,
+  ReadEconomicPackageDetailViewModel,
+  ReadEconomicPackageListViewModel,
+  ReadMenuCategoryDetailViewModel,
+  ReadMenuDetailViewModel,
+  ReadMenuProductDetailViewModel,
+  ReadSearchMenuDetailViewModel,
+  UpdateEconomicPackageViewModel,
+  UpdateMenuCategoryViewModel,
+  UpdateMenuProductViewModel,
+} from "./ViewModels/Menu.Service.ViewModel";
+import {
+  CreateContentEconomicPackageModel,
+  CreateEconomicPackageModel,
+  CreateMenuCategoryModel,
+  CreateMenuProductModel,
+  DeleteContentEconomicPackageModel,
+  DeleteEconomicPackageModel,
+  DeleteMenuCategoryModel,
+  DeleteMenuProductModel,
+  ReadEconomicPackageDetailModel,
+  ReadEconomicPackageListModel,
+  ReadMenuCategoryDetailModel,
+  ReadMenuDetailModel,
+  ReadMenuProductDetailModel,
+  ReadSearchMenuDetailModel,
+  UpdateEconomicPackageModel,
+  UpdateMenuCategoryModel,
+  UpdateMenuProductModel,
+} from "./Models/Menu.Service.Model";
+import { BaseAuthModel } from "./Models/Seed/Base.Service.Model";
 
 export class ApiMenu extends BaseApi {
   constructor() {
@@ -12,296 +51,239 @@ export class ApiMenu extends BaseApi {
     return new ApiBuilder(new ApiMenu());
   }
 
-  static async fetchSearch({
-    query,
-  }: TGetProductMenuSearchDto): Promise<
-    Array<TGetProductMenuSearchResponseDto>
-  > {
+  static async ReadSearchMenuDetail(
+    Param: ReadSearchMenuDetailModel,
+  ): Promise<Array<ReadSearchMenuDetailViewModel>> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.SEARCH}/${encodeURI(query)}`)
+      .route(`${EServerRoute.MENU_SEARCH}?Text=${encodeURI(Param.Text)}`)
       .method(EMethodRequest.GET)
-      .fetch<Array<TGetProductMenuSearchResponseDto>>();
+      .fetch<Array<ReadSearchMenuDetailViewModel>>();
   }
 
-  static async fetchAllProductMenu(): Promise<
-    Array<TGetCategoryMenuResponseDto>
-  > {
+  static async ReadMenuDetail(
+    Param: ReadMenuDetailModel,
+  ): Promise<Array<ReadMenuDetailViewModel>> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(ERoute.MENU)
+      .route(EServerRoute.MENU)
       .method(EMethodRequest.GET)
-      .fetch<Array<TGetCategoryMenuResponseDto>>();
+      .fetch<Array<ReadMenuDetailViewModel>>();
   }
 
-  static async fetchCategoryMenu({
-    category_name,
-  }: GetCategoryMenuDto): Promise<TGetCategoryMenuResponseDto> {
+  static async ReadMenuCategoryDetail(
+    Param: ReadMenuCategoryDetailModel,
+  ): Promise<ReadMenuCategoryDetailViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.MENU}/${encodeURI(category_name)}`)
+      .route(`${EServerRoute.MENU_CATEGORY}/${Param.Id}`)
       .method(EMethodRequest.GET)
-      .fetch<TGetCategoryMenuResponseDto>();
+      .fetch<ReadMenuCategoryDetailViewModel>();
   }
 
-  static async fetchProductMenu({
-    category_name,
-    product_id,
-  }: TGetProductMenuDto): Promise<TGetProductMenuResponseDto> {
+  static async ReadMenuProductDetail(
+    Param: ReadMenuProductDetailModel,
+  ): Promise<ReadMenuProductDetailViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(
-        `${ERoute.MENU}/${encodeURI(category_name)}/${product_id}`
-      )
+      .route(`${EServerRoute.MENU_PRODUCT}/${Param.Id}`)
       .method(EMethodRequest.GET)
-      .fetch<TGetProductMenuResponseDto>();
+      .fetch<ReadMenuProductDetailViewModel>();
   }
 
-  static async fetchCreateCategoryMenu({
-    category,
-    icon,
-    access_token,
-  }: TCreateCategoryMenuDto): Promise<TCreateProductMenuResponseDto> {
+  static async CreateMenuCategory(
+    Param: CreateMenuCategoryModel & BaseAuthModel,
+  ): Promise<CreateMenuCategoryViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(ERoute.MENU)
+      .route(EServerRoute.MENU_CATEGORY)
       .method(EMethodRequest.POST)
-      .header("access_token", access_token)
-      .bodyParam("category", category)
-      .bodyParam("icon", icon)
-      .fetch<TCreateProductMenuResponseDto>();
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Description", Param.Description)
+      .bodyParam("Icon", Param.Icon)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("MetaDescription", Param.MetaDescription)
+      .bodyParam("MetaTitle", Param.MetaTitle)
+      .fetch<CreateMenuCategoryViewModel>();
   }
 
-  static async fetchUpdateCategoryMenu({
-    category_id,
-    category,
-    icon,
-    access_token,
-  }: TUpdateCategoryMenuDto): Promise<TUpdateCategoryMenuResponseDto> {
+  static async UpdateMenuCategory(
+    Param: UpdateMenuCategoryModel & BaseAuthModel,
+  ): Promise<UpdateMenuCategoryViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.MENU}/${category_id}`)
+      .route(`${EServerRoute.MENU_CATEGORY}/${Param.Id}`)
       .method(EMethodRequest.PUT)
-      .header("access_token", access_token)
-      .bodyParam("category", category)
-      .bodyParam("icon", icon)
-      .fetch<TUpdateCategoryMenuResponseDto>();
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Icon", Param.Icon)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("Description", Param.Description)
+      .bodyParam("MetaTitle", Param.MetaTitle)
+      .bodyParam("MetaDescription", Param.MetaDescription)
+      .fetch<UpdateMenuCategoryViewModel>();
   }
 
-  static async fetchDeleteCategoryMenu({
-    category_id,
-    access_token,
-  }: TDeleteCategoryMenuDto): Promise<TDeleteCategoryMenuResponseDto> {
+  static async DeleteMenuCategory(
+    Param: DeleteMenuCategoryModel & BaseAuthModel,
+  ): Promise<DeleteMenuCategoryViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.MENU}/${category_id}`)
+      .header("access_token", Param.AccessToken)
+      .route(`${EServerRoute.MENU_CATEGORY}/${Param.Id}`)
       .method(EMethodRequest.DELETE)
-      .header("access_token", access_token)
-      .fetch<TDeleteCategoryMenuResponseDto>();
+      .fetch<DeleteMenuCategoryViewModel>();
   }
 
-  static async fetchCreateProductMenu({
-    category_id,
-    id,
-    available,
-    price,
-    waiting,
-    description,
-    meta_description,
-    meta_title,
-    name,
-    src,
-    access_token,
-    snap,
-    tapsi,
-  }: TCreateProductMenuDto): Promise<TCreateProductMenuResponseDto> {
+  static async CreateMenuProduct(
+    Param: CreateMenuProductModel & BaseAuthModel,
+  ): Promise<CreateMenuProductViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.PRODUCT_MENU}/${category_id}`)
+      .route(`${EServerRoute.MENU_PRODUCT}/${Param.CategoryId}`)
       .method(EMethodRequest.POST)
-      .header("access_token", access_token)
-      .bodyParam("id", id)
-      .bodyParam("available", available)
-      .bodyParam("price", price)
-      .bodyParam("waiting", waiting)
-      .bodyParam("description", description)
-      .bodyParam("meta_description", meta_description)
-      .bodyParam("meta_title", meta_title)
-      .bodyParam("name", name)
-      .bodyParam("src", src)
-      .bodyParam("snap", snap)
-      .bodyParam("tapsi", tapsi)
-      .fetch<TCreateProductMenuResponseDto>();
+      .header("access_token", Param.AccessToken)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("Description", Param.Description)
+      .bodyParam("MetaTitle", Param.MetaTitle)
+      .bodyParam("MetaDescription", Param.MetaDescription)
+      .bodyParam("Price", Param.Price)
+      .bodyParam("SrcImage", Param.SrcImage)
+      .bodyParam("Waiting", Param.Waiting)
+      .bodyParam("SnapId", Param.SnapId)
+      .bodyParam("TapsiId", Param.TapsiId)
+      .fetch<CreateMenuProductViewModel>();
   }
 
-  static async fetchUpdateProductMenu({
-    product_id,
-    id,
-    available,
-    price,
-    waiting,
-    description,
-    meta_description,
-    meta_title,
-    name,
-    src,
-    access_token,
-    snap,
-    tapsi,
-  }: TUpdateProductMenuDto): Promise<TUpdateProductMenuResponseDto> {
+  static async UpdateMenuProduct(
+    Param: UpdateMenuProductModel & BaseAuthModel,
+  ): Promise<UpdateMenuProductViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.PRODUCT_MENU}/${product_id}`)
+      .route(`${EServerRoute.MENU_PRODUCT}/${Param.Id}`)
       .method(EMethodRequest.PUT)
-      .header("access_token", access_token)
-      .bodyParam("id", id)
-      .bodyParam("available", available)
-      .bodyParam("price", price)
-      .bodyParam("waiting", waiting)
-      .bodyParam("description", description)
-      .bodyParam("meta_description", meta_description)
-      .bodyParam("meta_title", meta_title)
-      .bodyParam("name", name)
-      .bodyParam("src", src)
-      .bodyParam("snap", snap)
-      .bodyParam("tapsi", tapsi)
-      .fetch<TUpdateProductMenuResponseDto>();
+      .header("access_token", Param.AccessToken)
+      .bodyParam("CategoryId", Param.CategoryId)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("Name", Param.Name)
+      .bodyParam("Description", Param.Description)
+      .bodyParam("MetaTitle", Param.MetaTitle)
+      .bodyParam("MetaDescription", Param.MetaDescription)
+      .bodyParam("SrcImage", Param.SrcImage)
+      .bodyParam("Waiting", Param.Waiting)
+      .bodyParam("Price", Param.Price)
+      .bodyParam("SnapId", Param.SnapId)
+      .bodyParam("TapsiId", Param.TapsiId)
+      .fetch<UpdateMenuProductViewModel>();
   }
 
-  static async fetchDeleteProductMenu({
-    product_id,
-    access_token,
-  }: TDeleteProductMenuDto): Promise<TDeleteProductMenuResponseDto> {
+  static async DeleteMenuProduct(
+    Param: DeleteMenuProductModel & BaseAuthModel,
+  ): Promise<DeleteMenuProductViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.PRODUCT_MENU}/${product_id}`)
+      .route(`${EServerRoute.MENU_PRODUCT}/${Param.Id}`)
       .method(EMethodRequest.DELETE)
-      .header("access_token", access_token)
-      .fetch<TDeleteProductMenuResponseDto>();
+      .header("access_token", Param.AccessToken)
+      .fetch<DeleteMenuProductViewModel>();
   }
-  static async fetchGetEconomicPackage({
-    access_token,
-  }: TGetEconomicPackageDto): Promise<TGetEconomicPackageResponseDto> {
+
+  static async ReadEconomicPackageList(
+    Param: ReadEconomicPackageListModel,
+  ): Promise<Array<ReadEconomicPackageListViewModel>> {
+    const fetchRes = ApiMenu.builder()
+      .cache("no-store")
+      .route(EServerRoute.MENU_ECONOMIC_PACKAGE)
+      .method(EMethodRequest.GET);
+
+    Param.IsActiveNow !== undefined &&
+      fetchRes.param("IsActiveNow", Param.IsActiveNow);
+
+    return await fetchRes.fetch<Array<ReadEconomicPackageListViewModel>>();
+  }
+
+  static async ReadEconomicPackageDetail(
+    Param: ReadEconomicPackageDetailModel,
+  ): Promise<ReadEconomicPackageDetailViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(ERoute.STATUS_TABLE)
+      .route(`${EServerRoute.MENU_ECONOMIC_PACKAGE}/${Param.Id}`)
       .method(EMethodRequest.GET)
-      .header("access_token", access_token)
-      .fetch<TGetEconomicPackageResponseDto>();
+      .fetch<ReadEconomicPackageDetailViewModel>();
   }
 
-  static async fetchGetEconomicPackages({
-    all,
-  }: TGetEconomicPackagesDto): Promise<Array<TGetEconomicPackageResponseDto>> {
-    return all
-      ? await ApiMenu.builder()
-          .cache("no-store")
-          .route(ERoute.ECONOMIC_PACKAGE)
-          .method(EMethodRequest.GET)
-          .param("all", all)
-          .fetch<Array<TGetEconomicPackageResponseDto>>()
-      : await ApiMenu.builder()
-          .cache("no-store")
-          .route(ERoute.ECONOMIC_PACKAGE)
-          .method(EMethodRequest.GET)
-          .fetch<Array<TGetEconomicPackageResponseDto>>();
-  }
-
-  static async fetchAddEconomicPackage({
-    access_token,
-    end_day,
-    end_hours,
-    is_active,
-    price,
-    src,
-    start_day,
-    start_hours,
-    title,
-  }: TCreateEconomicPackageDto): Promise<TGetEconomicPackageResponseDto> {
+  static async CreateEconomicPackage(
+    Param: CreateEconomicPackageModel & BaseAuthModel,
+  ): Promise<CreateEconomicPackageViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(ERoute.ECONOMIC_PACKAGE)
+      .route(EServerRoute.MENU_ECONOMIC_PACKAGE)
       .method(EMethodRequest.POST)
-      .header("access_token", access_token)
-      .bodyParam("end_day", end_day)
-      .bodyParam("end_hours", end_hours)
-      .bodyParam("is_active", is_active)
-      .bodyParam("price", price)
-      .bodyParam("src", src)
-      .bodyParam("start_day", start_day)
-      .bodyParam("start_hours", start_hours)
-      .bodyParam("title", title)
-      .fetch<TGetEconomicPackageResponseDto>();
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Title", Param.Title)
+      .bodyParam("SrcImage", Param.SrcImage)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("StartDate", Param.StartDate)
+      .bodyParam("EndDate", Param.EndDate)
+      .bodyParam("Price", Param.Price)
+      .fetch<CreateEconomicPackageViewModel>();
   }
 
-  static async fetchUpdateEconomicPackage({
-    access_token,
-    economic_package_id,
-    end_day,
-    end_hours,
-    is_active,
-    price,
-    src,
-    start_day,
-    start_hours,
-    title,
-  }: TUpdateEconomicPackageDto): Promise<TUpdateEconomicPackageResponseDto> {
+  static async UpdateEconomicPackage(
+    Param: UpdateEconomicPackageModel & BaseAuthModel,
+  ): Promise<UpdateEconomicPackageViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.ECONOMIC_PACKAGE}/${economic_package_id}`)
+      .route(`${EServerRoute.MENU_ECONOMIC_PACKAGE}/${Param.Id}`)
       .method(EMethodRequest.PUT)
-      .header("access_token", access_token)
-      .bodyParam("end_day", end_day)
-      .bodyParam("end_hours", end_hours)
-      .bodyParam("is_active", is_active)
-      .bodyParam("price", price)
-      .bodyParam("src", src)
-      .bodyParam("start_day", start_day)
-      .bodyParam("start_hours", start_hours)
-      .bodyParam("title", title)
-      .fetch<TUpdateEconomicPackageResponseDto>();
+      .header("access_token", Param.AccessToken)
+      .bodyParam("Title", Param.Title)
+      .bodyParam("SrcImage", Param.SrcImage)
+      .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("StartDate", Param.StartDate)
+      .bodyParam("EndDate", Param.EndDate)
+      .bodyParam("Price", Param.Price)
+      .fetch<UpdateEconomicPackageViewModel>();
   }
 
-  static async fetchDeleteEconomicPackage({
-    economic_package_id,
-    access_token,
-  }: TDeleteEconomicPackageDto): Promise<TDeleteEconomicPackageResponseDto> {
+  static async DeleteEconomicPackage(
+    Param: DeleteEconomicPackageModel & BaseAuthModel,
+  ): Promise<DeleteEconomicPackageViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${ERoute.ECONOMIC_PACKAGE}/${economic_package_id}`)
+      .route(`${EServerRoute.MENU_ECONOMIC_PACKAGE}/${Param.Id}`)
       .method(EMethodRequest.DELETE)
-      .header("access_token", access_token)
-      .fetch<TDeleteEconomicPackageResponseDto>();
+      .header("access_token", Param.AccessToken)
+      .fetch<DeleteEconomicPackageViewModel>();
   }
 
-  static async fetchAddContentEconomicPackage({
-    economic_package_id,
-    product_id,
-    access_token,
-    count,
-  }: TCreateContentEconomicPackageDto): Promise<TCreateContentEconomicPackageResponseDto> {
+  static async CreateContentEconomicPackage(
+    Param: CreateContentEconomicPackageModel & BaseAuthModel,
+  ): Promise<CreateContentEconomicPackageViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(ERoute.CONTENT_ECONOMIC_PACKAGE)
+      .route(EServerRoute.MENU_CONTENT_ECONOMIC_PACKAGE)
       .method(EMethodRequest.POST)
-      .header("access_token", access_token)
-      .bodyParam("economic_package_id", economic_package_id)
-      .bodyParam("product_id", product_id)
-      .bodyParam("count", count)
-      .fetch<TCreateContentEconomicPackageResponseDto>();
+      .header("access_token", Param.AccessToken)
+      .bodyParam("EconomicPackageId", Param.EconomicPackageId)
+      .bodyParam("ProductId", Param.ProductId)
+      .bodyParam("Count", Param.Count)
+      .fetch<CreateContentEconomicPackageViewModel>();
   }
 
-  static async fetchDeleteContentEconomicPackage({
-    content_economic_package_id,
-    access_token,
-  }: TDeleteContentEconomicPackageDto): Promise<TDeleteContentEconomicPackageResponseDto> {
+  static async DeleteContentEconomicPackage(
+    Param: DeleteContentEconomicPackageModel & BaseAuthModel,
+  ): Promise<DeleteContentEconomicPackageViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(
-        `${ERoute.CONTENT_ECONOMIC_PACKAGE}/${content_economic_package_id}`
-      )
+      .route(EServerRoute.MENU_CONTENT_ECONOMIC_PACKAGE)
       .method(EMethodRequest.DELETE)
-      .header("access_token", access_token)
-      .fetch<TDeleteContentEconomicPackageResponseDto>();
+      .header("access_token", Param.AccessToken)
+      .bodyParam("EconomicPackageId", Param.EconomicPackageId)
+      .bodyParam("ProductId", Param.ProductId)
+      .bodyParam("Count", Param.Count)
+      .fetch<DeleteContentEconomicPackageViewModel>();
   }
 }

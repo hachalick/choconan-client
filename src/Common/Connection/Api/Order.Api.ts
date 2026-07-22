@@ -1,7 +1,50 @@
 import { EMethodRequest } from "@/Common/Enums/MethodReq.enum";
-import { ERoute } from "@/Common/Enums/Routs";
-import { ApiBuilder } from "./SeedWork/Builder.Api";
-import { BaseApi } from "./SeedWork/Base.Api";
+import { EServerRoute } from "@/Common/Enums/ServerRout";
+import { ApiBuilder } from "./Seed/Builder.Api";
+import { BaseApi } from "./Seed/Base.Api";
+import {
+  AcceptStatusTableViewModel,
+  CreateOrderItemViewModel,
+  CreateOrderTableViewModel,
+  CreateOrderViewModel,
+  CreateTableViewModel,
+  DeleteOrderItemViewModel,
+  DeleteOrderViewModel,
+  DeleteStatusTableViewModel,
+  DeleteTableViewModel,
+  ReadOrderDetailViewModel,
+  ReadOrderListViewModel,
+  ReadOrderMonthlyListViewModel,
+  ReadOrderTableDetailViewModel,
+  ReadOrderTableListViewModel,
+  ReadStatusTableViewModel,
+  ReadTableListViewModel,
+  UpdateOrderItemViewModel,
+  UpdateOrderViewModel,
+  UpdatePayStatusOrderViewModel,
+} from "./ViewModels/Order.Service.ViewModel";
+import {
+  AcceptStatusTableModel,
+  CreateOrderItemModel,
+  CreateOrderModel,
+  CreateOrderTableModel,
+  CreateTableModel,
+  DeleteOrderItemModel,
+  DeleteOrderModel,
+  DeleteStatusTableModel,
+  DeleteTableModel,
+  ReadOrderDetailModel,
+  ReadOrderListModel,
+  ReadOrderMonthlyListModel,
+  ReadOrderTableDetailModel,
+  ReadOrderTableListModel,
+  ReadStatusTableModel,
+  ReadTableListModel,
+  UpdateOrderItemModel,
+  UpdateOrderModel,
+  UpdatePayStatusOrderModel,
+} from "./Models/Order.Service.Model";
+import { BaseAuthModel } from "./Models/Seed/Base.Service.Model";
 
 export class ApiOrder extends BaseApi {
   constructor() {
@@ -12,256 +55,233 @@ export class ApiOrder extends BaseApi {
     return new ApiBuilder(new ApiOrder());
   }
 
-  static async fetchTables(): Promise<Array<TGetTableOrderResponseDto>> {
+  static async ReadTableList(
+    Param: ReadTableListModel,
+  ): Promise<Array<ReadTableListViewModel>> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(ERoute.TABLE)
+      .route(EServerRoute.ORDER_TABLE)
       .method(EMethodRequest.GET)
-      .fetch<Array<TGetTableOrderResponseDto>>();
+      .fetch<Array<ReadTableListViewModel>>();
   }
 
-  static async fetchOrderPanel(): Promise<
-    Array<TGetFactorPresentOrderTableResponseDto>
-  > {
+  static async CreateTable(
+    Param: CreateTableModel & BaseAuthModel,
+  ): Promise<CreateTableViewModel> {
+    console.log(Param)
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(ERoute.ORDER_TABLES)
-      .method(EMethodRequest.GET)
-      .fetch<Array<TGetFactorPresentOrderTableResponseDto>>();
-  }
-
-  static async fetchOrderTablePanel({
-    table_id,
-  }: TGetFactorPresentOrderTableDto): Promise<TGetFactorPresentOrderTableResponseDto> {
-    return await ApiOrder.builder()
-      .cache("no-store")
-      .route(`${ERoute.ORDER_TABLES}/${table_id}`)
-      .method(EMethodRequest.GET)
-      .fetch<TGetFactorPresentOrderTableResponseDto>();
-  }
-
-  static async fetchOrderTable({
-    table_id,
-    list_order,
-  }: TCreateOrderTableDto): Promise<TCreateOrderTableResponseDto> {
-    return await ApiOrder.builder()
-      .cache("no-store")
-      .route(`${ERoute.TABLE}/${table_id}`)
+      .route(`${EServerRoute.ORDER_TABLE}/${encodeURI(Param.Location)}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.POST)
-      .bodyParam("list_order", list_order)
-      .fetch<TCreateOrderTableResponseDto>();
+      .fetch<CreateTableViewModel>();
   }
 
-  static async fetchCreateTable({
-    table_number,
-    access_token,
-  }: TCreateTableDto): Promise<TCreateTableResponseDto> {
+  static async DeleteTable(
+    Param: DeleteTableModel & BaseAuthModel,
+  ): Promise<DeleteTableViewModel> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.TABLE}/${table_number}`)
-      .method(EMethodRequest.POST)
-      .header("access_token", access_token)
-      .fetch<TCreateTableResponseDto>();
-  }
-
-  static async fetchDeleteTable({
-    table_id,
-    access_token,
-  }: TDeleteTableDto): Promise<TDeleteTableDto> {
-    return await ApiOrder.builder()
-      .cache("no-store")
-      .route(`${ERoute.TABLE}/${table_id}`)
-      .method(EMethodRequest.POST)
-      .header("access_token", access_token)
-      .fetch<TDeleteTableDto>();
-  }
-
-  static async fetchStatusTable({
-    table_id,
-    access_token,
-  }: TGetStatusTableDto): Promise<TGetStatusTableResponseDto> {
-    return await ApiOrder.builder()
-      .cache("no-store")
-      .route(`${ERoute.STATUS_TABLE}/${table_id}`)
-      .method(EMethodRequest.GET)
-      .header("access_token", access_token)
-      .fetch<TGetStatusTableResponseDto>();
-  }
-
-  static async fetchAcceptStatusTable({
-    table_id,
-    access_token,
-  }: TCreateAcceptStatusTableOrderDto): Promise<TCreateAcceptStatusTableOrderResponseDto> {
-    return await ApiOrder.builder()
-      .cache("no-store")
-      .route(`${ERoute.ACCEPT_STATUS_TABLE}/${table_id}`)
-      .method(EMethodRequest.POST)
-      .header("access_token", access_token)
-      .fetch<TCreateAcceptStatusTableOrderResponseDto>();
-  }
-
-  static async fetchDeleteStatusTable({
-    table_id,
-    access_token,
-  }: TCreateDeleteStatusTableOrderDto): Promise<TCreateDeleteStatusTableOrderResponseDto> {
-    return await ApiOrder.builder()
-      .cache("no-store")
-      .route(`${ERoute.STATUS_TABLE}/${table_id}`)
+      .route(`${EServerRoute.ORDER_TABLE}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.DELETE)
-      .header("access_token", access_token)
-      .fetch<TCreateDeleteStatusTableOrderResponseDto>();
+      .fetch<DeleteTableViewModel>();
   }
 
-  static async fetchGetOrders({
-    access_token,
-    start_day,
-    end_day,
-    pay_status,
-  }: TGetOrdersDto): Promise<Array<TGetFactorResponseDto>> {
+  static async ReadStatusTable(
+    Param: ReadStatusTableModel,
+  ): Promise<ReadStatusTableViewModel> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.ORDER_STATUS_TABLE}/${Param.Id}`)
+      .method(EMethodRequest.GET)
+      .fetch<ReadStatusTableViewModel>();
+  }
+
+  static async AcceptStatusTable(
+    Param: AcceptStatusTableModel & BaseAuthModel,
+  ): Promise<AcceptStatusTableViewModel> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.ORDER_STATUS_TABLE}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.PUT)
+      .fetch<AcceptStatusTableViewModel>();
+  }
+
+  static async DeleteStatusTable(
+    Param: DeleteStatusTableModel & BaseAuthModel,
+  ): Promise<DeleteStatusTableViewModel> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.ORDER_STATUS_TABLE}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.PUT)
+      .fetch<DeleteStatusTableViewModel>();
+  }
+
+  static async ReadOrderTableList(
+    Param: ReadOrderTableListModel & BaseAuthModel,
+  ): Promise<Array<ReadOrderTableListViewModel>> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(EServerRoute.ORDER_ORDER_TABLE)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<Array<ReadOrderTableListViewModel>>();
+  }
+
+  static async ReadOrderTableDetail(
+    Param: ReadOrderTableDetailModel & BaseAuthModel,
+  ): Promise<ReadOrderTableDetailViewModel> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.ORDER_TABLE}/${Param.AccessToken}`)
+      .method(EMethodRequest.GET)
+      .fetch<ReadOrderTableDetailViewModel>();
+  }
+
+  static async CreateOrderTable(
+    Param: CreateOrderTableModel,
+  ): Promise<CreateOrderTableViewModel> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.ORDER_TABLE}/${Param.Id}`)
+      .bodyParam("Orders", Param.Orders)
+      .method(EMethodRequest.POST)
+      .fetch<CreateOrderTableViewModel>();
+  }
+
+  static async ReadOrderList(
+    Param: ReadOrderListModel &
+      BaseAuthModel & {
+        StartDay?: string;
+        EndDay?: string;
+        IsPay?: boolean;
+      },
+  ): Promise<Array<ReadOrderListViewModel>> {
     const fetchRes = ApiOrder.builder()
       .cache("no-store")
-      .route(ERoute.ORDER)
-      .method(EMethodRequest.GET)
-      .header("access_token", access_token);
+      .route(EServerRoute.ORDER_ORDER)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET);
 
-    start_day !== undefined && fetchRes.param("start_day", start_day);
-    end_day !== undefined && fetchRes.param("end_day", end_day);
-    pay_status !== undefined && fetchRes.param("pay_status", pay_status);
+    Param.StartDay !== undefined && fetchRes.param("StartDay", Param.StartDay);
+    Param.EndDay !== undefined && fetchRes.param("EndDay", Param.EndDay);
+    Param.IsPay !== undefined && fetchRes.param("IsPay", Param.IsPay);
 
-    return fetchRes.fetch<Array<TGetFactorResponseDto>>();
+    return fetchRes.fetch<Array<ReadOrderListViewModel>>();
   }
 
-  static async fetchGetOrder({
-    order_id,
-    access_token,
-  }: TGetOrderDto): Promise<TGetFactorResponseDto> {
+  static async ReadOrderMonthlyList(
+    Param: ReadOrderMonthlyListModel & BaseAuthModel,
+  ): Promise<Array<ReadOrderMonthlyListViewModel>> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.ORDER}/${order_id}`)
+      .route(EServerRoute.ORDER_ORDER_MONTHLY)
+      .header("access_token", Param.AccessToken)
+      .param("Count", Param.Count)
+      .param("Space", Param.Space)
       .method(EMethodRequest.GET)
-      .header("access_token", access_token)
-      .fetch<TGetFactorResponseDto>();
+      .fetch<Array<ReadOrderMonthlyListViewModel>>();
   }
 
-  static async fetchCreateOrder({
-    access_token,
-  }: TCreateOrderDto): Promise<TCreateFactorResponseDto> {
+  static async ReadOrderDetail(
+    Param: ReadOrderDetailModel & BaseAuthModel,
+  ): Promise<ReadOrderDetailViewModel> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(ERoute.ORDER)
+      .route(`${EServerRoute.ORDER_ORDER}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.GET)
+      .fetch<ReadOrderDetailViewModel>();
+  }
+
+  static async CreateOrder(
+    Param: CreateOrderModel & BaseAuthModel,
+  ): Promise<CreateOrderViewModel> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(EServerRoute.ORDER_ORDER)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.POST)
-      .header("access_token", access_token)
-      .fetch<TCreateFactorResponseDto>();
+      .fetch<CreateOrderViewModel>();
   }
 
-  static async fetchDeleteOrder({
-    access_token,
-    order_id,
-  }: TDeleteFactorDto): Promise<TDeleteFactorResponseDto> {
+  static async UpdateOrder(
+    Param: UpdateOrderModel & BaseAuthModel,
+  ): Promise<UpdateOrderViewModel> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.ORDER}/${order_id}`)
+      .route(`${EServerRoute.ORDER_ORDER}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("CustomerMobile", Param.CustomerMobile)
+      .bodyParam("FactorDate", Param.FactorDate)
+      .bodyParam("FactorNumber", Param.FactorNumber)
+      .bodyParam("IsPay", Param.IsPay)
+      .bodyParam("Location", Param.Location)
+      .bodyParam("Tax", Param.Tax)
+      .method(EMethodRequest.PUT)
+      .fetch<UpdateOrderViewModel>();
+  }
+
+  static async UpdatePayStatusOrder(
+    Param: UpdatePayStatusOrderModel & BaseAuthModel,
+  ): Promise<UpdatePayStatusOrderViewModel> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.ORDER_ORDER_PAY_STATUS}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .param("IsPay", Param.IsPay)
+      .method(EMethodRequest.PUT)
+      .fetch<UpdatePayStatusOrderViewModel>();
+  }
+
+  static async DeleteOrder(
+    Param: DeleteOrderModel & BaseAuthModel,
+  ): Promise<DeleteOrderViewModel> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.ORDER_ORDER}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.DELETE)
-      .header("access_token", access_token)
-      .fetch<TDeleteFactorResponseDto>();
+      .fetch<DeleteOrderViewModel>();
   }
 
-  static async fetchUpdateOrder({
-    access_token,
-    customer_mobile,
-    factor_number,
-    location,
-    pay_status,
-    tax,
-    factor_id,
-    create_date,
-  }: TUpdateFactorDto): Promise<TUpdateFactorResponseDto> {
+  static async CreateOrderItem(
+    Param: CreateOrderItemModel & BaseAuthModel,
+  ): Promise<CreateOrderItemViewModel> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.ORDER}/${factor_id}`)
-      .method(EMethodRequest.PUT)
-      .header("access_token", access_token)
-      .bodyParam("pay_status", pay_status)
-      .bodyParam("customer_mobile", customer_mobile)
-      .bodyParam("location", location)
-      .bodyParam("factor_number", factor_number)
-      .bodyParam("tax", tax)
-      .bodyParam("create_date", create_date)
-      .fetch<TUpdateFactorResponseDto>();
-  }
-
-  static async fetchUpdatePayStatusOrder({
-    order_id,
-    access_token,
-    pay_status,
-  }: {
-    order_id: string;
-    access_token: string;
-    pay_status: boolean;
-  }): Promise<TUpdatePayStatusOrderResponseDto> {
-    return await ApiOrder.builder()
-      .cache("no-store")
-      .route(`${ERoute.ORDER_PAY_STATUS}/${order_id}`)
-      .method(EMethodRequest.PUT)
-      .header("access_token", access_token)
-      .bodyParam("pay_status", pay_status)
-      .fetch<TUpdatePayStatusOrderResponseDto>();
-  }
-
-  static async fetchReportMonthlyOrder({
-    access_token,
-  }: TGetReportMonthlyOrderDto): Promise<
-    Array<TGetReportMonthlyOrderResponseDto>
-  > {
-    return await ApiOrder.builder()
-      .cache("no-store")
-      .route(ERoute.ORDER_MONTHLY)
-      .method(EMethodRequest.GET)
-      .header("access_token", access_token)
-      .fetch<Array<TGetReportMonthlyOrderResponseDto>>();
-  }
-
-  static async fetchCreateOrderItem({
-    access_token,
-    factor_id,
-  }: CreateFactorItemDto): Promise<TCreateFactorItemResponseDto> {
-    return await ApiOrder.builder()
-      .cache("no-store")
-      .route(`${ERoute.ORDER_ITEM}/${factor_id}`)
+      .route(`${EServerRoute.ORDER_ORDER_ITEM}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
       .method(EMethodRequest.POST)
-      .header("access_token", access_token)
-      .fetch<TCreateFactorItemResponseDto>();
+      .fetch<CreateOrderItemViewModel>();
   }
 
-  static async fetchDeleteOrderItem({
-    access_token,
-    order_item_id,
-  }: TDeleteOrderItemResponseDto): Promise<TGetFactorResponseDto> {
+  static async UpdateOrderItem(
+    Param: UpdateOrderItemModel & BaseAuthModel,
+  ): Promise<UpdateOrderItemViewModel> {
     return await ApiOrder.builder()
       .cache("no-store")
-      .route(`${ERoute.ORDER_ITEM}/${order_item_id}`)
-      .method(EMethodRequest.DELETE)
-      .header("access_token", access_token)
-      .fetch<TGetFactorResponseDto>();
-  }
-
-  static async fetchUpdateOrderItem({
-    order_item_id,
-    access_token,
-    product_count,
-    product_discount,
-    product_name,
-    product_price,
-  }: TUpdateFactorItemResponseDto): Promise<TUpdateOrderItemResponseDto> {
-    return await ApiOrder.builder()
-      .cache("no-store")
-      .route(`${ERoute.ORDER_ITEM}/${order_item_id}`)
+      .route(`${EServerRoute.ORDER_ORDER_ITEM}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .bodyParam("ProductName", Param.ProductName)
+      .bodyParam("ProductPrice", Param.ProductPrice)
+      .bodyParam("ProductCount", Param.ProductCount)
+      .bodyParam("ProductDiscount", Param.ProductDiscount)
       .method(EMethodRequest.PUT)
-      .header("access_token", access_token)
-      .bodyParam("product_count", product_count)
-      .bodyParam("product_discount", product_discount)
-      .bodyParam("product_name", product_name)
-      .bodyParam("product_price", product_price)
-      .fetch<TUpdateOrderItemResponseDto>();
+      .fetch<UpdateOrderItemViewModel>();
+  }
+
+  static async DeleteOrderItem(
+    Param: DeleteOrderItemModel & BaseAuthModel,
+  ): Promise<DeleteOrderItemViewModel> {
+    return await ApiOrder.builder()
+      .cache("no-store")
+      .route(`${EServerRoute.ORDER_ORDER_ITEM}/${Param.Id}`)
+      .header("access_token", Param.AccessToken)
+      .method(EMethodRequest.DELETE)
+      .fetch<DeleteOrderItemViewModel>();
   }
 }
