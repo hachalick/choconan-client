@@ -1,1 +1,0 @@
-type TDeleteProductMenuResponseDto = { delete: boolean };

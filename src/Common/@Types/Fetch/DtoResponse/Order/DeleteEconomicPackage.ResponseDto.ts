@@ -1,1 +1,0 @@
-type TDeleteEconomicPackageResponseDto = { delete: boolean }

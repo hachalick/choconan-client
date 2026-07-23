@@ -22,7 +22,7 @@ export default function OnlineSnap() {
   useEffect(() => {
     const fetchData = async () => {
       const res = await FetchApi.OnlineShop.ReadMenuSnapFood();
-      console.log(res);
+
       setDataMatch(res);
     };
 

@@ -122,22 +122,6 @@ export default function CreateMenuCategory() {
             loading="lazy"
           />
         </div>
-        {defaultCategory.Id ? (
-          <InputContainer column>
-            <Label>شناسه دسته بندی</Label>
-            <Input
-              title="شناسه دسته بندی"
-              type="text"
-              id="Id"
-              name="Id"
-              value={defaultCategory.Id}
-              onFocus={(e) => e.target.select()}
-              disabled
-            />
-          </InputContainer>
-        ) : (
-          <></>
-        )}
         <InputContainer column>
           <Label>مسیر عکس</Label>
           <Input

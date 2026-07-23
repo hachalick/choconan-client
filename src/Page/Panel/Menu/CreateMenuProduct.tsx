@@ -82,8 +82,6 @@ export default function CreateMenuProduct() {
             Id: setting?.productMenu.state || "",
           });
 
-          console.log(resProduct);
-
           setDefaultProduct(resProduct);
         }
 
@@ -98,22 +96,6 @@ export default function CreateMenuProduct() {
 
   const [cloudProduct, setSaveChangeProduct] = useChangeTimer(async () => {
     const access_token = sessionStorage.getItem("access_token") || "";
-
-    console.log({
-      AccessToken: access_token,
-      Id: defaultProduct.Id,
-      IsShowMenu: defaultProduct.IsShowMenu,
-      SrcImage: defaultProduct.SrcImage,
-      Name: defaultProduct.Name,
-      Description: defaultProduct.Description,
-      MetaTitle: defaultProduct.MetaTitle,
-      MetaDescription: defaultProduct.MetaDescription,
-      Price: defaultProduct.Price,
-      Waiting: defaultProduct.Waiting,
-      SnapId: defaultProduct.SnapId,
-      TapsiId: defaultProduct.TapsiId,
-      CategoryId: defaultProduct.CategoryId,
-    });
 
     const res = await FetchApi.Menu.UpdateMenuProduct({
       AccessToken: access_token,

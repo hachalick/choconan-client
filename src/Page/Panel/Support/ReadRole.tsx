@@ -24,8 +24,6 @@ export default function ReadRole() {
         AccessToken: access_token,
       });
 
-      console.log(1)
-
       setListRole(res);
       setFetchAgain(false);
     };

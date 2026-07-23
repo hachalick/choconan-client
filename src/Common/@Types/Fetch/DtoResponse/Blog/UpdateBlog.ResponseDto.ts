@@ -1,1 +1,0 @@
-type TUpdateBlogResponseDto = { update: boolean };

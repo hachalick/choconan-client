@@ -1,1 +1,0 @@
-type TGetTableOrderResponseDto = { table_id: string; table: number }

@@ -79,14 +79,16 @@ export default function CreateFactor() {
 
     const res = await FetchApi.Order.UpdateOrder({
       AccessToken: access_token,
+      Id: defaultFactor.Id,
       CustomerMobile: defaultFactor.CustomerMobile,
       FactorNumber: defaultFactor.FactorNumber,
       Location: defaultFactor.Location,
       IsPay: defaultFactor.IsPay,
       Tax: defaultFactor.Tax,
-      Id: defaultFactor.Id,
       FactorDate: defaultFactor.FactorDate,
     });
+    
+    console.log(res);
 
     return res.Update;
   }, [defaultFactor]);
@@ -254,7 +256,6 @@ export default function CreateFactor() {
   };
 
   const onClickDeleteFactorItem = async (index: number) => {
-    console.log(index);
     setDefaultFactor((val) => ({
       ...val,
       FactorItems: val.FactorItems.filter((val, i) => i !== index),
@@ -276,6 +277,7 @@ export default function CreateFactor() {
     setting?.factor.setState("");
     setting?.dashboard.setState(EDashboard.READ_FACTOR);
   };
+
   //#endregion
 
   return (
@@ -297,7 +299,7 @@ export default function CreateFactor() {
               onChange={(e) => {
                 onChangeFactorForm({
                   target: {
-                    name: "create_at",
+                    name: "FactorDate",
                     type: "text",
                     value: `${e?.year}/${e?.month.number}/${e?.day} ${e?.hour}:${e?.minute}:${e?.second}`,
                   },

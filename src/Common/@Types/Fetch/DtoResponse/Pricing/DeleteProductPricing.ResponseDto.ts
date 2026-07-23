@@ -1,3 +1,0 @@
-type TDeleteProductPricingResponseDto = {
-  deleted: boolean;
-};

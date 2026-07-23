@@ -68,7 +68,6 @@ export class ApiOrder extends BaseApi {
   static async CreateTable(
     Param: CreateTableModel & BaseAuthModel,
   ): Promise<CreateTableViewModel> {
-    console.log(Param)
     return await ApiOrder.builder()
       .cache("no-store")
       .route(`${EServerRoute.ORDER_TABLE}/${encodeURI(Param.Location)}`)

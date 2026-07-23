@@ -1,10 +1,10 @@
 export enum EInnerRoute {
   // PROTOCOL = "http",
-  // PROTOCOL = "https",
+  PROTOCOL = "https",
   // DOMAIN = "127.0.0.1:3000",
   // DOMAIN = "192.168.1.109:8080",
-  // DOMAIN = "shonan.ir",
-  // HOST = `${PROTOCOL}://${DOMAIN}`,
+  DOMAIN = "shonan.ir",
+  HOST = `${PROTOCOL}://${DOMAIN}`,
   // app
   HOME                 = "/",
   ABOUT_US             = "/about-us",

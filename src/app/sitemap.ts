@@ -1,52 +1,49 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-import { EServerRoute } from "@/Common/Enums/ServerRout";
+import { EInnerRoute } from "@/Common/Enums/InnerRout";
 import { MetadataRoute } from "next";
 type ItemSitemap = MetadataRoute.Sitemap[0];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemap = [
     {
-      url: `${EServerRoute.HOST}`,
+      url: `${EInnerRoute.HOST}`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${EServerRoute.HOST}/about-us`,
+      url: `${EInnerRoute.HOST}${EInnerRoute.ABOUT_US}`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${EServerRoute.HOST}/blogs`,
+      url: `${EInnerRoute.HOST}${EInnerRoute.CONTACT_US}`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${EServerRoute.HOST}/contact-us`,
+      url: `${EInnerRoute.HOST}${EInnerRoute.FAQ}`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${EServerRoute.HOST}/faqs`,
+      url: `${EInnerRoute.HOST}${EInnerRoute.NEWS}`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${EServerRoute.HOST}/news`,
+      url: `${EInnerRoute.HOST}${EInnerRoute.PRODUCT}`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${EServerRoute.HOST}/products`,
+      url: `${EInnerRoute.HOST}${EInnerRoute.QUESTION}`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${EServerRoute.HOST}/questions`,
+      url: `${EInnerRoute.HOST}${EInnerRoute.SEARCH}`,
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${EServerRoute.HOST}/search`,
-      lastModified: new Date().toISOString(),
-    },
-    {
-      url: `${EServerRoute.HOST}/menu`,
+      url: `${EInnerRoute.HOST}${EInnerRoute.MENU}`,
       lastModified: new Date().toISOString(),
     },
   ];
+  
   return sitemap;
 }

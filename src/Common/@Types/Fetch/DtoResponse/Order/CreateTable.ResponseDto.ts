@@ -1,1 +1,0 @@
-type TCreateTableResponseDto = { create: boolean; table_id: string }

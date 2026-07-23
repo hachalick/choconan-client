@@ -1,3 +1,0 @@
-type TGetProductMenuSearchDto = {
-  query: string;
-};

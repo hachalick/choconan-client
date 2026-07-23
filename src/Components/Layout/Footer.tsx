@@ -1,16 +1,27 @@
+"use client";
 import { CContactUs } from "@/Common/Constants/Connection.Constant";
 import { EServerRoute } from "@/Common/Enums/ServerRout";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaInstagram, FaTelegramPlane, FaWhatsapp } from "react-icons/fa";
 import Box from "../Element/Box";
 import Enamad from "../Ui/Enamad";
 import { EInnerRoute } from "@/Common/Enums/InnerRout";
 import { FetchApi } from "@/Common/Connection/Api/Seed/fetchApi.Api";
+import { ReadMenuDetailViewModel } from "@/Common/Connection/Api/ViewModels/Menu.Service.ViewModel";
 
-export default async function Footer() {
-  const menu = await FetchApi.Menu.ReadMenuDetail({});
+export default function Footer() {
+  const [menu, setMenu] = useState<Array<ReadMenuDetailViewModel>>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const menu = await FetchApi.Menu.ReadMenuDetail({});
+      setMenu(menu);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <footer className="py-2 print:hidden">

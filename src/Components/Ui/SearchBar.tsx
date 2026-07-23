@@ -1,13 +1,11 @@
 "use client";
 import { FetchApi } from "@/Common/Connection/Api/Seed/fetchApi.Api";
 import { ReadMenuDetailViewModel } from "@/Common/Connection/Api/ViewModels/Menu.Service.ViewModel";
-import { usEServerRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
 export default function SearchBar555() {
-  const router = usEServerRouter();
-
   const [isShow, setShow] = useState(false);
   const [data, setData] = useState<Array<ReadMenuDetailViewModel>>([]);
 
@@ -17,12 +15,12 @@ export default function SearchBar555() {
       setData(fetchData);
       setShow(true);
     };
+
     fetches();
   }, []);
 
   function redirectToRoute(val: string) {
-    const [category, id, name] = val?.split("##") ?? ["", "", ""];
-    router.push(`/menu/${encodeURI(category)}/${id}/${encodeURI(name)}`);
+    redirect(`/menu/product/${val}`);
   }
 
   if (isShow)
@@ -44,10 +42,7 @@ export default function SearchBar555() {
                 <optgroup key={i} label={category.Name} className="pt-12">
                   {category.Products.map((product, i) => {
                     return (
-                      <option
-                        key={i}
-                        value={`${category.Id}##${product.Id}##${product.Name}`}
-                      >
+                      <option key={i} value={product.Id}>
                         {product.Name}
                       </option>
                     );

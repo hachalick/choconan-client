@@ -1,1 +1,0 @@
-type TUpdateProductMenuResponseDto = { update: boolean }

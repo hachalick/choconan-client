@@ -31,7 +31,7 @@ export default function ReadOrder() {
       const orders = await FetchApi.Order.ReadOrderTableList({
         AccessToken: access_token,
       });
-      console.log(orders)
+
       setOrders(orders);
     };
 
