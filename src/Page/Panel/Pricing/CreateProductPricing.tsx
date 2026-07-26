@@ -665,7 +665,7 @@ export default function CreateProductPricing() {
                     <Select
                       name="ChildProductUnitId"
                       title="نام محصول مصرف شده"
-                      defaultValue={item_detail.Id}
+                      defaultValue={item_detail.ChildProductUnitId}
                       onChange={(e) =>
                         onChangeDetailProductPricing(
                           e,
