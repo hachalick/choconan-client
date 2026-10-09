@@ -1,6 +1,3 @@
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 import { Metadata } from "next";
 import React from "react";
 import { metadata } from "../layout";

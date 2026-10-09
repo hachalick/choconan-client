@@ -1,4 +1,4 @@
 export class SendSmsOtpModel {
-  Phone: string;
-  Otp: string;
+  Phone: string = '';
+  Otp: string = '';
 }

@@ -1,98 +1,98 @@
 export class ReadUnitPricingListModel {}
 
 export class ReadUnitPricingDetailModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class CreateUnitPricingModel {
-  Name: string;
+  Name: string = "";
 }
 
 export class UpdateUnitPricingModel {
-  Id: string;
-  Name: string;
+  Id: string = "";
+  Name: string = "";
 }
 
 export class DeleteUnitPricingModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class ReadProductPricingListModel {}
 
 export class CreateProductPricingModel {
-  Name: string;
-  Buy: number;
+  Name: string = "";
+  Buy: number = 0;
 }
 
 export class UpdateProductPricingModel {
-  Id: string;
-  Name: string;
-  Buy: number;
+  Id: string = "";
+  Name: string = "";
+  Buy: number = 0;
 }
 
 export class DeleteProductPricingModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class CreateProductUnitPricingModel {
-  UnitPricingId: string;
-  ProductPricingId: string;
-  ProductMenuId: string | null;
-  Ratio: number;
-  Profit: number;
+  UnitPricingId: string = "";
+  ProductPricingId: string = "";
+  ProductMenuId: string | null = null;
+  Ratio: number = 0;
+  Profit: number = 0;
 }
 
 export class UpdateProductUnitPricingModel {
-  Id: string;
-  UnitPricingId: string;
-  ProductMenuId: string | null;
-  Ratio: number;
-  Profit: number;
+  Id: string = "";
+  UnitPricingId: string = "";
+  ProductMenuId: string | null = null;
+  Ratio: number = 0;
+  Profit: number = 0;
 }
 
 export class DeleteProductUnitPricingModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class UpdateProductUnitRatioModel {
-  IsRatio: boolean;
-  ProductUnitId1: string;
-  ProductUnitId2: string;
+  IsRatio: boolean = false;
+  ProductUnitId1: string = "";
+  ProductUnitId2: string = "";
 }
 
 export class CreateDetailProductPricingModel {
-  Amount: number;
-  ParentProductUnitDetailId: string;
-  ChildProductUnitDetailId: string;
+  Amount: number = 0;
+  ParentProductUnitDetailId: string = "";
+  ChildProductUnitDetailId: string = "";
 }
 
 export class UpdateDetailProductPricingModel {
-  Id: string;
-  Amount: number;
-  ChildProductUnitDetailId: string;
+  Id: string = "";
+  Amount: number = 0;
+  ChildProductUnitDetailId: string = "";
 }
 
 export class DeleteDetailProductPricingModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class ReadCostProductPricingListModel {}
 
 export class ReadCostProductPricingDetailModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class CreateCostProductPricingModel {
-  Name: string;
-  Price: number;
+  Name: string = "";
+  Price: number = 0;
 }
 
 export class UpdateCostProductPricingModel {
-  Id: string;
-  Name: string;
-  Price: number;
+  Id: string = "";
+  Name: string = "";
+  Price: number = 0;
 }
 
 export class DeleteCostProductPricingModel {
-  Id: string;
+  Id: string = "";
 }

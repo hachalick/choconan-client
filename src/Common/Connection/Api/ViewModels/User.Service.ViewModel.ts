@@ -8,31 +8,31 @@ import {
 //#region User
 
 export class ReadAccountDetailViewModel extends BaseReadViewModel {
-  Name: string;
-  Family: string;
-  Profile: string;
-  Role: string[];
-  Access: string[];
+  Name: string = "";
+  Family: string = "";
+  Profile: string = "";
+  Role: string[] = [];
+  Access: string[] = [];
 }
 
 export class ReadUserDetailViewModel extends BaseReadViewModel {
-  Name: string;
-  Family: string;
-  Phone: string;
-  NationalCode: string;
-  Profile: string;
-  Role: string[];
-  Access: string[];
+  Name: string = "";
+  Family: string = "";
+  Phone: string = "";
+  NationalCode: string = "";
+  Profile: string = "";
+  Role: string[] = [];
+  Access: string[] = [];
 }
 
 export class ReadUserListViewModel extends BaseReadViewModel {
-  Name: string;
-  Family: string;
-  Phone: string;
-  NationalCode: string;
-  Profile: string;
-  Role: string[];
-  Access: string[];
+  Name: string = "";
+  Family: string = "";
+  Phone: string = "";
+  NationalCode: string = "";
+  Profile: string = "";
+  Role: string[] = [];
+  Access: string[] = [];
 }
 
 export class CreateUserViewModel extends BaseCreateViewModel {}
@@ -48,11 +48,11 @@ export class DeleteUserViewModel extends BaseDeleteViewModel {}
 //#region Dashboard Capability
 
 export class ReadDashboardCapabilityDetailViewModel extends BaseReadViewModel {
-  DashboardCapability: string;
+  DashboardCapability: string = "";
 }
 
 export class ReadDashboardCapabilityListViewModel extends BaseReadViewModel {
-  DashboardCapability: string;
+  DashboardCapability: string = "";
 }
 
 export class CreateDashboardCapabilityViewModel extends BaseCreateViewModel {}
@@ -70,11 +70,11 @@ export class DeleteDashboardCapabilityUserViewModel extends BaseDeleteViewModel 
 //#region Role
 
 export class ReadRoleListViewModel extends BaseReadViewModel {
-  Name: string;
+  Name: string = "";
 }
 
 export class ReadRoleDetailViewModel extends BaseReadViewModel {
-  Name: string;
+  Name: string = "";
 }
 
 export class CreateRoleViewModel extends BaseCreateViewModel {}

@@ -6,11 +6,11 @@ import {
 } from "./Seed/Base.Service.ViewModel";
 
 export class ReadUnitPricingListViewModel extends BaseReadViewModel {
-  Name: string;
+  Name: string = "";
 }
 
 export class ReadUnitPricingDetailViewModel extends BaseReadViewModel {
-  Name: string;
+  Name: string = "";
 }
 
 export class CreateUnitPricingViewModel extends BaseCreateViewModel {}
@@ -20,12 +20,17 @@ export class UpdateUnitPricingViewModel extends BaseUpdateViewModel {}
 export class DeleteUnitPricingViewModel extends BaseDeleteViewModel {}
 
 export class ReadProductPricingListViewModel {
-  DayToWork: number;
+  DayToWork: number = 0;
   Cost: {
     SumCost: number;
     AverageCost: number;
     ItemCost: number;
     List: { Id: string; Name: string; Price: number }[];
+  } = {
+    AverageCost: 0,
+    ItemCost: 0,
+    List: [],
+    SumCost: 0,
   };
   ProductInMenu: {
     SumCountSell: number;
@@ -49,6 +54,11 @@ export class ReadProductPricingListViewModel {
       AverageCountSell: number;
       Balance: number;
     }[];
+  } = {
+    AverageCountSell: 0,
+    List: [],
+    SumBalance: 0,
+    SumCountSell: 0,
   };
   ProductInPricing: {
     List: {
@@ -82,11 +92,13 @@ export class ReadProductPricingListViewModel {
         }[];
       }[];
     }[];
+  } = {
+    List: [],
   };
 }
 
 export class CreateProductUnitPricingViewModel extends BaseCreateViewModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class UpdateProductUnitPricingViewModel extends BaseUpdateViewModel {}
@@ -96,7 +108,7 @@ export class DeleteProductUnitPricingViewModel extends BaseDeleteViewModel {}
 export class UpdateProductUnitRatioViewModel extends BaseUpdateViewModel {}
 
 export class CreateProductPricingViewModel extends BaseCreateViewModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class UpdateProductPricingViewModel extends BaseUpdateViewModel {}
@@ -104,7 +116,7 @@ export class UpdateProductPricingViewModel extends BaseUpdateViewModel {}
 export class DeleteProductPricingViewModel extends BaseDeleteViewModel {}
 
 export class CreateDetailProductPricingViewModel extends BaseCreateViewModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class UpdateDetailProductPricingViewModel extends BaseUpdateViewModel {}
@@ -112,13 +124,13 @@ export class UpdateDetailProductPricingViewModel extends BaseUpdateViewModel {}
 export class DeleteDetailProductPricingViewModel extends BaseDeleteViewModel {}
 
 export class ReadCostProductPricingListViewModel extends BaseReadViewModel {
-  Name: string;
-  Price: number;
+  Name: string = "";
+  Price: number = 0;
 }
 
 export class ReadCostProductPricingDetailViewModel extends BaseReadViewModel {
-  Name: string;
-  Price: number;
+  Name: string = "";
+  Price: number = 0;
 }
 
 export class CreateCostProductPricingViewModel extends BaseCreateViewModel {}

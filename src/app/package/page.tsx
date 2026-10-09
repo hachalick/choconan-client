@@ -1,6 +1,3 @@
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 import { EInnerRoute } from "@/Common/Enums/InnerRout";
 import Layout from "@/Components/Layout/Layout";
 import ShowNestedRoute from "@/Components/Ui/ShowNestedRoute";

@@ -1,6 +1,3 @@
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 import { EInnerRoute } from "@/Common/Enums/InnerRout";
 import { MetadataRoute } from "next";
 type ItemSitemap = MetadataRoute.Sitemap[0];

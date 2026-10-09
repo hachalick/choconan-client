@@ -215,26 +215,14 @@ export default function ReadProductPricing() {
       </Form>
       <Box variant="secondary">
         <H size={4}>
-          این گزارش از روی{" "}
-          {calculateNumber(productUnitPricing.DayToWork, 1, floatFloor)} روز
-          گذشته بدست آمده است
+          این گزارش از روی {digitsEnToFa(productUnitPricing.DayToWork)} روز گذشته بدست آمده
+          است
         </H>
       </Box>
       <Details>
         <Summary variant="primary">
-          لیست هزینه های ثابت (ماهانه ={" "}
-          {calculateNumber(
-            productUnitPricing.Cost.SumCost,
-            floatNumber,
-            floatFloor,
-          )}{" "}
-          تومان , روزانه ={" "}
-          {calculateNumber(
-            productUnitPricing.Cost.AverageCost,
-            floatNumber,
-            floatFloor,
-          )}{" "}
-          تومان, یک آیتم ={" "}
+          لیست هزینه های ثابت (ماهانه = {digitsEnToFa(productUnitPricing.Cost.SumCost)} تومان
+          , روزانه = {digitsEnToFa(productUnitPricing.Cost.AverageCost)} تومان, یک آیتم ={" "}
           {calculateNumber(
             productUnitPricing.Cost.ItemCost,
             floatNumber,
@@ -289,19 +277,9 @@ export default function ReadProductPricing() {
             {digitsEnToFa(
               addCommas(productUnitPricing.ProductInMenu.List.length),
             )}{" "}
-            نتیجه , فروش کل ={" "}
-            {calculateNumber(
-              productUnitPricing.ProductInMenu.SumCountSell,
-              floatNumber,
-              floatFloor,
-            )}{" "}
-            , میانگین فروش ={" "}
-            {calculateNumber(
-              productUnitPricing.ProductInMenu.AverageCountSell,
-              floatNumber,
-              floatFloor,
-            )}{" "}
-            , تراز کل =
+            نتیجه , فروش کل = {digitsEnToFa(productUnitPricing.ProductInMenu.SumCountSell)} ,
+            میانگین فروش = {digitsEnToFa(productUnitPricing.ProductInMenu.AverageCountSell)} ,
+            تراز کل =
             <span dir="ltr">
               {calculateNumber(
                 productUnitPricing.ProductInMenu.SumBalance,
@@ -496,9 +474,7 @@ export default function ReadProductPricing() {
                   <div className="flex justify-between items-center grow">
                     <span>تراز محصول</span>
                     <span className="border-dotted border-b-4 border-white h-[1px] grow mx-4"></span>
-                    <span dir="ltr">
-                      {calculateNumber(val.Balance, floatNumber, floatFloor)}
-                    </span>
+                    <span dir="ltr">{digitsEnToFa(val.Balance)}</span>
                   </div>
                 </div>
               </div>

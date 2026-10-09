@@ -1,40 +1,40 @@
 //#region User
 
 export class ReadAccountDetailModel {
-  Token: string;
+  Token: string = '';
 }
 
 export class ReadUserDetailModel {
-  Id: string;
+  Id: string = '';
 }
 
 export class ReadUserListModel {}
 
 export class CreateUserModel {
-  Name?: string;
-  Family?: string;
-  Phone: string;
-  NationalCode: string;
-  Password: string;
+  Name?: string = '';
+  Family?: string = '';
+  Phone: string = '';
+  NationalCode: string = '';
+  Password: string = '';
 }
 
 export class UpdateUserModel {
-  Id: string;
-  Name: string;
-  Family: string;
-  Phone: string;
-  NationalCode: string;
-  Profile: string;
+  Id: string = '';
+  Name: string = '';
+  Family: string = '';
+  Phone: string = '';
+  NationalCode: string = '';
+  Profile: string = '';
 }
 
 export class UpdateUserProfileModel {
-  Token: string;
-  Name: string;
-  Family: string;
+  Token: string = '';
+  Name: string = '';
+  Family: string = '';
 }
 
 export class DeleteUserModel {
-  Id: string;
+  Id: string = '';
 }
 
 //#endregion
@@ -42,13 +42,13 @@ export class DeleteUserModel {
 //#region Dashboard Capability
 
 export class ReadDashboardCapabilityDetailModel {
-  Id: string;
+  Id: string = '';
 }
 
 export class ReadDashboardCapabilityListModel {}
 
 export class CreateDashboardCapabilityModel {
-  Name: string;
+  Name: string = '';
 }
 
 //#endregion
@@ -56,13 +56,13 @@ export class CreateDashboardCapabilityModel {
 //#region Dashboard Capability
 
 export class CreateDashboardCapabilityUserModel {
-  DashboardCapabilityId: string;
-  UserId: string;
+  DashboardCapabilityId: string = '';
+  UserId: string = '';
 }
 
 export class DeleteDashboardCapabilityUserModel {
-  DashboardCapabilityId: string;
-  UserId: string;
+  DashboardCapabilityId: string = '';
+  UserId: string = '';
 }
 
 //#endregion
@@ -72,20 +72,20 @@ export class DeleteDashboardCapabilityUserModel {
 export class ReadRoleListModel {}
 
 export class ReadRoleDetailModel {
-  Id: string;
+  Id: string = '';
 }
 
 export class CreateRoleModel {
-  Name: string;
+  Name: string = '';
 }
 
 export class UpdateRoleModel {
-  Id: string;
-  Name: string;
+  Id: string = '';
+  Name: string = '';
 }
 
 export class DeleteRoleModel {
-  Id: string;
+  Id: string = '';
 }
 
 //#endregion
@@ -93,13 +93,13 @@ export class DeleteRoleModel {
 //#region Role User
 
 export class CreateRoleUserModel {
-  RoleId: string;
-  UserId: string;
+  RoleId: string = '';
+  UserId: string = '';
 }
 
 export class DeleteRoleUserModel {
-  RoleId: string;
-  UserId: string;
+  RoleId: string = '';
+  UserId: string = '';
 }
 
 //#endregion

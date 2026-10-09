@@ -1,51 +1,51 @@
 export class ReadAllProductSnapFoodViewModel {
-  Id: number;
-  Title: string;
-  Price: number;
+  Id: number = 0;
+  Title: string = "";
+  Price: number = 0;
 }
 
 export class ReadMatchProductSnapFoodViewModel {
-  Id: number;
-  Title: string;
-  Price: number;
-  SelfTitle: string;
-  SelfPrice: number;
+  Id: number = 0;
+  Title: string = "";
+  Price: number = 0;
+  SelfTitle: string = "";
+  SelfPrice: number = 0;
 }
 
 export class ReadNotMatchProductSnapFoodViewModel {
-  Id: number;
-  Title: string;
-  Price: number;
+  Id: number = 0;
+  Title: string = "";
+  Price: number = 0;
 }
 
 export class ReadMenuSnapFoodViewModel {
-  AllProduct: ReadAllProductSnapFoodViewModel[];
-  Match: ReadMatchProductSnapFoodViewModel[];
-  NotMatch: ReadNotMatchProductSnapFoodViewModel[];
+  AllProduct: ReadAllProductSnapFoodViewModel[] = [];
+  Match: ReadMatchProductSnapFoodViewModel[] = [];
+  NotMatch: ReadNotMatchProductSnapFoodViewModel[] = [];
 }
 
 export class ReadAllProductTapsiFoodViewModel {
-  Id: number;
-  Title: string;
-  Price: number;
+  Id: number = 0;
+  Title: string = "";
+  Price: number = 0;
 }
 
 export class ReadMatchProductTapsiFoodViewModel {
-  Id: number;
-  Title: string;
-  Price: number;
-  SelfTitle: string;
-  SelfPrice: number;
+  Id: number = 0;
+  Title: string = "";
+  Price: number = 0;
+  SelfTitle: string = "";
+  SelfPrice: number = 0;
 }
 
 export class ReadNotMatchProductTapsiFoodViewModel {
-  Id: number;
-  Title: string;
-  Price: number;
+  Id: number = 0;
+  Title: string = "";
+  Price: number = 0;
 }
 
 export class ReadMenuTapsiFoodViewModel {
-  AllProduct: ReadAllProductTapsiFoodViewModel[];
-  Match: ReadMatchProductTapsiFoodViewModel[];
-  NotMatch: ReadNotMatchProductTapsiFoodViewModel[];
+  AllProduct: ReadAllProductTapsiFoodViewModel[] = [];
+  Match: ReadMatchProductTapsiFoodViewModel[] = [];
+  NotMatch: ReadNotMatchProductTapsiFoodViewModel[] = [];
 }

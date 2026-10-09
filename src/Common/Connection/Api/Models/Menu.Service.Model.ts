@@ -1,71 +1,71 @@
 export class ReadMenuDetailModel {}
 
 export class ReadMenuCategoryDetailModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class ReadMenuProductDetailModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class ReadSearchMenuDetailModel {
-  Text: string;
+  Text: string = "";
 }
 
 export class CreateMenuCategoryModel {
-  Name: string;
-  IsShowMenu: boolean;
-  MetaTitle: string;
-  MetaDescription: string;
-  Icon: string;
-  Description: string;
+  Name: string = "";
+  IsShowMenu: boolean = true;
+  MetaTitle: string = "";
+  MetaDescription: string = "";
+  Icon: string = "";
+  Description: string = "";
 }
 
 export class UpdateMenuCategoryModel {
-  Id: string;
-  Name: string;
-  IsShowMenu: boolean;
-  MetaTitle: string;
-  MetaDescription: string;
-  Icon: string;
-  Description: string;
+  Id: string = "";
+  Name: string = "";
+  IsShowMenu: boolean = true;
+  MetaTitle: string = "";
+  MetaDescription: string = "";
+  Icon: string = "";
+  Description: string = "";
 }
 
 export class DeleteMenuCategoryModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class CreateMenuProductModel {
-  CategoryId: string;
-  IsShowMenu: boolean;
-  MetaTitle: string;
-  MetaDescription: string;
-  Name: string;
-  Description: string;
-  Price: number;
-  Waiting: number;
-  SnapId: string;
-  TapsiId: string;
-  SrcImage: string;
+  CategoryId: string = "";
+  IsShowMenu: boolean = true;
+  MetaTitle: string = "";
+  MetaDescription: string = "";
+  Name: string = "";
+  Description: string = "";
+  Price: number = 0;
+  Waiting: number = 0;
+  SnapId: string = "";
+  TapsiId: string = "";
+  SrcImage: string = "";
 }
 
 export class UpdateMenuProductModel {
-  Id: string;
-  CategoryId: string;
-  IsShowMenu: boolean;
-  MetaTitle: string;
-  MetaDescription: string;
-  Name: string;
-  Description: string;
-  Price: number;
-  Waiting: number;
-  SnapId: string;
-  TapsiId: string;
-  SrcImage: string;
+  Id: string = "";
+  CategoryId: string = "";
+  IsShowMenu: boolean = true;
+  MetaTitle: string = "";
+  MetaDescription: string = "";
+  Name: string = "";
+  Description: string = "";
+  Price: number = 0;
+  Waiting: number = 0;
+  SnapId: string = "";
+  TapsiId: string = "";
+  SrcImage: string = "";
 }
 
 export class DeleteMenuProductModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class ReadEconomicPackageListModel {
@@ -73,40 +73,40 @@ export class ReadEconomicPackageListModel {
 }
 
 export class ReadEconomicPackageDetailModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class CreateEconomicPackageModel {
-  IsShowMenu: boolean;
-  SrcImage: string;
-  Title: string;
-  StartDate: string;
-  EndDate: string;
-  Price: number;
+  IsShowMenu: boolean = true;
+  SrcImage: string = "";
+  Title: string = "";
+  StartDate: string = "";
+  EndDate: string = "";
+  Price: number = 0;
 }
 
 export class UpdateEconomicPackageModel {
-  Id: string;
-  IsShowMenu: boolean;
-  SrcImage: string;
-  Title: string;
-  StartDate: string;
-  EndDate: string;
-  Price: number;
+  Id: string = "";
+  IsShowMenu: boolean = true;
+  SrcImage: string = "";
+  Title: string = "";
+  StartDate: string = "";
+  EndDate: string = "";
+  Price: number = 0;
 }
 
 export class DeleteEconomicPackageModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class CreateContentEconomicPackageModel {
-  EconomicPackageId: string;
-  ProductId: string;
-  Count: number;
+  EconomicPackageId: string = "";
+  ProductId: string = "";
+  Count: number = 0;
 }
 
 export class DeleteContentEconomicPackageModel {
-  EconomicPackageId: string;
-  ProductId: string;
-  Count: number;
+  EconomicPackageId: string = "";
+  ProductId: string = "";
+  Count: number = 0;
 }

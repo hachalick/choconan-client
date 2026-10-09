@@ -12,6 +12,6 @@ export class DeleteFileImageViewModel extends BaseDeleteViewModel {}
 export class UploadFileImageViewModel extends BaseUploadViewModel {}
 
 export class ReadFileImageListViewModel extends BaseReadViewModel {
-  Direction: string;
-  Url: string;
+  Direction: string = '';
+  Url: string = '';
 }

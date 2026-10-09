@@ -141,10 +141,11 @@ export class ApiMenu extends BaseApi {
   ): Promise<CreateMenuProductViewModel> {
     return await ApiMenu.builder()
       .cache("no-store")
-      .route(`${EServerRoute.MENU_PRODUCT}/${Param.CategoryId}`)
+      .route(`${EServerRoute.MENU_PRODUCT}`)
       .method(EMethodRequest.POST)
       .header("access_token", Param.AccessToken)
       .bodyParam("IsShowMenu", Param.IsShowMenu)
+      .bodyParam("CategoryId", Param.CategoryId)
       .bodyParam("Name", Param.Name)
       .bodyParam("Description", Param.Description)
       .bodyParam("MetaTitle", Param.MetaTitle)

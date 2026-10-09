@@ -1,27 +1,27 @@
 export class BaseReadViewModel {
-  Id: string;
+  Id: string = "";
 }
 
 export class BaseCreateViewModel {
-  Create: boolean;
+  Create: boolean = false;
 }
 
 export class BaseUpdateViewModel {
-  Update: boolean;
+  Update: boolean = false;
 }
 
 export class BaseDeleteViewModel {
-  Delete: boolean;
+  Delete: boolean = false;
 }
 
 export class BaseDownloadViewModel {
-  Download: Buffer;
+  Download: Buffer = Buffer.alloc(0);
 }
 
 export class BaseUploadViewModel {
-  Upload: boolean;
+  Upload: boolean = false;
 }
 
 export class BaseEmitViewModel {
-  Send: boolean;
+  Send: boolean = false;
 }

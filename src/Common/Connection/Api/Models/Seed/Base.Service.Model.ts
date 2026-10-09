@@ -1,11 +1,11 @@
 export class BaseUpdateModel {
-  Id: string;
+  Id: string = '';
 }
 
 export class BaseDeleteModel {
-  Id: string;
+  Id: string = '';
 }
 
 export class BaseAuthModel {
-  AccessToken: string;
+  AccessToken: string = '';
 }

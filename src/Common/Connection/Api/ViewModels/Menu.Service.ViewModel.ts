@@ -6,9 +6,9 @@ import {
 } from "./Seed/Base.Service.ViewModel";
 
 export class ReadMenuDetailViewModel extends BaseReadViewModel {
-  Name: string;
-  IsShowMenu: boolean;
-  Icon: string;
+  Name: string = "";
+  IsShowMenu: boolean = false;
+  Icon: string = "";
   Products: {
     Id: string;
     IsShowMenu: boolean;
@@ -19,16 +19,16 @@ export class ReadMenuDetailViewModel extends BaseReadViewModel {
     SnapId: string;
     TapsiId: string;
     SrcImage: string;
-  }[];
+  }[] = [];
 }
 
 export class ReadMenuCategoryDetailViewModel extends BaseReadViewModel {
-  Name: string;
-  Icon: string;
-  IsShowMenu: boolean;
-  Description: string;
-  MetaTitle: string;
-  MetaDescription: string;
+  Name: string = "";
+  Icon: string = "";
+  IsShowMenu: boolean = false;
+  Description: string = "";
+  MetaTitle: string = "";
+  MetaDescription: string = "";
   Products: {
     Id: string;
     IsShowMenu: boolean;
@@ -39,33 +39,33 @@ export class ReadMenuCategoryDetailViewModel extends BaseReadViewModel {
     SnapId: string;
     TapsiId: string;
     SrcImage: string;
-  }[];
+  }[] = [];
 }
 
 export class ReadMenuProductDetailViewModel extends BaseReadViewModel {
-  CategoryId: string;
-  CategoryName: string;
-  IsShowMenu: boolean;
-  MetaTitle: string;
-  MetaDescription: string;
-  Name: string;
-  Description: string;
-  Price: number;
-  Waiting: number;
-  SnapId: string;
-  TapsiId: string;
-  SrcImage: string;
+  CategoryId: string = "";
+  CategoryName: string = "";
+  IsShowMenu: boolean = false;
+  MetaTitle: string = "";
+  MetaDescription: string = "";
+  Name: string = "";
+  Description: string = "";
+  Price: number = 0;
+  Waiting: number = 0;
+  SnapId: string = "";
+  TapsiId: string = "";
+  SrcImage: string = "";
 }
 
 export class ReadSearchMenuDetailViewModel extends BaseReadViewModel {
-  IsShowMenu: boolean;
-  Name: string;
-  Description: string;
-  Price: number;
-  Waiting: number;
-  SnapId: string;
-  TapsiId: string;
-  SrcImage: string;
+  IsShowMenu: boolean = false;
+  Name: string = "";
+  Description: string = "";
+  Price: number = 0;
+  Waiting: number = 0;
+  SnapId: string = "";
+  TapsiId: string = "";
+  SrcImage: string = "";
 }
 
 export class CreateMenuCategoryViewModel extends BaseCreateViewModel {}
@@ -81,12 +81,12 @@ export class UpdateMenuProductViewModel extends BaseUpdateViewModel {}
 export class DeleteMenuProductViewModel extends BaseDeleteViewModel {}
 
 export class ReadEconomicPackageListViewModel extends BaseReadViewModel {
-  IsShowMenu: boolean;
-  SrcImage: string;
-  Title: string;
-  StartDate: string;
-  EndDate: string;
-  Price: number;
+  IsShowMenu: boolean = false;
+  SrcImage: string = "";
+  Title: string = "";
+  StartDate: string = "";
+  EndDate: string = "";
+  Price: number = 0;
   EconomicPackageItems: {
     Id: string;
     Count: number;
@@ -94,16 +94,16 @@ export class ReadEconomicPackageListViewModel extends BaseReadViewModel {
     Name: string;
     Price: number;
     SrcImage: string;
-  }[];
+  }[] = [];
 }
 
 export class ReadEconomicPackageDetailViewModel extends BaseReadViewModel {
-  IsShowMenu: boolean;
-  SrcImage: string;
-  Title: string;
-  StartDate: string;
-  EndDate: string;
-  Price: number;
+  IsShowMenu: boolean = false;
+  SrcImage: string = "";
+  Title: string = "";
+  StartDate: string = "";
+  EndDate: string = "";
+  Price: number = 0;
   EconomicPackageItems: {
     Id: string;
     ProductId: string;
@@ -112,7 +112,7 @@ export class ReadEconomicPackageDetailViewModel extends BaseReadViewModel {
     Name: string;
     Price: number;
     SrcImage: string;
-  }[];
+  }[] = [];
 }
 
 export class CreateEconomicPackageViewModel extends BaseCreateViewModel {}

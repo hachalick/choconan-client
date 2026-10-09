@@ -1,6 +1,3 @@
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 import { H } from "@/Components/Element/H";
 import Layout from "@/Components/Layout/Layout";
 import Banner from "@/Components/Ui/Banner";

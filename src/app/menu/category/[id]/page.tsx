@@ -73,10 +73,8 @@ export default async function Category({
 
 export async function generateMetadata({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: {};
 }): Promise<Metadata> {
   const newMetaData = { ...metadata };
 

@@ -1,4 +1,4 @@
 export class SeenLicensePlate {
-  id: number;
-  licensePlate: string;
+  id: number = 0;
+  licensePlate: string = '';
 }
