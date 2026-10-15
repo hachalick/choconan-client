@@ -61,17 +61,18 @@ export default function CreateFactor() {
         setDefaultFactor(res);
       }
     };
-    fetchProducts();
 
-    const factor_number = localStorage.getItem("factor_number") || "1";
-    setDefaultFactor((val) => ({
-      ...val,
-      factor_number: parseInt(factor_number),
-    }));
-    setDefaultFactor((val) => ({
-      ...val,
-      factor_number: parseInt(factor_number),
-    }));
+    const fetchGetTimeServer = async () => {
+      const time = await FetchApi.Video.ReadTimeServer();
+
+      setDefaultFactor((val) => ({
+        ...val,
+        FactorDate: moment(time).format("jYYYY/jMM/jDD HH:mm:ss"),
+      }));
+    };
+
+    fetchProducts();
+    fetchGetTimeServer();
   }, []);
 
   const [cloudDefaultFactor, setSaveChangeFactor] = useChangeTimer(async () => {
@@ -87,7 +88,7 @@ export default function CreateFactor() {
       Tax: defaultFactor.Tax,
       FactorDate: defaultFactor.FactorDate,
     });
-    
+
     console.log(res);
 
     return res.Update;

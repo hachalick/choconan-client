@@ -6,6 +6,7 @@ export enum EServerRoute {
   DOMAIN = "api.shonan.ir",
   HOST = `${PROTOCOL}://${DOMAIN}`,
   // app
+  TIME = "/time",
   VIDEO = "/video",
   VIDEO_LAST = "/video/last",
   // menu

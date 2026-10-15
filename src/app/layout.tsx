@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
-import Header from "@/Components/Layout/Header";
-import Footer from "@/Components/Layout/Footer";
-import MenuMobile from "@/Components/Layout/MenuMobile";
 
 const croissant = localFont({
   variable: "--font-croissant",

@@ -227,7 +227,7 @@ export default function ReadFactor() {
         </div>
       </Box>
       <div className="flex flex-col gap-4">
-        {factors.map((value, index) => (
+        {factors.map((value) => (
           <Box variant="secondary" key={value.Id}>
             <div className="flex gap-4">
               <div className="flex flex-col gap-2 p-2">
