@@ -19,8 +19,6 @@ export default function Default() {
       const data = (
         await FetchApi.Order.ReadOrderMonthlyList({
           AccessToken: access_token,
-          Count: 12,
-          Space: 0,
         })
       ).reverse();
 
@@ -28,7 +26,7 @@ export default function Default() {
         series: [
           {
             name: "مجموع فاکتور (تعداد)",
-            data: data.map((val) => val.totalFactors),
+            data: data.map((val) => val.TotalFactors),
           },
         ],
         options: {
@@ -55,7 +53,7 @@ export default function Default() {
             },
           },
           xaxis: {
-            categories: data.map((val) => val.month),
+            categories: data.map((val) => val.Month),
           },
         } as ApexOptions, // تعیین نوع برای کل options
       });
@@ -64,7 +62,7 @@ export default function Default() {
         series: [
           {
             name: "مجموع آیتم (تعداد)",
-            data: data.map((val) => val.totalItems),
+            data: data.map((val) => val.TotalItems),
           },
         ],
         options: {
@@ -91,7 +89,7 @@ export default function Default() {
             },
           },
           xaxis: {
-            categories: data.map((val) => val.month),
+            categories: data.map((val) => val.Month),
           },
         } as ApexOptions, // تعیین نوع برای کل options
       });
@@ -100,7 +98,7 @@ export default function Default() {
         series: [
           {
             name: "مجموع فروش (تومان)",
-            data: data.map((val) => val.totalPrice),
+            data: data.map((val) => val.TotalPrice),
           },
         ],
         options: {
@@ -127,7 +125,7 @@ export default function Default() {
             },
           },
           xaxis: {
-            categories: data.map((val) => val.month),
+            categories: data.map((val) => val.Month),
           },
         } as ApexOptions, // تعیین نوع برای کل options
       });
@@ -136,7 +134,7 @@ export default function Default() {
         series: [
           {
             name: "میانگین فاکتور (تعداد)",
-            data: data.map((val) => val.averageFactors),
+            data: data.map((val) => val.AverageFactors),
           },
         ],
         options: {
@@ -163,7 +161,7 @@ export default function Default() {
             },
           },
           xaxis: {
-            categories: data.map((val) => val.month),
+            categories: data.map((val) => val.Month),
           },
         } as ApexOptions, // تعیین نوع برای کل options
       });
@@ -172,7 +170,7 @@ export default function Default() {
         series: [
           {
             name: "میانگین آیتم (تعداد)",
-            data: data.map((val) => val.averageItems),
+            data: data.map((val) => val.AverageItems),
           },
         ],
         options: {
@@ -199,7 +197,7 @@ export default function Default() {
             },
           },
           xaxis: {
-            categories: data.map((val) => val.month),
+            categories: data.map((val) => val.Month),
           },
         } as ApexOptions, // تعیین نوع برای کل options
       });
@@ -208,7 +206,7 @@ export default function Default() {
         series: [
           {
             name: "میانگین فروش (تومان)",
-            data: data.map((val) => val.averagePrice),
+            data: data.map((val) => val.AveragePrice),
           },
         ],
         options: {
@@ -235,7 +233,7 @@ export default function Default() {
             },
           },
           xaxis: {
-            categories: data.map((val) => val.month),
+            categories: data.map((val) => val.Month),
           },
         } as ApexOptions, // تعیین نوع برای کل options
       });

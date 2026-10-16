@@ -42,6 +42,7 @@ export enum EServerRoute {
   USER_ROLE = "/role",
   USER_ACCESS = "/access",
   // file
+  FILE_DOWNLOAD_EXCEL_BACKUP = "/download/excel/backup",
   FILE_IMAGE = "/image",
   // pricing
   PRICING_UNIT = "/unit",

@@ -9,6 +9,7 @@ import {
 } from "./ViewModels/File.Service.ViewModel";
 import {
   DeleteFileImageModel,
+  DownloadBackupModel,
   ReadFileImageListModel,
 } from "./Models/File.Service.Model";
 import { BaseAuthModel } from "./Models/Seed/Base.Service.Model";
@@ -31,6 +32,17 @@ export class ApiFile extends BaseApi {
       .method(EMethodRequest.GET)
       .header("access_token", Param.AccessToken)
       .fetch<Array<ReadFileImageListViewModel>>();
+  }
+
+  static async DownloadBackup(
+    Param: DownloadBackupModel & BaseAuthModel,
+  ): Promise<Blob> {
+    return await ApiFile.builder()
+      .cache("no-store")
+      .route(EServerRoute.FILE_DOWNLOAD_EXCEL_BACKUP)
+      .method(EMethodRequest.GET)
+      .header("access_token", Param.AccessToken)
+      .fetch<Blob>();
   }
 
   static async DeleteFileImage(

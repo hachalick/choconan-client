@@ -1,7 +1,9 @@
 export class DownloadFileMenuExcelModel {}
 
 export class DeleteFileImageModel {
-  Id: string = '';
+  Id: string = "";
 }
 
 export class ReadFileImageListModel {}
+
+export class DownloadBackupModel {}

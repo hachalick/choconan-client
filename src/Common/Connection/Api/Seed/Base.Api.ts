@@ -63,7 +63,7 @@ export abstract class BaseApi {
       | object
       | Array<object>
       | boolean
-      | Array<boolean>
+      | Array<boolean>,
   ) {
     if (!this._body || typeof this._body !== "object") {
       this._body = {};
@@ -174,7 +174,7 @@ export abstract class BaseApi {
       this._contentType.includes("application/x-www-form-urlencoded")
     ) {
       return new URLSearchParams(
-        this._body as Record<string, string>
+        this._body as Record<string, string>,
       ).toString();
     } else if (this._contentType.includes("multipart/form-data")) {
       const formData = new FormData();
@@ -231,6 +231,11 @@ export abstract class BaseApi {
         return (await response.json()) as T;
       } else if (contentType && contentType.includes("text/")) {
         return (await response.text()) as T;
+      } else if (
+        contentType &&
+        contentType.includes("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+      ) {
+        return (await response.blob()) as T;
       } else if (
         contentType &&
         contentType.includes("application/octet-stream")
@@ -300,7 +305,7 @@ export abstract class BaseApi {
         xhr.upload.onprogress = (event) => {
           if (event.lengthComputable) {
             const percentComplete = Math.round(
-              (event.loaded / event.total) * 100
+              (event.loaded / event.total) * 100,
             );
             onProgress(percentComplete, event.loaded, event.total);
           }

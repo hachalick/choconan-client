@@ -175,14 +175,16 @@ export class ApiOrder extends BaseApi {
   static async ReadOrderMonthlyList(
     Param: ReadOrderMonthlyListModel & BaseAuthModel,
   ): Promise<Array<ReadOrderMonthlyListViewModel>> {
-    return await ApiOrder.builder()
+    const f = await ApiOrder.builder()
       .cache("no-store")
       .route(EServerRoute.ORDER_ORDER_MONTHLY)
       .header("access_token", Param.AccessToken)
-      .param("Count", Param.Count)
-      .param("Space", Param.Space)
-      .method(EMethodRequest.GET)
-      .fetch<Array<ReadOrderMonthlyListViewModel>>();
+      .method(EMethodRequest.GET);
+
+    if (Param.Count) f.param("Count", Param.Count);
+    if (Param.Space) f.param("Space", Param.Space);
+
+    return f.fetch<Array<ReadOrderMonthlyListViewModel>>();
   }
 
   static async ReadOrderDetail(
