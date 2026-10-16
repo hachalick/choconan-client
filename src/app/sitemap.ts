@@ -1,6 +1,5 @@
 import { EInnerRoute } from "@/Common/Enums/InnerRout";
 import { MetadataRoute } from "next";
-type ItemSitemap = MetadataRoute.Sitemap[0];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemap = [
