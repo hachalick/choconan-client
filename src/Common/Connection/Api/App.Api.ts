@@ -17,7 +17,7 @@ export class ApiVideo extends BaseApi {
   static async ReadTimeServer(): Promise<Date> {
     const res = await ApiVideo.builder()
       .cache("no-store")
-      .route(`${EServerRoute.VIDEO_LAST}`)
+      .route(`${EServerRoute.TIME}`)
       .method(EMethodRequest.GET)
       .fetch<string>();
 

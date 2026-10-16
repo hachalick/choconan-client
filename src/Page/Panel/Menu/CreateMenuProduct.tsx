@@ -86,7 +86,7 @@ export default function CreateMenuProduct() {
         }
 
         const resMenu = await FetchApi.Menu.ReadMenuDetail({});
-
+        setDefaultProduct((val) => ({ ...val, CategoryId: resMenu[0].Id }));
         setMenu(resMenu);
         setGetList(false);
       };

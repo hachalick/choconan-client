@@ -55,8 +55,6 @@ export default function DashboardLayout({
               location.reload();
             }
           } catch (error) {
-            // console.log(error)
-            localStorage.clear();
             sessionStorage.clear();
           }
         }
@@ -71,7 +69,6 @@ export default function DashboardLayout({
             location.reload();
           }
         } catch (error) {
-          localStorage.clear();
           sessionStorage.clear();
         }
       } else {
@@ -92,12 +89,14 @@ export default function DashboardLayout({
       const pars_dashboard_page = JSON.parse(dashboard_page);
 
       if (typeof pars_dashboard_page === "number") {
-        setStatePageDashboard(pars_dashboard_page);
+        setStatePageDashboard(pars_dashboard_page as EDashboard);
       } else if (typeof pars_dashboard_page === "string") {
         try {
           const int_pars_dashboard_page = parseInt(pars_dashboard_page);
-          setStatePageDashboard(int_pars_dashboard_page);
-        } catch (error) {}
+          setStatePageDashboard(int_pars_dashboard_page as EDashboard);
+        } catch (error) {
+          // setStatePageDashboard(EDashboard.DEFAULT);
+        }
       }
     }
   }, []);

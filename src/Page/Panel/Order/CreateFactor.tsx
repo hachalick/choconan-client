@@ -89,8 +89,6 @@ export default function CreateFactor() {
       FactorDate: defaultFactor.FactorDate,
     });
 
-    console.log(res);
-
     return res.Update;
   }, [defaultFactor]);
 

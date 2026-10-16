@@ -245,7 +245,6 @@ export abstract class BaseApi {
         return (await response.text()) as T;
       }
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
         throw new Error(`Fetch failed: ${error.message}`);
       }

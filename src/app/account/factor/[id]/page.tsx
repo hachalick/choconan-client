@@ -24,7 +24,6 @@ export default function OrderTablePanel({
 
     const setterData = async () => {
       const { id } = await params;
-      console.log(id);
 
       const table = await FetchApi.Order.ReadOrderDetail({
         AccessToken: access_token,
