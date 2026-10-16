@@ -49,7 +49,7 @@ export default function Present() {
               </Button>
               <Button
                 type="button"
-                href={EInnerRoute.ORDER_PRESENT_ORDER}
+                href={EInnerRoute.ORDER_PRESENT_FACTOR}
                 variant="success"
                 title="ادامه خرید"
                 StartIcon={FiShoppingBag}

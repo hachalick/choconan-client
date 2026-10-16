@@ -19,7 +19,7 @@ export enum EInnerRoute {
   NEWS                 = "/News",
   ORDER                = "/Order",
   ORDER_PRESENT        = "/Order/Present",
-  ORDER_PRESENT_ORDER  = "/Order/Present/order",
+  ORDER_PRESENT_FACTOR  = "/Order/Present/Factor",
   ORDER_TRANSFER       = "/Order/Transfer",
   PACKAGE              = "/Package",
   PRODUCT              = "/Product",

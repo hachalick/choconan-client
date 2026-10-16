@@ -113,7 +113,7 @@ export default function PresentFactor() {
           { path: EInnerRoute.HOME, name: "خانه" },
           { path: EInnerRoute.ORDER, name: "سبد خرید" },
           { path: EInnerRoute.ORDER_PRESENT, name: "حضوری" },
-          { path: EInnerRoute.ORDER_PRESENT_ORDER, name: "فاکتور" },
+          { path: EInnerRoute.ORDER_PRESENT_FACTOR, name: "فاکتور" },
         ]}
       />
 
