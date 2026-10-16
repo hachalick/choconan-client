@@ -16,7 +16,7 @@ import { EInnerRoute } from "@/Common/Enums/InnerRout";
 export default function MenuMobile() {
   const [countBasket, setCountBasket] = useState(0);
 
-  const pathname = usePathname();
+  const pathname = usePathname().toLowerCase();
 
   useEffect(() => {
     const getBasket = async () => {
